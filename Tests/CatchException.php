@@ -33,6 +33,11 @@ class CatchException
             self::$exception = $exception;
         }
     }
+
+    public static function get()
+    {
+        return self::$exception;
+    }
 }
 
 class CatchExceptionAssert
