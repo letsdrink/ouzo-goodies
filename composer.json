@@ -1,0 +1,30 @@
+{
+  "name": "letsdrink/ouzo-goodies",
+  "description": "Ouzo framework goodies",
+  "homepage": "http://ouzoframework.org/",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "keywords": [
+    "php",
+    "test",
+    "asserts",
+    "mock",
+    "tdd",
+    "utils",
+    "utilities"
+  ],
+  "authors": [
+    {
+      "name": "Ouzo developers",
+      "email": "ouzo-framework@googlegroups.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Ouzo\\": [
+        "Tests/",
+        "Utilities/"
+      ]
+    }
+  }
+}
