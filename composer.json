@@ -21,10 +21,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Ouzo\\": [
-        "Tests/",
-        "Utilities/"
-      ]
+      "Ouzo\\": ""
     }
   }
 }
