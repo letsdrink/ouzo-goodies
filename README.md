@@ -35,3 +35,5 @@ Other topics
 ###PhpStorm plugins:
  * [Ouzo framework plugin](http://plugins.jetbrains.com/plugin/7565?pr=)
  * [DynamicReturnTypePlugin](http://plugins.jetbrains.com/plugin/7251) - for Mock and CatchException. You have to copy [dynamicReturnTypeMeta.json ](https://github.com/letsdrink/ouzo/blob/master/dynamicReturnTypeMeta.json) to your project root.
+
+For ideas, questions, discussions write to *ouzo-framework@googlegroups.com*.
