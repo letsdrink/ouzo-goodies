@@ -24,10 +24,10 @@ Utilities:
 * [Path](https://github.com/letsdrink/ouzo/wiki/Path) - Helper functions for path operations.
 
 Tests:
-* [Assertions for arrays](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-array-assertions)
-* [Assertions for exceptions](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-exception-assertions)
-* [Assertions for strings](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-string-assertions)
-* [Mocking](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-mocking)
+* [Assertions for arrays](https://github.com/letsdrink/ouzo/wiki/Tests#array-assertions)
+* [Assertions for exceptions](https://github.com/letsdrink/ouzo/wiki/Tests#exception-assertions)
+* [Assertions for strings](https://github.com/letsdrink/ouzo/wiki/Tests#string-assertions)
+* [Mocking](https://github.com/letsdrink/ouzo/wiki/Tests#mocking)
 
 Other topics
 * [Functional programming with ouzo](https://github.com/letsdrink/ouzo/wiki/Functional-programming-with-ouzo)
