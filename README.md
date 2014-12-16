@@ -1,7 +1,7 @@
 Ouzo goodies
 ==============
 
-Utility classes, test assertions and mocking framework extracted from ouzo framework.
+Utility classes, test assertions and mocking framework extracted from Ouzo framework.
 
 http://ouzoframework.org
 
