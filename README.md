@@ -1,5 +1,7 @@
-Utility classes, test assertions and mocking framework extracted from ouzo framework.
+Ouzo goodies
 ==============
+
+Utility classes, test assertions and mocking framework extracted from ouzo framework.
 
 http://ouzoframework.org
 
@@ -11,12 +13,6 @@ http://ouzoframework.org
 
 ###Documentation:
 
-Tests:
-    * [Assertions for arrays](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-array-assertions)
-    * [Assertions for exceptions](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-exception-assertions)
-    * [Assertions for strings](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-string-assertions)
-    * [Mocking](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-mocking)
-
 Utilities:
 * [Arrays](https://github.com/letsdrink/ouzo/wiki/Arrays) - Helper functions for arrays.
 * [FluentArray](https://github.com/letsdrink/ouzo/wiki/FluentArray) - Interface for manipulating arrays in a chained fashion.
@@ -26,6 +22,12 @@ Utilities:
 * [FluentFunctions](https://github.com/letsdrink/ouzo/wiki/FluentFunctions) - Fluent utility for function composition.
 * [Cache](https://github.com/letsdrink/ouzo/wiki/Cache) - General-purpose cache.
 * [Path](https://github.com/letsdrink/ouzo/wiki/Path) - Helper functions for path operations.
+
+Tests:
+* [Assertions for arrays](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-array-assertions)
+* [Assertions for exceptions](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-exception-assertions)
+* [Assertions for strings](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-string-assertions)
+* [Mocking](https://github.com/letsdrink/ouzo/wiki/Tests##wiki-mocking)
 
 Other topics
 * [Functional programming with ouzo](https://github.com/letsdrink/ouzo/wiki/Functional-programming-with-ouzo)
