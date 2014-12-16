@@ -5,19 +5,13 @@ use Exception;
 
 class CatchException
 {
-    private $object;
 
-    private static $exception;
-
-    public function __construct($object)
-    {
-        $this->object = $object;
-    }
+    static $exception;
 
     public static function when($object)
     {
         self::$exception = null;
-        return new CatchException($object);
+        return new CatchExceptionObject($object);
     }
 
     public static function assertThat()
@@ -25,18 +19,28 @@ class CatchException
         return new CatchExceptionAssert(self::$exception);
     }
 
+    public static function get()
+    {
+        return self::$exception;
+    }
+}
+
+class CatchExceptionObject
+{
+    private $object;
+
+    public function __construct($object)
+    {
+        $this->object = $object;
+    }
+
     public function __call($method, $args)
     {
         try {
             call_user_func_array(array($this->object, $method), $args);
         } catch (Exception $exception) {
-            self::$exception = $exception;
+            CatchException::$exception = $exception;
         }
-    }
-
-    public static function get()
-    {
-        return self::$exception;
     }
 }
 
