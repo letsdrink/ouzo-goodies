@@ -5,8 +5,7 @@ use Exception;
 
 class CatchException
 {
-
-    static $exception;
+    public static $exception;
 
     public static function when($object)
     {
