@@ -218,7 +218,7 @@ class Strings
      * Example:
      * <code>
      * $string = 'Targaryen';
-     * $stringWithSuffix = Strings::appendPrefix($string, 'Daenerys ');
+     * $stringWithPrefix = Strings::appendPrefix($string, 'Daenerys ');
      * </code>
      * Result:
      * <code>
