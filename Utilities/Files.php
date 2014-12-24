@@ -14,7 +14,7 @@ use RegexIterator;
 class Files
 {
     /**
-     * Load file using require or require_once if the $loadOnce flag is set to true.
+     * Loads a file using require or require_once if the $loadOnce flag is set to true.
      *
      * @param string $path
      * @param bool $loadOnce
@@ -30,7 +30,7 @@ class Files
     }
 
     /**
-     * Load file using require or require_once if the $loadOnce flag is set to true, if file is not exists throw FileNotFoundException.
+     * Loads a file using require or require_once if the $loadOnce flag is set to true, if the file does not exist, throws FileNotFoundException.
      *
      * @param string $path
      * @param bool $loadOnce
@@ -55,7 +55,7 @@ class Files
     }
 
     /**
-     * Delete file, if not exists throw FileNotFoundException.
+     * Deletes file, throws FileNotFoundException if the file does not exist.
      *
      * @param string $path
      * @return bool
@@ -70,7 +70,7 @@ class Files
     }
 
     /**
-     * Move file from the source to the destination path, if source file is not exists throw FileNotFoundException.
+     * Moves file from the source to the destination, throws FileNotFoundException if the source directory does not exist.
      *
      * @param string $sourcePath
      * @param string $destinationPath
@@ -86,7 +86,7 @@ class Files
     }
 
     /**
-     * Convert file size to size with unit string.
+     * Converts file size in bytes to a string with unit.
      *
      * Example:
      * <code>
@@ -113,7 +113,7 @@ class Files
     }
 
     /**
-     * Return size of the given file.
+     * Returns a size of the given file.
      *
      * @param string $path
      * @return int
@@ -124,7 +124,7 @@ class Files
     }
 
     /**
-     * Check is given file is exists.
+     * Checks if the given file exists.
      *
      * @param string $path
      * @return bool
@@ -135,7 +135,7 @@ class Files
     }
 
     /**
-     * Return all files from the given directory that have given extension.
+     * Returns all files from the given directory that have the given extension.
      *
      * @param string $dir
      * @param string $extension
@@ -150,7 +150,7 @@ class Files
     }
 
     /**
-     * Copy content from $inputFile to $outputFile.
+     * Copies content from $inputFile to $outputFile.
      *
      * @param string $inputFile
      * @param string $outputFile

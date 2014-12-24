@@ -8,7 +8,7 @@ namespace Ouzo\Utilities;
 class Json
 {
     /**
-     * Decodes string contains JSON.
+     * Decodes a JSON string
      *
      * @param string $string
      * @param bool $asArray
@@ -20,7 +20,7 @@ class Json
     }
 
     /**
-     * Encode array to the JSON format.
+     * Returns the JSON representation of the $array
      *
      * @param array $array
      * @return string
@@ -31,7 +31,7 @@ class Json
     }
 
     /**
-     * Return JSON error code for the last JSON operation.
+     * Returns a JSON error code for the last operation.
      *
      * @return int
      */
