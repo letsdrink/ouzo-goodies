@@ -10,7 +10,7 @@ use ReflectionObject;
 class Objects
 {
     /**
-     * Convert given object to the string.
+     * Returns a string representation of the given object.
      *
      * @param mixed $var
      * @return string

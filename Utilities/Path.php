@@ -8,7 +8,7 @@ namespace Ouzo\Utilities;
 class Path
 {
     /**
-     * Return path for the given arguments.
+     * Returns a path created by placing DIRECTORY_SEPARATOR between each argument
      *
      * Example:
      * <code>
@@ -29,7 +29,7 @@ class Path
     }
 
     /**
-     * Return path staring in system temporary directory.
+     * Returns a path starting in the system temporary directory.
      *
      * Example:
      * <code>
@@ -51,13 +51,13 @@ class Path
     }
 
     /**
-     * Return normalized path.
+     * Returns a normalized path.
      * Actions:
      * <ul>
      *      <li>removes dots from relative path</li>
      *      <li>removes dots from absolute path</li>
-     *      <li>not remove leading dots</li>
-     *      <li>remove double slashes</li>
+     *      <li>does not remove leading dots</li>
+     *      <li>removes double slashes</li>
      * </ul>
      *
      * Example:
