@@ -67,7 +67,7 @@ class Cache
     }
 
     /**
-     * Check is cache contains objects stored under key.
+     * Checks if cache contains an object for the given key.
      *
      * @param $key
      * @return bool
@@ -88,7 +88,7 @@ class Cache
     }
 
     /**
-     * Clear all items stored in cache.
+     * Clears all items stored in cache.
      */
     public static function clear()
     {

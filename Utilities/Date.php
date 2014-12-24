@@ -13,7 +13,7 @@ class Date
     const DEFAULT_TIME_FORMAT = 'Y-m-d H:i';
 
     /**
-     * Return formatted date.
+     * Returns formatted date.
      *
      * @param string $date
      * @param string $format
@@ -29,7 +29,7 @@ class Date
     }
 
     /**
-     * Return formatted date time.
+     * Returns formatted date time.
      *
      * @param string $date
      * @param string $format
@@ -41,7 +41,7 @@ class Date
     }
 
     /**
-     * Adding interval for the freeze time.
+     * Adds interval to current time and returns a formatted date.
      *
      * @link http://php.net/manual/en/dateinterval.construct.php
      *
@@ -57,7 +57,7 @@ class Date
     }
 
     /**
-     * Modify the freeze date using date time formats and formatting returned date.
+     * Modifies the current time and returns a formatted date.
      *
      * @link http://php.net/manual/en/datetime.formats.php
      *
@@ -71,7 +71,7 @@ class Date
     }
 
     /**
-     * Modify given date using date time formats and formatting returned date.
+     * Modifies the given date string and returns a formatted date.
      *
      * @link http://php.net/manual/en/datetime.formats.php
      *
@@ -87,7 +87,7 @@ class Date
     }
 
     /**
-     * Return beginning of day for the given date.
+     * Returns the beginning of a day for the given date.
      *
      * Example:
      * <code>
@@ -108,7 +108,7 @@ class Date
     }
 
     /**
-     * Return end of day for the given date.
+     * Returns end of a day for the given date.
      *
      * Example:
      * <code>
@@ -129,7 +129,7 @@ class Date
     }
 
     /**
-     * Return formatted time.
+     * Returns formatted time.
      *
      * @param string $time
      * @param string $format
@@ -141,7 +141,7 @@ class Date
     }
 
     /**
-     * Return formatted Unix timestamp.
+     * Returns formatted Unix timestamp.
      *
      * @param int $timestamp
      * @param string $format

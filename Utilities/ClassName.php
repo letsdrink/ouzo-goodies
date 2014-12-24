@@ -8,7 +8,7 @@ namespace Ouzo\Utilities;
 class ClassName
 {
     /**
-     * Transform path to class name - with namespaces.
+     * Transforms path to class name with namespaces.
      *
      * Example:
      * <code>

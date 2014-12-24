@@ -8,7 +8,7 @@ namespace Ouzo\Utilities\Validator;
 class Validate
 {
     /**
-     * Check is value is true, otherwise throw ValidateException with the user given message.
+     * Checks if value is true, if not throws ValidateException with the given message.
      *
      * @param bool $value
      * @param string $message
@@ -24,7 +24,7 @@ class Validate
     }
 
     /**
-     * Check is value is correct email address, otherwise throw ValidateException with the user given message.
+     * Checks if value is a correct email address, otherwise throws ValidateException with the user given message.
      *
      * @param string $value
      * @param string $message
@@ -40,7 +40,7 @@ class Validate
     }
 
     /**
-     * Check is value is not null, otherwise throw ValidateException with the user given message.
+     * Checks if value is not null, otherwise throws ValidateException with the user given message.
      *
      * @param mixed $value
      * @param string $message

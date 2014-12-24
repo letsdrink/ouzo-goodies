@@ -15,9 +15,8 @@ class DynamicProxy
     private static $counter;
 
     /**
-     * Creating proxy for the object.
-     * If is given methodHandler class is passed to the created proxy object and all method calls are go over thought those class.
-     *
+     * Creates a proxy for the given class.
+     * Returned object dispatches method invocations to $methodHandler.
      * @param $className
      * @param $methodHandler
      * @return null
@@ -76,7 +75,7 @@ class DynamicProxy
     }
 
     /**
-     * Extract method handler from proxy object.
+     * Extracts method handler from proxy object.
      *
      * @param $proxy
      * @return mixed
