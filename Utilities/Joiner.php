@@ -18,7 +18,7 @@ class Joiner
     }
 
     /**
-     * Return Joiner object and define separator for the linking elements.
+     * Returns a Joiner object that uses the given separator.
      *
      * @param string $separator
      * @return Joiner
@@ -29,7 +29,7 @@ class Joiner
     }
 
     /**
-     * Return joined string from the given array elements.
+     * Returns a string containing array elements joined using the previously configured separator.
      *
      * @param array $array
      * @return string
@@ -51,8 +51,7 @@ class Joiner
     }
 
     /**
-     * Sets flat which causes skipping null values.
-     *
+     * Returns a joiner that skips null elements.
      * @return Joiner
      */
     public function skipNulls()
@@ -62,7 +61,8 @@ class Joiner
     }
 
     /**
-     * Call function on the each elements in array, passing to lambda key and value from the array.
+     * Returns a joiner that transforms array elements before joining.
+     * $function is called with two parameters: key and value.
      *
      * @param callable $function
      * @return Joiner
@@ -74,7 +74,8 @@ class Joiner
     }
 
     /**
-     * Call function on the each values of the array.
+     * Returns a joiner that transforms array values before joining.
+     * $function is called with one parameter: value.
      *
      * @param callable $function
      * @return Joiner
