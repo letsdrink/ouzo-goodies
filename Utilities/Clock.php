@@ -20,7 +20,7 @@ class Clock
     }
 
     /**
-     * Freeze clock on given date, if given null or none freeze on now.
+     * Freezes time to a specific point or current time if no time is given.
      *
      * @param null $date
      */
@@ -32,7 +32,7 @@ class Clock
     }
 
     /**
-     * Return format date which is currently freeze.
+     * Returns current time as a string.
      *
      * Example:
      * <code>
@@ -53,8 +53,7 @@ class Clock
     }
 
     /**
-     * Return DateTime object which is currently freeze.
-     *
+     * Obtains a Clock set to the current time.
      * @return Clock
      */
     public static function now()
@@ -66,6 +65,10 @@ class Clock
         return new Clock($date);
     }
 
+    /**
+     * Obtains a Clock set to to a specific point.
+     * @return Clock
+     */
     public static function at($date)
     {
         return new Clock(new DateTime($date));
@@ -82,6 +85,11 @@ class Clock
         return $this->dateTime->format($format);
     }
 
+    /**
+     * Converts this object to a DateTime
+     *
+     * @return DateTime
+     */
     public function toDateTime()
     {
         return $this->dateTime;
