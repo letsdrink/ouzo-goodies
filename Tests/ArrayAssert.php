@@ -112,16 +112,14 @@ class ArrayAssert
 
     public function onProperty($property)
     {
-        $this->_actual = Arrays::map($this->_actual, Functions::extractExpression($property, true));
-        return $this;
+        return new ArrayAssert(Arrays::map($this->_actual, Functions::extractExpression($property, true)));
     }
 
     public function onMethod($method)
     {
-        $this->_actual = Arrays::map($this->_actual, function ($element) use ($method) {
+        return new ArrayAssert(Arrays::map($this->_actual, function ($element) use ($method) {
             return $element->$method();
-        });
-        return $this;
+        }));
     }
 
     public function containsKeyAndValue($elements)
