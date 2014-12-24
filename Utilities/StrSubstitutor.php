@@ -11,8 +11,8 @@ class StrSubstitutor
     private $_default;
 
     /**
-     * Create substitutor object, and define placeholders - values map for the replacements.
-     * Substitutor can use default value for the replacements when not found value in the defined map.
+     * Creates a substitutor object that uses the given array for placeholders resolution.
+     * Optionally, substitutor can use the $default when no value is found for a placeholder.
      *
      * @param array $values
      * @param null|string $default
@@ -24,7 +24,7 @@ class StrSubstitutor
     }
 
     /**
-     * Replaces placeholders {{PLACEHOLDER_NAME}} for the defined value.
+     * Replaces placeholders {{PLACEHOLDER_NAME}} with their values.
      *
      * Example:
      * <code>
