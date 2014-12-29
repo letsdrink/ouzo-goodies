@@ -485,4 +485,18 @@ class Strings
     {
         return strstr($string, $substring) !== false;
     }
+
+    /**
+     * Gets the substring before the first occurrence of a separator. The separator is not returned.
+     *
+     * @param string $string
+     * @param string $separator
+     * @return string
+     */
+    public static function substringBefore($string, $separator)
+    {
+        $pos = mb_strpos($string, $separator);
+        return $pos !== FALSE ? mb_substr($string, 0, $pos) : $string;
+    }
+
 }
