@@ -99,6 +99,9 @@ Download from github or simply add composer dependency:
 
 ###Documentation
 
+Tutorials:
+* [Functional programming](http://ouzo.readthedocs.org/en/latest/documentation/functional_programming.html)
+
 Utilities:
 * [Arrays](http://ouzo.readthedocs.org/en/latest/utils/arrays.html) - Helper functions for arrays.
 * [FluentArray](http://ouzo.readthedocs.org/en/latest/utils/fluent_array.html) - Interface for manipulating arrays in a chained fashion.
@@ -117,9 +120,6 @@ Tests:
 * [Assertions for strings](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#string-assertions)
 * [Mocking](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#mocking)
 * [Testing time-dependent code](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#testing-time-dependent-code)
-
-Other topics
-* [Functional programming](http://ouzo.readthedocs.org/en/latest/documentation/functional_programming.html)
 
 Check out full docs at http://ouzo.readthedocs.org
 
