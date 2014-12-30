@@ -15,7 +15,7 @@ Utility classes, test assertions and mocking framework extracted from [Ouzo fram
 
 Couple of examples.
 
-Fluent arrays:
+[Fluent arrays](http://ouzo.readthedocs.org/en/latest/utils/fluent_array.html):
 ```php
 $result = FluentArray::from($users)
              ->map(Functions::extractField('name'))
@@ -24,7 +24,7 @@ $result = FluentArray::from($users)
              ->toArray();
 ```    
 
-Fluent functions:
+[Fluent functions](http://ouzo.readthedocs.org/en/latest/utils/fluent_functions.html):
 ```php
 $product = new Product(['name' => 'super phone']);
 
@@ -37,12 +37,12 @@ $function = FluentFunctions::extractField('name')
 $result = Functions::call($function, $product); //=> '*** extra phone! ***'
 ```
 
-Extract (from Functions):
+[Extract (from Functions)](http://ouzo.readthedocs.org/en/latest/utils/functions.html#extract):
 ```php
 $cities = Arrays::map($users, Functions::extract()->getAddress('home')->city);
 ```
 
-Clock:
+[Clock](http://ouzo.readthedocs.org/en/latest/utils/clock.html):
 ```php
 $string = Clock::now()
     ->plusYears(1)
@@ -51,7 +51,7 @@ $string = Clock::now()
     ->format();
 ```
 
-Comparators:
+[Comparators](http://ouzo.readthedocs.org/en/latest/utils/comparators.html):
 ```php
 $product1 = new Product(['name' => 'b']);
 $product2 = new Product(['name' => 'c']);
@@ -60,13 +60,13 @@ $product3 = new Product(['name' => 'a']);
 $result = Arrays::sort([$product1, $product2, $product3], Comparator::compareBy('name'));
 ```
 
-Fluent assertions for arrays:
+[Fluent assertions for arrays](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#array-assertions):
 ```php
 $animals = ['cat', 'dog', 'pig'];
 Assert::thatArray($animals)->hasSize(3)->contains('cat');
 ```
 
-Fluent assertions for strings:
+[Fluent assertions for strings](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#string-assertions):
 ```php
 Assert::thatString("Frodo")
      ->startsWith("Fro")
@@ -76,7 +76,7 @@ Assert::thatString("Frodo")
      ->hasSize(5);
 ```
 
-Mocking:
+[Mocking](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#mocking):
 ```php
 $mock = Mock::mock();
 Mock::when($mock)->someMethod('arg')->thenReturn('result');
@@ -86,7 +86,7 @@ $result = $mock->someMethod('arg');
 $this->assertEquals("result", $result);
 ```
 
-This is just the taste of Ouzo. Look at the documentation for more goodies.
+This is just a taste of Ouzo. Look at the documentation for more goodies.
 
 ###Where to get it
 
