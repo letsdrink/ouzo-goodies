@@ -69,8 +69,10 @@ Assert::thatArray($animals)->hasSize(3)->contains('cat');
 Fluent assertions for strings:
 ```php
 Assert::thatString("Frodo")
-     ->startsWith("Fro")->endsWith("do")
-     ->contains("rod")->doesNotContain("fro")
+     ->startsWith("Fro")
+     ->endsWith("do")
+     ->contains("rod")
+     ->doesNotContain("fro")
      ->hasSize(5);
 ```
 
