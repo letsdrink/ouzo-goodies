@@ -1,5 +1,7 @@
 <?php
 namespace Ouzo\Utilities;
+use ArrayAccess;
+use BadMethodCallException;
 
 /**
  * Sample usage:
@@ -8,7 +10,7 @@ namespace Ouzo\Utilities;
  *  $cities = Arrays::map($users, Functions::extract()->getAddress('home')->city);
  * </code>
  */
-class Extractor
+class Extractor implements ArrayAccess
 {
     private $_operations = array();
 
@@ -37,5 +39,28 @@ class Extractor
             }
         }
         return $input;
+    }
+
+    public function offsetGet($offset)
+    {
+        $this->_operations[] = function ($input) use ($offset) {
+            return isset($input[$offset]) ? $input[$offset] : null;
+        };
+        return $this;
+    }
+
+    public function offsetExists($offset)
+    {
+        throw new BadMethodCallException();
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        throw new BadMethodCallException();
+    }
+
+    public function offsetUnset($offset)
+    {
+        throw new BadMethodCallException();
     }
 }
