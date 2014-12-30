@@ -100,7 +100,7 @@ Download from github or simply add composer dependency:
 ###Documentation
 
 Tutorials:
-* [Functional programming](http://ouzo.readthedocs.org/en/latest/documentation/functional_programming.html)
+* [Functional programming with Ouzo](http://ouzo.readthedocs.org/en/latest/documentation/functional_programming.html)
 
 Utilities:
 * [Arrays](http://ouzo.readthedocs.org/en/latest/utils/arrays.html) - Helper functions for arrays.
