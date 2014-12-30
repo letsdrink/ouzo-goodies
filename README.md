@@ -86,6 +86,8 @@ $result = $mock->someMethod('arg');
 $this->assertEquals("result", $result);
 ```
 
+This is just the taste of Ouzo. Look at the documentation for more goodies.
+
 ###Where to get it
 
 Download from github or simply add composer dependency:
