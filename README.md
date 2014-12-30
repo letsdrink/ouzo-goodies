@@ -79,9 +79,9 @@ Assert::thatString("Frodo")
 Mocking:
 ```php
 $mock = Mock::mock();
-Mock::when($mock)->method(1)->thenReturn('result');
+Mock::when($mock)->someMethod('arg')->thenReturn('result');
 
-$result = $mock->method(1);
+$result = $mock->someMethod('arg');
 
 $this->assertEquals("result", $result);
 ```
