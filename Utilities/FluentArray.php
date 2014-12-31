@@ -29,6 +29,12 @@ class FluentArray
         return $this;
     }
 
+    public function mapEntries($function)
+    {
+        $this->_array = Arrays::mapEntries($this->_array, $function);
+        return $this;
+    }
+
     public function filter($function)
     {
         $this->_array = Arrays::filter($this->_array, $function);
