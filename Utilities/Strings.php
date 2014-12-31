@@ -498,5 +498,4 @@ class Strings
         $pos = mb_strpos($string, $separator);
         return $pos !== FALSE ? mb_substr($string, 0, $pos) : $string;
     }
-
 }

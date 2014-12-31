@@ -1,5 +1,6 @@
 <?php
 namespace Ouzo\Utilities;
+
 use ArrayAccess;
 use BadMethodCallException;
 

@@ -1008,7 +1008,8 @@ class Arrays
      * @param callable $function
      * @return array
      */
-    public static function mapEntries(array $elements, $function) {
+    public static function mapEntries(array $elements, $function)
+    {
         $keys = array_keys($elements);
         $values = array_values($elements);
         return array_combine($keys, array_map($function, $keys, $values));
