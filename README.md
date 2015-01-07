@@ -78,12 +78,12 @@ Assert::thatString("Frodo")
 
 [Mocking](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#mocking):
 ```php
-$mock = Mock::mock();
-Mock::when($mock)->someMethod('arg')->thenReturn('result');
+$mock = Mock::create();
+Mock::when($mock)->someMethod('arg')->thenReturn('123');
 
 $result = $mock->someMethod('arg');
 
-$this->assertEquals("result", $result);
+$this->assertEquals('123', $result);
 ```
 
 This is just a taste of Ouzo. Look at the documentation for more goodies.

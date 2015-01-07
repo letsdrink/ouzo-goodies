@@ -5,6 +5,11 @@ use Ouzo\Utilities\DynamicProxy;
 
 class Mock
 {
+    public static function create($className = null)
+    {
+        return self::mock($className);
+    }
+
     public static function mock($className = null)
     {
         $mock = new SimpleMock();
