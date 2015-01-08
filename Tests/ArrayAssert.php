@@ -86,7 +86,7 @@ class ArrayAssert
     {
         $this->isNotNull();
         $actualSize = sizeof($this->_actual);
-        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize");
+        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->_actualString);
         return $this;
     }
 
