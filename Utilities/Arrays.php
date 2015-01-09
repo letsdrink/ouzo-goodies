@@ -155,7 +155,7 @@ class Arrays
                 return $key;
             }
         }
-        return FALSE;
+        return false;
     }
 
     /**

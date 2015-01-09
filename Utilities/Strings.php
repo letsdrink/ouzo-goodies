@@ -104,6 +104,31 @@ class Strings
     }
 
     /**
+     * Returns a new string without the given suffix.
+     *
+     * Example:
+     * <code>
+     * $string = 'JohnSnow';
+     * $withoutSuffix = Strings::removeSuffix($string, 'Snow');
+     * </code>
+     * Result:
+     * <code>
+     * John
+     * </code>
+     *
+     * @param string $string
+     * @param string $suffix
+     * @return string
+     */
+    public static function removeSuffix($string, $suffix)
+    {
+        if (self::endsWith($string, $suffix)) {
+            return substr($string, 0, -strlen($suffix));
+        }
+        return $string;
+    }
+
+    /**
      * Method checks if string starts with $prefix.
      *
      * Example:
@@ -496,6 +521,6 @@ class Strings
     public static function substringBefore($string, $separator)
     {
         $pos = mb_strpos($string, $separator);
-        return $pos !== FALSE ? mb_substr($string, 0, $pos) : $string;
+        return $pos !== false ? mb_substr($string, 0, $pos) : $string;
     }
 }
