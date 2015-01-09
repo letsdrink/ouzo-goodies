@@ -1,6 +1,7 @@
 <?php
 namespace Ouzo\Utilities;
 
+use Exception;
 use InvalidArgumentException;
 
 /**
@@ -1013,5 +1014,37 @@ class Arrays
         $keys = array_keys($elements);
         $values = array_values($elements);
         return array_combine($keys, array_map($function, $keys, $values));
+    }
+
+    /**
+     * Removes duplicate values from an array. It uses the given expression to extract value that is compared.
+     *
+     * Example:
+     * <code>
+     * $a = new stdClass();
+     * $a->name = 'bob';
+     *
+     * $b = new stdClass();
+     * $b->name = 'bob';
+     *
+     * $array = [$a, $b];
+     * $result = Arrays::uniqueBy($array, 'name');
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [0] => $b
+     * )
+     * </code>
+     *
+     * @param array $elements
+     * @param $selector
+     * @return array
+     * @throws Exception
+     */
+    public static function uniqueBy(array $elements, $selector)
+    {
+        return array_values(self::toMap($elements, Functions::extractExpression($selector)));
     }
 }
