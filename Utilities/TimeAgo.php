@@ -7,8 +7,8 @@ class TimeAgo
 {
     private $_date;
 
-    public $key = null;
-    public $params = array();
+    private $key;
+    private $params = array();
 
     public function __construct($date)
     {
@@ -105,5 +105,15 @@ class TimeAgo
     public static function create($date)
     {
         return new self($date);
+    }
+
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    public function getParams()
+    {
+        return $this->params;
     }
 }
