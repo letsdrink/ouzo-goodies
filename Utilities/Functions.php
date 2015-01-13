@@ -26,7 +26,7 @@ class Functions
     public static function extractFieldRecursively($names, $accessPrivate = false)
     {
         return function ($object) use ($names, $accessPrivate) {
-            return Objects::getValueRecursively($object, $names, $accessPrivate);
+            return Objects::getValueRecursively($object, $names, null, $accessPrivate);
         };
     }
 
