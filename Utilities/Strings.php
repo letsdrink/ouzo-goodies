@@ -527,4 +527,20 @@ class Strings
         $pos = mb_strpos($string, $separator);
         return $pos !== false ? mb_substr($string, 0, $pos) : $string;
     }
+
+    /**
+     * @param string $subject
+     * @param string $search
+     * @param string $replace
+     * @param int $nth
+     * @return string
+     */
+    public static function replaceNth($subject, $search, $replace, $nth)
+    {
+        $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
+        if (false !== $found && $found > $nth) {
+            return substr_replace($subject, $replace, $matches[0][$nth][1], strlen($search));
+        }
+        return $subject;
+    }
 }
