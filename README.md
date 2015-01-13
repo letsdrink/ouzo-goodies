@@ -84,6 +84,16 @@ Mock::when($mock)->someMethod('arg')->thenReturn('123');
 $result = $mock->someMethod('arg');
 
 $this->assertEquals('123', $result);
+Mock::verify($mock)->method('arg');
+```
+
+[Exception assertions](http://ouzo.readthedocs.org/en/latest/documentation/tests.html#exception-assertions):
+```php
+$foo = new Foo();
+
+CatchException::when($foo)->method();
+
+CatchException::assertThat()->isInstanceOf("FooException");
 ```
 
 This is just a taste of Ouzo. Look at the documentation for more goodies.
