@@ -17,6 +17,9 @@ class Booleans
      */
     public static function toBoolean($string)
     {
+        if (is_bool($string)) {
+            return $string;
+        }
         $string = strtolower($string);
         $specials = array('true', 'on', 'yes');
         if (in_array($string, $specials)) {
