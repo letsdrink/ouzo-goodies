@@ -504,7 +504,7 @@ class Strings
     }
 
     /**
-     * Check is string contains substring.
+     * Checks if string contains the substring.
      *
      * @param string $string
      * @param string $substring
