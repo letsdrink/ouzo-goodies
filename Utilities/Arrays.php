@@ -831,7 +831,7 @@ class Arrays
     }
 
     /**
-     * Returns array with removed keys even are nested.
+     * Removes nested keys in array.
      *
      * Example:
      * <code>
