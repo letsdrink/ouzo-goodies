@@ -862,7 +862,7 @@ class Arrays
     }
 
     /**
-     * Check is array has nested keys. Possibly check array with null values using flag <i>Arrays::TREAT_NULL_AS_VALUE</i>.
+     * Checks if array has nested key. It's possible to check array with null values using flag <i>Arrays::TREAT_NULL_AS_VALUE</i>.
      *
      * Example:
      * <code>
