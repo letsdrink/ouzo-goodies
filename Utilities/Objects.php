@@ -136,6 +136,9 @@ class Objects
      */
     public static function getValue($object, $field, $default = null, $accessPrivate = false)
     {
+        if (is_array($object)) {
+            return Arrays::getValue($object, $field, $default);
+        }
         if (isset($object->$field)) {
             return $object->$field;
         }
