@@ -1,6 +1,6 @@
 {
   "name": "letsdrink/ouzo-goodies",
-  "description": "Ouzo framework goodies",
+  "description": "Utility classes, test assertions and mocking framework extracted from Ouzo framework.",
   "homepage": "http://ouzoframework.org/",
   "minimum-stability": "stable",
   "license": "MIT",
