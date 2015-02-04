@@ -171,4 +171,9 @@ class ArrayAssert
         AssertAdapter::assertSame(array_diff($currentArrayFlatten, $arrayFlatten), array_diff($arrayFlatten, $currentArrayFlatten));
         return $this;
     }
+
+    public function isEqualTo($array)
+    {
+        AssertAdapter::assertEquals($array, $this->_actual);
+    }
 }
