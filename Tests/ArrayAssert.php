@@ -148,7 +148,7 @@ class ArrayAssert
         return $this;
     }
 
-    public function exclude()
+    public function excludes()
     {
         $elements = func_get_args();
         $currentArray = $this->_actual;
