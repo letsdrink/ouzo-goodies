@@ -28,16 +28,20 @@ class Comparator
     }
 
     /**
-     * Returns comparator which compares objects by using values computed using given expression.
-     * Expression should comply with format accepted by <code>Functions::extractExpression</code>.
+     * Returns comparator which compares objects by using values computed using given expressions.
+     * Expressions should comply with format accepted by <code>Functions::extractExpression</code>.
      * Comparator returns an integer less than, equal to, or greater than zero if the first argument is considered to be respectively less than, equal to, or greater than the second.
      *
-     * @param $expression
+     * @param mixed ...
      * @return callable
      */
-    public static function compareBy($expression)
+    public static function compareBy()
     {
-        return new EvaluatingComparator(Functions::extractExpression($expression));
+        $expressions = func_get_args();
+        $comparators = Arrays::map($expressions, function ($expression) {
+            return new EvaluatingComparator(Functions::extractExpression($expression));
+        });
+        return sizeof($comparators) == 1 ? $comparators[0] : new CompoundComparator($comparators);
     }
 
     /**
