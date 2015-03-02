@@ -11,12 +11,12 @@ use Ouzo\Utilities\Supplier\MemoizingSupplier;
 class Suppliers
 {
 
-    public static function memoize(callable $function)
+    public static function memoize($function)
     {
         return new MemoizingSupplier($function);
     }
 
-    public static function memoizeWithExpiration(callable $function, $expireTime = 3600)
+    public static function memoizeWithExpiration($function, $expireTime = 3600)
     {
         return new ExpiringMemoizingSupplier($function, $expireTime);
     }
