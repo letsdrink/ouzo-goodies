@@ -11,7 +11,7 @@ class MemoizingSupplier
     private $cachedResult;
     private $function;
 
-    public function __construct(callable $function)
+    public function __construct($function)
     {
         $this->function = $function;
     }

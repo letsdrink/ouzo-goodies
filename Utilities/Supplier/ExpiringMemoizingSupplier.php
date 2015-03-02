@@ -14,7 +14,7 @@ class ExpiringMemoizingSupplier
     private $function;
     private $expireTime;
 
-    public function __construct(callable $function, $expireTime = 3600)
+    public function __construct($function, $expireTime = 3600)
     {
         $this->function = $function;
         $this->expireTime = $expireTime;
