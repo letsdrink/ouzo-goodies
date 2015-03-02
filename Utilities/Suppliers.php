@@ -5,8 +5,16 @@
  */
 namespace Ouzo\Utilities;
 
+use Ouzo\Utilities\Supplier\ExpiringMemoizingSupplier;
+use Ouzo\Utilities\Supplier\MemoizingSupplier;
+
 class Suppliers
 {
+
+    public static function memoize(callable $function)
+    {
+        return new MemoizingSupplier($function);
+    }
 
     public static function memoizeWithExpiration(callable $function, $expireTime = 3600)
     {
