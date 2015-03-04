@@ -163,4 +163,14 @@ class Clock
     {
         return $this->_modify("+$years years");
     }
+
+    public function isAfter($other)
+    {
+        return $this->getTimestamp() > $other->getTimestamp();
+    }
+
+    public function isBefore($other)
+    {
+        return $this->getTimestamp() < $other->getTimestamp();
+    }
 }
