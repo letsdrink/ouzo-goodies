@@ -71,11 +71,24 @@ class Clock
 
     /**
      * Obtains a Clock set to to a specific point.
+     * @param $date
      * @return Clock
      */
     public static function at($date)
     {
         return new Clock(new DateTime($date));
+    }
+
+    /**
+     * Obtains a Clock set to to a specific point using Unix timestamp.
+     * @param $timestamp
+     * @return Clock
+     */
+    public static function fromTimestamp($timestamp)
+    {
+        $dateTime = new DateTime();
+        $dateTime->setTimestamp($timestamp);
+        return new Clock($dateTime);
     }
 
     public function getTimestamp()
