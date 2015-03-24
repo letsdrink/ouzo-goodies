@@ -128,9 +128,9 @@ class ArrayAssert
 
     public function containsKeyAndValue($elements)
     {
-        $contains = array_intersect_assoc($elements, $this->_actual);
+        $contains = array_intersect_key($this->_actual, $elements);
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertEquals(count($elements), count($contains), "Cannot find key value pairs {$elementsString} in actual {$this->_actualString}");
+        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->_actualString}");
         return $this;
     }
 
