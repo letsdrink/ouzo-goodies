@@ -55,7 +55,7 @@ class StrSubstitutor
      */
     public function replace($string)
     {
-        return preg_replace_callback('/\{\{(\w+)}}/', array($this, '_replace_vars'), $string);
+        return preg_replace_callback('/\{\{(.+?)}}/u', array($this, '_replace_vars'), $string);
     }
 
     /**
