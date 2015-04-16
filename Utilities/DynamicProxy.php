@@ -43,7 +43,8 @@ class DynamicProxy
         $code .= "function __construct(\$methodHandler) { \$this->_methodHandler = \$methodHandler; }\n";
         foreach (self::getClassMethods($class) as $method) {
             $params = self::getParameterDeclaration($method);
-            $code .= "function {$method->name}($params) { return call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";
+            $modifier = $method->isStatic() ? 'static' : '';
+            $code .= "$modifier function {$method->name}($params) { return call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";
         }
         $code .= '}';
         return $code;
@@ -53,7 +54,7 @@ class DynamicProxy
     {
         $methods = $class->getMethods();
         return Arrays::filter($methods, function (ReflectionMethod $method) {
-            return !$method->isConstructor() && !$method->isStatic();
+            return !$method->isConstructor();
         });
     }
 
