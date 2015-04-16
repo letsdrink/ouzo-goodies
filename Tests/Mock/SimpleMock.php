@@ -24,7 +24,7 @@ class SimpleMock
         }
 
         $firstMatching = Arrays::first($matching);
-        $this->removeMatchedCall($matching);
+        $this->removeMatchedCallIfMultipleResults($matching);
 
         return $firstMatching->evaluate($methodCall);
     }
@@ -37,10 +37,17 @@ class SimpleMock
         return $matching;
     }
 
-    private function removeMatchedCall($matching)
+    private function removeMatchedCallIfMultipleResults($matching)
     {
         if (count($matching) > 1) {
-            array_shift($this->_stubbed_calls);
+            $this->removeStubbedCall(Arrays::first($matching));
+        }
+    }
+
+    private function removeStubbedCall($call)
+    {
+        if (($key = array_search($call, $this->_stubbed_calls)) !== false) {
+            unset($this->_stubbed_calls[$key]);
         }
     }
 }
