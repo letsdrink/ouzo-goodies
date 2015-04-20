@@ -49,6 +49,9 @@ class CatchExceptionObject
 
 class CatchExceptionAssert
 {
+    /**
+     * @var Exception
+     */
     private $exception;
 
     public function __construct($exception)
@@ -70,17 +73,30 @@ class CatchExceptionAssert
 
     public function notCaught()
     {
-        AssertAdapter::assertNull($this->exception);
+        if ($this->exception) {
+            throw $this->exception;
+        }
         return $this;
     }
 
     public function hasMessage($message)
     {
-        if ($this->exception instanceof Exception) {
-            AssertAdapter::assertEquals($message, $this->exception->getMessage());
-        } else {
-            AssertAdapter::fail('Message not contains in exceptions');
-        }
+        $this->_validateExceptionThrown();
+        AssertAdapter::assertEquals($message, $this->exception->getMessage());
         return $this;
+    }
+
+    public function hasCode($code)
+    {
+        $this->_validateExceptionThrown();
+        AssertAdapter::assertEquals($code, $this->exception->getCode());
+        return $this;
+    }
+
+    private function _validateExceptionThrown()
+    {
+        if (!$this->exception) {
+            AssertAdapter::fail('Exception was not thrown.');
+        }
     }
 }
