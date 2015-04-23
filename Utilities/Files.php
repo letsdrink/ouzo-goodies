@@ -6,6 +6,7 @@
 namespace Ouzo\Utilities;
 
 use Exception;
+use finfo;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
@@ -71,6 +72,20 @@ class Files
             throw new FileNotFoundException('Cannot find file: ' . $path);
         }
         return unlink($path);
+    }
+
+    /**
+     * Deletes file if exists, otherwise throws FileNotFoundException if the file does not exist.
+     * @param $path
+     * @return bool
+     * @throws FileNotFoundException
+     */
+    public static function deleteIfExists($path)
+    {
+        if (self::exists($path)) {
+            return self::delete($path);
+        }
+        throw new FileNotFoundException('Cannot find file: ' . $path);
     }
 
     /**
@@ -169,6 +184,18 @@ class Files
         }
         fclose($input);
         fclose($output);
+    }
+
+    /**
+     * Returns mime type for the given file path.
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function mimeType($path)
+    {
+        $fileInfo = new finfo(FILEINFO_MIME_TYPE);
+        return $fileInfo->file($path);
     }
 }
 
