@@ -32,10 +32,8 @@ class Functions
 
     public static function extractExpression($selector, $accessPrivate = false)
     {
-        if (is_callable($selector)) {
+        if (!is_string($selector)) {
             return $selector;
-        } elseif (!is_string($selector)) {
-            throw new Exception('Invalid selector: ' . $selector);
         } elseif (preg_match('/\(\)|->/', $selector)) {
             return Functions::extractFieldRecursively($selector, $accessPrivate);
         } else {
