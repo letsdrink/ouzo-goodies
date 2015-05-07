@@ -856,7 +856,7 @@ class Arrays
         $key = array_shift($keys);
         if (count($keys) == 0) {
             unset($array[$key]);
-        } else {
+        } else if ($array[$key] !== null) {
             self::removeNestedKey($array[$key], $keys);
         }
     }
