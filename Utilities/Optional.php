@@ -32,6 +32,11 @@ class Optional
         return new self($object);
     }
 
+    private static function absent()
+    {
+        return new self(null);
+    }
+
     public static function fromNullable($object)
     {
         return new self($object);
@@ -68,6 +73,9 @@ class Optional
     public function __call($name, $arguments)
     {
         if (!in_array($name, array('isPresent', 'get', 'or', 'orNull'))) {
+            if (!method_exists($this->object, $name)) {
+                return Optional::absent();
+            }
             return Optional::fromNullable(call_user_func_array(array($this->object, $name), $arguments));
         }
         return call_user_func_array(array($this, '_' . $name), $arguments);
@@ -75,6 +83,9 @@ class Optional
 
     public function __get($field)
     {
+        if (!property_exists($this->object, $field)) {
+            return Optional::absent();
+        }
         return Optional::fromNullable($this->object->$field);
     }
 }
