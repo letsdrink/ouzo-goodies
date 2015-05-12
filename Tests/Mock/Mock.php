@@ -33,6 +33,11 @@ class Mock
         return new Verifier(self::_extractMock($mock));
     }
 
+    public static function verifyZeroInteractions($mock)
+    {
+        ZeroInteractionsVerifier::verify(self::_extractMock($mock));
+    }
+
     private static function _extractMock($mock)
     {
         if ($mock instanceof SimpleMock) {

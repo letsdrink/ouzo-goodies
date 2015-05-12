@@ -6,8 +6,6 @@
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Arrays;
-use Ouzo\Utilities\Functions;
-use Ouzo\Utilities\Joiner;
 use PHPUnit_Framework_ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
@@ -48,7 +46,7 @@ class Verifier
         if (empty($this->mock->_called_methods)) {
             return "no interactions";
         }
-        return Joiner::on(', ')->join(Arrays::map($this->mock->_called_methods, Functions::toString()));
+        return MethodCall::arrayToString($this->mock->_called_methods);
     }
 
     protected function _wasCalled($name, $arguments)

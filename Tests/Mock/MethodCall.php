@@ -30,6 +30,11 @@ class MethodCall
         return $this->toString();
     }
 
+    public static function arrayToString($calls)
+    {
+        return Joiner::on(', ')->join(Arrays::map($calls, Functions::toString()));
+    }
+
     public static function newInstance($name, $arguments)
     {
         return new MethodCall($name, $arguments);
