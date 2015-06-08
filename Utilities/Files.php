@@ -75,17 +75,16 @@ class Files
     }
 
     /**
-     * Deletes file if exists, otherwise throws FileNotFoundException if the file does not exist.
+     * Deletes file if exists, otherwise return false if the file does not exist.
      * @param $path
      * @return bool
-     * @throws FileNotFoundException
      */
     public static function deleteIfExists($path)
     {
         if (self::exists($path)) {
             return self::delete($path);
         }
-        throw new FileNotFoundException('Cannot find file: ' . $path);
+        return false;
     }
 
     /**
