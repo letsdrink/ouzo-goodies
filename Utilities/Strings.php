@@ -322,14 +322,15 @@ class Strings
     }
 
     /**
-     * Alias for htmlentities() with UTF-8 and defined flag ENT_COMPAT.
+     * Alias for htmlentities() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
      *
      * @param string $text
      * @return string
      */
     public static function htmlEntities($text)
     {
-        $htmlentities = htmlentities($text, ENT_COMPAT, 'UTF-8');
+        $flag = defined('ENT_SUBSTITUTE') ? ENT_SUBSTITUTE : ENT_IGNORE;
+        $htmlentities = htmlentities($text, ENT_COMPAT | $flag, 'UTF-8');
         $htmlentities = str_replace(array('&Oacute;', '&oacute;'), array('Ó', 'ó'), $htmlentities);
         return $htmlentities;
     }
