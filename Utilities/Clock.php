@@ -6,6 +6,7 @@
 namespace Ouzo\Utilities;
 
 use DateTime;
+use DateTimeZone;
 
 /**
  * Class Clock
@@ -185,5 +186,11 @@ class Clock
     public function isBefore($other)
     {
         return $this->getTimestamp() < $other->getTimestamp();
+    }
+
+    public function setTimezone($timezone)
+    {
+        $this->dateTime->setTimezone(new DateTimeZone($timezone));
+        return $this;
     }
 }
