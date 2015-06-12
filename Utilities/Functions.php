@@ -104,6 +104,14 @@ class Functions
         };
     }
 
+    public static function prependAndAppend($prefix, $suffix = null)
+    {
+        return function ($string) use ($prefix, $suffix) {
+            $suffix = $suffix ?: $prefix;
+            return $prefix . $string . $suffix;
+        };
+    }
+
     public static function notEmpty()
     {
         return function ($object) {
