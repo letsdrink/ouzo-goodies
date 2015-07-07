@@ -1051,4 +1051,51 @@ class Arrays
     {
         return array_values(self::toMap($elements, Functions::extractExpression($selector)));
     }
+
+    /**
+     * Returns a recursive diff of two arrays
+
+     * Example:
+     * <code>
+     * $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f');
+     * $array2 = array('a' => array('b' => 'c'));
+     * $result = Arrays::recursiveDiff($array1, $array2);
+     * </code>
+     * Result:
+     * <code>
+     * array('a' => array('d' => 'e'), 'f')
+     *
+     * Array
+     * (
+     *  [a] => Array
+     *        (
+     *          [d] => e
+     *        )
+     *  [0] => f
+     * )
+     * </code>
+     *
+     * @param array $array1
+     * @param array $array2
+     * @return array
+     */
+    public static function recursiveDiff($array1, $array2)
+    {
+        $result = array();
+        foreach ($array1 as $key => $value) {
+            if (array_key_exists($key, $array2)) {
+                if (is_array($value)) {
+                    $nestedDiff = self::recursiveDiff($value, $array2[$key]);
+                    if (!empty($nestedDiff)) {
+                        $result[$key] = $nestedDiff;
+                    }
+                } else if ($value != $array2[$key]) {
+                    $result[$key] = $value;
+                }
+            } else {
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
 }
