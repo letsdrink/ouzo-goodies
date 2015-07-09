@@ -15,6 +15,7 @@ use InvalidArgumentException;
 class Arrays
 {
     const TREAT_NULL_AS_VALUE = 1;
+    const REMOVE_EMPTY_PARENTS = true;
 
     /**
      * Returns true if every element in array satisfies the predicate.
@@ -850,14 +851,18 @@ class Arrays
      *
      * @param array $array
      * @param array $keys
+     * @param bool $removeEmptyParents
      */
-    public static function removeNestedKey(array &$array, array $keys)
+    public static function removeNestedKey(array &$array, array $keys, $removeEmptyParents = false)
     {
         $key = array_shift($keys);
         if (count($keys) == 0) {
             unset($array[$key]);
         } else if ($array[$key] !== null) {
             self::removeNestedKey($array[$key], $keys);
+            if ($removeEmptyParents && empty($array[$key])) {
+                unset($array[$key]);
+            }
         }
     }
 
