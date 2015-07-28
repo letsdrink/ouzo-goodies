@@ -85,13 +85,14 @@ class Iterators
     }
 
     /**
-     * Returns the current element in iterator or defaultValue if the current position is not valid.
+     * Returns the first element in iterator or defaultValue.
      * @param Iterator $iterator
      * @param $default
      * @return mixed
      */
-    public static function currentOr(Iterator $iterator, $default)
+    public static function firstOr(Iterator $iterator, $default)
     {
+        $iterator->rewind();
         return $iterator->valid() ? $iterator->current() : $default;
     }
 

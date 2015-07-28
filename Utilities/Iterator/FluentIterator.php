@@ -31,7 +31,7 @@ class FluentIterator extends ForwardingIterator
      * @param $generator
      * @return FluentIterator
      */
-    public static function fromGenerator($generator)
+    public static function fromFunction($generator)
     {
         return new self(Iterators::generate($generator));
     }
@@ -48,13 +48,13 @@ class FluentIterator extends ForwardingIterator
     }
 
     /**
-     * Returns the current element or defaultValue if the current position is not valid.
+     * Returns the first element in this iterator or defaultValue.
      * @param $default
      * @return mixed
      */
-    public function currentOr($default)
+    public function firstOr($default)
     {
-        return Iterators::currentOr($this->iterator, $default);
+        return Iterators::firstOr($this->iterator, $default);
     }
 
     /**
