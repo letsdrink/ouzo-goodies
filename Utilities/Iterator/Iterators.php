@@ -4,7 +4,6 @@ namespace Ouzo\Utilities\Iterator;
 
 
 use ArrayIterator;
-use CallbackFilterIterator;
 use InfiniteIterator;
 use Iterator;
 use LimitIterator;
@@ -47,11 +46,11 @@ class Iterators
      * Returns the elements of $iterator that satisfy a predicate.
      * @param Iterator $iterator
      * @param $predicate
-     * @return CallbackFilterIterator
+     * @return FilteringIterator
      */
     public static function filter(Iterator $iterator, $predicate)
     {
-        return new CallbackFilterIterator($iterator, $predicate);
+        return new FilteringIterator($iterator, $predicate);
     }
 
     /**
