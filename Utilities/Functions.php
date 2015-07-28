@@ -55,6 +55,13 @@ class Functions
         };
     }
 
+    public static function random($min = 0, $max = null)
+    {
+        return function () use ($min, $max) {
+            return mt_rand($min, $max);
+        };
+    }
+
     public static function throwException(Exception $exception)
     {
         return function () use ($exception) {
