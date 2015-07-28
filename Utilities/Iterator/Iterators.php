@@ -8,6 +8,7 @@ namespace Ouzo\Utilities\Iterator;
 
 use ArrayIterator;
 use InfiniteIterator;
+use InvalidArgumentException;
 use Iterator;
 use LimitIterator;
 
@@ -97,6 +98,20 @@ class Iterators
     {
         $iterator->rewind();
         return $iterator->valid() ? $iterator->current() : $default;
+    }
+
+    /**
+     * Returns the first element in iterator or throws an Exception if iterator is empty
+     * @param Iterator $iterator
+     * @return mixed
+     */
+    public static function first(Iterator $iterator)
+    {
+        $iterator->rewind();
+        if (!$iterator->valid()) {
+            throw new InvalidArgumentException("Iterator is empty");
+        }
+        return $iterator->current();
     }
 
     /**

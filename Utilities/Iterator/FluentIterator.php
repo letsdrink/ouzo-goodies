@@ -61,6 +61,15 @@ class FluentIterator extends ForwardingIterator
     }
 
     /**
+     * Returns the first element in iterator or throws an Exception if iterator is empty
+     * @return mixed
+     */
+    public function first()
+    {
+        return Iterators::first($this->iterator);
+    }
+
+    /**
      * Returns a fluent iterator returning the first $number elements of of this fluent iterator.
      * @param $number
      * @return $this
