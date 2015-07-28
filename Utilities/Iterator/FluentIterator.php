@@ -3,58 +3,101 @@
 namespace Ouzo\Utilities\Iterator;
 
 
-use CallbackFilterIterator;
-use InfiniteIterator;
-
 class FluentIterator extends ForwardingIterator
 {
+    /**
+     * Returns a fluent iterator that wraps $iterator
+     * @param $iterator
+     * @return FluentIterator
+     */
     public static function from($iterator)
     {
         return new self($iterator);
     }
 
+    /**
+     * Returns a fluent iterator for $array
+     * @param array $array
+     * @return FluentIterator
+     */
     public static function fromArray($array)
     {
-        return new self(new \ArrayIterator($array));
+        return new self(Iterators::forArray($array));
     }
 
+    /**
+     * Returns a fluent iterator that uses $function to generate elements
+     * $function takes one argument which is the current position of the iterator.
+     * @param $generator
+     * @return FluentIterator
+     */
     public static function fromGenerator($generator)
     {
-        return new self(new GeneratingIterator($generator));
+        return new self(Iterators::generate($generator));
     }
 
+    /**
+     * Returns a fluent iterator that applies function to each element of this fluent iterator.
+     * @param $function
+     * @return $this
+     */
     public function map($function)
     {
-        $this->iterator = new TransformingIterator($this->iterator, $function);
+        $this->iterator = Iterators::map($this->iterator, $function);
         return $this;
     }
 
-    public function firstOr($default)
+    /**
+     * Returns the current element or defaultValue if the current position is not valid.
+     * @param $default
+     * @return mixed
+     */
+    public function currentOr($default)
     {
-        return $this->iterator->valid() ? $this->iterator->current() : $default;
+        return Iterators::currentOr($this->iterator, $default);
     }
 
+    /**
+     * Returns a fluent iterator returning the first $number elements of of this fluent iterator.
+     * @param $number
+     * @return $this
+     */
     public function limit($number)
     {
-        $this->iterator = new \LimitIterator($this->iterator, 0, $number);
+        $this->iterator = Iterators::limit($this->iterator, $number);
         return $this;
     }
 
+    /**
+     * Returns a fluent iterator returning all but first $number elements of this fluent iterator.
+     * @param $number
+     * @return $this
+     */
     public function skip($number)
     {
-        $this->iterator = new \LimitIterator($this->iterator, $number);
+        $this->iterator = Iterators::skip($this->iterator, $number);
         return $this;
     }
 
+    /**
+     * Returns a fluent iterator returning elements of this fluent iterator grouped in chunks of $chunkSize
+     * Returns the
+     * @param $chunkSize
+     * @return $this
+     */
     public function batch($chunkSize)
     {
-        $this->iterator = new BatchingIterator($this->iterator, $chunkSize);
+        $this->iterator = Iterators::batch($this->iterator, $chunkSize);
         return $this;
     }
 
+    /**
+     * Returns a fluent iterator that cycles indefinitely over the elements of this fluent iterator.
+     * @return $this
+     */
     public function cycle()
     {
-        $this->iterator = new InfiniteIterator($this->iterator);
+        $this->iterator = Iterators::cycle($this->iterator);
         return $this;
     }
 
@@ -64,18 +107,27 @@ class FluentIterator extends ForwardingIterator
      */
     public function reindex()
     {
-        $this->iterator = new ReindexingIterator($this->iterator);
+        $this->iterator = Iterators::reindex($this->iterator);
         return $this;
     }
 
+    /**
+     * Returns a fluent iterator returning elements of this fluent iterator that satisfy a predicate.
+     * @param $predicate
+     * @return $this
+     */
     public function filter($predicate)
     {
-        $this->iterator = new CallbackFilterIterator($this->iterator, $predicate);
+        $this->iterator = Iterators::filter($this->iterator, $predicate);
         return $this;
     }
 
+    /**
+     * Copies elements of this fluent iterator into an array.
+     * @return array
+     */
     public function toArray()
     {
-        return iterator_to_array($this->iterator);
+        return Iterators::toArray($this->iterator);
     }
 }

@@ -1,0 +1,130 @@
+<?php
+
+namespace Ouzo\Utilities\Iterator;
+
+
+use ArrayIterator;
+use CallbackFilterIterator;
+use InfiniteIterator;
+use Iterator;
+use LimitIterator;
+
+class Iterators
+{
+    /**
+     * Returns an iterator that uses $function to generate elements
+     * $function takes one argument which is the current position of the iterator.
+     * @param $function
+     * @return GeneratingIterator
+     */
+    public static function generate($function)
+    {
+        return new GeneratingIterator($function);
+    }
+
+    /**
+     * Returns an iterator that cycles indefinitely over the elements of $iterator.
+     * @param Iterator $iterator
+     * @return GeneratingIterator
+     */
+    public static function cycle(Iterator $iterator)
+    {
+        return new InfiniteIterator($iterator);
+    }
+
+    /**
+     * Returns the elements of $iterator grouped in chunks of $chunkSize
+     * @param Iterator $iterator
+     * @param $chunkSize
+     * @return BatchingIterator
+     */
+    public static function batch(Iterator $iterator, $chunkSize)
+    {
+        return new BatchingIterator($iterator, $chunkSize);
+    }
+
+    /**
+     * Returns the elements of $iterator that satisfy a predicate.
+     * @param Iterator $iterator
+     * @param $predicate
+     * @return CallbackFilterIterator
+     */
+    public static function filter(Iterator $iterator, $predicate)
+    {
+        return new CallbackFilterIterator($iterator, $predicate);
+    }
+
+    /**
+     * Copies an iterator's elements into an array.
+     * @param Iterator $iterator
+     * @return array
+     */
+    public static function toArray(Iterator $iterator)
+    {
+        return iterator_to_array($iterator);
+    }
+
+    /**
+     * Returns an iterator containing the elements of $array.
+     * @param $array
+     * @return ArrayIterator
+     */
+    public static function forArray($array)
+    {
+        return new ArrayIterator($array);
+    }
+
+    /**
+     * Returns an iterator that applies function to each element of $iterator.
+     * @param Iterator $iterator
+     * @param $function
+     * @return TransformingIterator
+     */
+    public static function map(Iterator $iterator, $function)
+    {
+        return new TransformingIterator($iterator, $function);
+    }
+
+    /**
+     * Returns the current element in iterator or defaultValue if the current position is not valid.
+     * @param Iterator $iterator
+     * @param $default
+     * @return mixed
+     */
+    public static function currentOr(Iterator $iterator, $default)
+    {
+        return $iterator->valid() ? $iterator->current() : $default;
+    }
+
+    /**
+     * Creates an iterator returning the first $number elements of the given iterator.
+     * @param Iterator $iterator
+     * @param $number
+     * @return LimitIterator
+     */
+    public static function limit(Iterator $iterator, $number)
+    {
+        return new LimitIterator($iterator, 0, $number);
+    }
+
+    /**
+     * Creates an iterator returning all but first $number elements of the given iterator.
+     * @param Iterator $iterator
+     * @param $number
+     * @return LimitIterator
+     */
+    public static function skip(Iterator $iterator, $number)
+    {
+        return new LimitIterator($iterator, $number);
+    }
+
+    /**
+     * Returns an iterator that indexes elements numerically starting from 0
+     * @param Iterator $iterator
+     * @return Iterator
+     */
+    public static function reindex(Iterator $iterator)
+    {
+        return new ReindexingIterator($iterator);
+    }
+}
