@@ -22,7 +22,16 @@ $result = FluentArray::from($users)
              ->filter(Functions::notEmpty())
              ->unique()
              ->toArray();
-```    
+```
+
+[Fluent iterator](http://ouzo.readthedocs.org/en/latest/utils/fluent_iterator.html):
+```php
+$result = FluentIterator::fromArray(array(1, 2, 3))
+             ->cycle()
+             ->limit(10)
+             ->reindex()
+             ->toArray(); // array(1, 2, 3, 1, 2, 3, 1, 2, 3, 1)
+```
 
 [Fluent functions](http://ouzo.readthedocs.org/en/latest/utils/fluent_functions.html):
 ```php
@@ -115,6 +124,8 @@ Tutorials:
 Utilities:
 * [Arrays](http://ouzo.readthedocs.org/en/latest/utils/arrays.html) - Helper functions for arrays.
 * [FluentArray](http://ouzo.readthedocs.org/en/latest/utils/fluent_array.html) - Interface for manipulating arrays in a chained fashion.
+* [Iterators](http://ouzo.readthedocs.org/en/latest/utils/iterators.html) - Helper functions for iterators.
+* [FluentIterator](http://ouzo.readthedocs.org/en/latest/utils/fluent_iterator.html)- Interface for manipulating iterators in a chained fashion.
 * [Strings](http://ouzo.readthedocs.org/en/latest/utils/strings.html) - Helper functions for strings.
 * [Objects](http://ouzo.readthedocs.org/en/latest/utils/objects.html)- Helper functions that can operate on any PHP object.
 * [Functions](http://ouzo.readthedocs.org/en/latest/utils/functions.html) - Static utility methods returning closures that can be used with Arrays and FluentArray.
