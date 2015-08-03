@@ -59,7 +59,7 @@ class ArrayAssert
     {
         $nonExistingElements = array();
         foreach ($elements as $element) {
-            if (!in_array($element, $this->_actual)) {
+            if (!Arrays::contains($this->_actual, $element)) {
                 $nonExistingElements[] = $element;
             }
         }
@@ -154,7 +154,7 @@ class ArrayAssert
         $currentArray = $this->_actual;
         $foundElement = '';
         $anyFound = Arrays::any($elements, function ($element) use ($currentArray, &$foundElement) {
-            $checkInArray = in_array($element, $currentArray);
+            $checkInArray = Arrays::contains($currentArray, $element);
             if ($checkInArray) {
                 $foundElement = $element;
             }
