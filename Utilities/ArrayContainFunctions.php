@@ -54,12 +54,12 @@ class ArrayContainFunctions
         };
     }
 
-    protected static function bothEquals($var1, $var2, $value1, $value2)
+    public static function bothEquals($var1, $var2, $value1, $value2)
     {
         return ($var1 === $value1 && $var2 === $value2) || ($var1 === $value2 && $var2 === $value1);
     }
 
-    protected static function anyEquals($var1, $var2, $value1, $value2)
+    public static function anyEquals($var1, $var2, $value1, $value2)
     {
         return $var1 === $value1 || $var1 === $value2 || $var2 === $value1 || $var2 === $value2;
     }
