@@ -201,4 +201,11 @@ class Functions
             return $value != $object;
         };
     }
+
+    public static function contains($element)
+    {
+        return function ($array) use ($element) {
+            return Arrays::contains($array, $element);
+        };
+    }
 }

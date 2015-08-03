@@ -21,43 +21,37 @@ class ArrayContainFunctions
             return false;
         }
         foreach ($elements as $element) {
-            foreach ($array as $arrayElements) {
-                if (Arrays::contains($arrayElements, $element)) {
-                    continue 2;
-                }
+            if (!Arrays::any($array, Functions::contains($element))) {
+                return false;
             }
-            return false;
         }
         return true;
     }
 
     public static function containsElement(array $array, $element)
     {
-        foreach ($array as $value) {
-            if (self::isEqual($value, $element)) {
-                return true;
-            }
-        }
-        return false;
+        return Arrays::any($array, self::isEqual($element));
     }
 
-    private static function isEqual($var1, $var2)
+    private static function isEqual($var2)
     {
-        $type1 = gettype($var1);
         $type2 = gettype($var2);
-        if ($var1 === $var2) {
-            return true;
-        }
-        if ($type1 == $type2 && ($type1 == 'object' || $type1 == 'array') && $var1 == $var2) {
-            return true;
-        }
-        if (self::bothEquals($type1, $type2, 'string', 'integer') && $var1 == $var2) {
-            return true;
-        }
-        if (self::bothEquals($type1, $type2, 'boolean', 'string') && self::anyEquals($var1, $var2, 'true', 'false') && Booleans::toBoolean($var1) == Booleans::toBoolean($var2)) {
-            return true;
-        }
-        return false;
+        return function ($var1) use ($var2, $type2) {
+            $type1 = gettype($var1);
+            if ($var1 === $var2) {
+                return true;
+            }
+            if ($type1 == $type2 && ($type1 == 'object' || $type1 == 'array') && $var1 == $var2) {
+                return true;
+            }
+            if (ArrayContainFunctions::bothEquals($type1, $type2, 'string', 'integer') && $var1 == $var2) {
+                return true;
+            }
+            if (ArrayContainFunctions::bothEquals($type1, $type2, 'boolean', 'string') && ArrayContainFunctions::anyEquals($var1, $var2, 'true', 'false') && Booleans::toBoolean($var1) == Booleans::toBoolean($var2)) {
+                return true;
+            }
+            return false;
+        };
     }
 
     private static function bothEquals($var1, $var2, $value1, $value2)
