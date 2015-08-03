@@ -1059,7 +1059,6 @@ class Arrays
 
     /**
      * Returns a recursive diff of two arrays
-
      * Example:
      * <code>
      * $array1 = array('a' => array('b' => 'c', 'd' => 'e'), 'f');
@@ -1102,5 +1101,31 @@ class Arrays
             }
         }
         return $result;
+    }
+
+    /**
+     * Returns true if array contains given element. Comparison is based on the following rules:
+     *  - same type + same type = strict check
+     *  - object + object = loose check
+     *  - array + array = goes through all elements and invokes Arrays::contains
+     *  - string + integer = loose check
+     *  - boolean + string ('true' or 'false') = loose check
+     *  - false in other cases
+     * Example:
+     * <code>
+     * $result = Arrays::contains(array(1, 2, 3), 2);
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * @param array $array
+     * @param mixed $element expected value
+     * @return bool
+     */
+    public static function contains(array $array, $element)
+    {
+        return ArrayContainFunctions::contains($array, $element);
     }
 }
