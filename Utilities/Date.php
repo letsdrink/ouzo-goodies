@@ -7,6 +7,7 @@ namespace Ouzo\Utilities;
 
 use DateInterval;
 use DateTime;
+use DateTimeZone;
 
 /**
  * Class Date
@@ -15,6 +16,7 @@ use DateTime;
 class Date
 {
     const DEFAULT_TIME_FORMAT = 'Y-m-d H:i';
+    const DEFAULT_TIMEZONE = 'UTC';
 
     /**
      * Returns formatted date.
@@ -149,12 +151,14 @@ class Date
      *
      * @param int $timestamp
      * @param string $format
+     * @param string $timezone
      * @return string
      */
-    public static function formatTimestamp($timestamp, $format = self::DEFAULT_TIME_FORMAT)
+    public static function formatTimestamp($timestamp, $format = self::DEFAULT_TIME_FORMAT, $timezone = self::DEFAULT_TIMEZONE)
     {
         $dateTime = new DateTime();
         $dateTime->setTimestamp($timestamp);
+        $dateTime->setTimezone(new DateTimeZone($timezone));
         return $dateTime->format($format);
     }
 }
