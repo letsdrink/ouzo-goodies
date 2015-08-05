@@ -5,7 +5,7 @@
  */
 namespace Ouzo\Utilities\Supplier;
 
-class MemoizingSupplier
+class MemoizingSupplier implements Supplier
 {
     private $invoked = false;
     private $cachedResult;

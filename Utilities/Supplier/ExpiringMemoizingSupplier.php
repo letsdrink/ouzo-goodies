@@ -7,7 +7,7 @@ namespace Ouzo\Utilities\Supplier;
 
 use Ouzo\Utilities\Clock;
 
-class ExpiringMemoizingSupplier
+class ExpiringMemoizingSupplier implements Supplier
 {
     private $cachedResult;
     private $lastCallTime;
