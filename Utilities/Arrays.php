@@ -836,7 +836,7 @@ class Arrays
      *
      * Example:
      * <code>
-     * $array = array('1' => array('2' => array('3' => 'value')));$array = array('1' => array('2' => array('3' => 'value')));
+     * $array = array('1' => array('2' => array('3' => 'value')));
      * Arrays::removeNestedKey($array, array('1', '2'));
      * </code>
      * Result:
