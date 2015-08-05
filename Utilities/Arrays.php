@@ -858,7 +858,7 @@ class Arrays
         $key = array_shift($keys);
         if (count($keys) == 0) {
             unset($array[$key]);
-        } else if (isset($array[$key])) {
+        } elseif (isset($array[$key])) {
             self::removeNestedKey($array[$key], $keys, $removeEmptyParents);
             if ($removeEmptyParents && empty($array[$key])) {
                 unset($array[$key]);
@@ -1093,7 +1093,7 @@ class Arrays
                     if (!empty($nestedDiff)) {
                         $result[$key] = $nestedDiff;
                     }
-                } else if ($value != $array2[$key]) {
+                } elseif ($value != $array2[$key]) {
                     $result[$key] = $value;
                 }
             } else {

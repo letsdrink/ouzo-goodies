@@ -10,7 +10,6 @@ use Ouzo\Utilities\Supplier\MemoizingSupplier;
 
 class Suppliers
 {
-
     public static function memoize($function)
     {
         return new MemoizingSupplier($function);

@@ -34,7 +34,7 @@ class Functions
     {
         if (!is_string($selector)) {
             return $selector;
-        } elseif (strpos($selector, '()') !== FALSE || strpos($selector, '->') !== FALSE) {
+        } elseif (strpos($selector, '()') !== false || strpos($selector, '->') !== false) {
             return Functions::extractFieldRecursively($selector, $accessPrivate);
         } else {
             return Functions::extractField($selector, $accessPrivate);

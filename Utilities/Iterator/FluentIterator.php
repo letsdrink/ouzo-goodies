@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
-
 class FluentIterator extends ForwardingIterator
 {
     /**

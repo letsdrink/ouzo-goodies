@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities;
 
-
 use Exception;
 use InvalidArgumentException;
 
@@ -16,7 +15,6 @@ use InvalidArgumentException;
  */
 class Optional
 {
-
     private $object;
 
     private function __construct($object)

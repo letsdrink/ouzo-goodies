@@ -52,5 +52,4 @@ class RecursiveStrSubstitutor
         } while (($originalString != $string) && ($nestLevel <= $this->_maxNestLevel));
         return $string;
     }
-
 }

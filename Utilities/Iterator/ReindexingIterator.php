@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
-
 class ReindexingIterator extends ForwardingIterator
 {
     private $index;
@@ -26,5 +25,4 @@ class ReindexingIterator extends ForwardingIterator
         parent::rewind();
         $this->index = 0;
     }
-
 }

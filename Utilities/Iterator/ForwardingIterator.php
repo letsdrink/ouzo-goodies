@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
-
 use Iterator;
 
 class ForwardingIterator implements Iterator

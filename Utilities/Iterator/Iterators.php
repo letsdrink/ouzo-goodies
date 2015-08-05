@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
-
 use ArrayIterator;
 use InfiniteIterator;
 use InvalidArgumentException;

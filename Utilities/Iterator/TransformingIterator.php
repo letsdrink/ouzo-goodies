@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
-
 use Iterator;
 
 class TransformingIterator extends ForwardingIterator
