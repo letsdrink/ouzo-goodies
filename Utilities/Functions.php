@@ -139,6 +139,13 @@ class Functions
         };
     }
 
+    public static function endsWith($suffix)
+    {
+        return function ($string) use ($suffix) {
+            return Strings::endsWith($string, $suffix);
+        };
+    }
+
     public static function formatDateTime($format = Date::DEFAULT_TIME_FORMAT)
     {
         return function ($date) use ($format) {

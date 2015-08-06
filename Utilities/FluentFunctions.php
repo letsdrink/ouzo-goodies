@@ -20,6 +20,7 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction notBlank()
  * @method static FluentFunction removePrefix($string)
  * @method static FluentFunction startsWith($string)
+ * @method static FluentFunction endsWith($string)
  * @method static FluentFunction formatDateTime($format)
  * @method static FluentFunction toString()
  * @method static FluentFunction surroundWith($string)
