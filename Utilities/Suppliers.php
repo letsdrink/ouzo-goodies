@@ -10,7 +10,7 @@ use Ouzo\Utilities\Supplier\MemoizingSupplier;
 use Ouzo\Utilities\Supplier\Supplier;
 
 /**
- * This class can be used as the assignment target for a lambda expression.
+ * Static utility methods returning suppliers.
  */
 class Suppliers
 {
