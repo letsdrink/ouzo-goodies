@@ -7,41 +7,54 @@ namespace Ouzo\Utilities;
 
 use DateTime;
 
+/**
+ * This class is intended to format date in a "time ago" manner.
+ * @package Ouzo\Utilities
+ */
 class TimeAgo
 {
-    private $_date;
+    /** @var string */
+    private $date;
+    /** @var string */
     private $key;
+    /** @var array */
     private $params = array();
 
+    /**
+     * @param string $date
+     */
     public function __construct($date)
     {
-        $this->_date = $date;
+        $this->date = $date;
         $this->prepare();
     }
 
+    /**
+     * @return void
+     */
     private function prepare()
     {
-        $date = new DateTime($this->_date);
-        if ($this->_showJustNow()) {
+        $date = new DateTime($this->date);
+        if ($this->showJustNow()) {
             $this->key = 'timeAgo.justNow';
             return;
         }
-        if ($minutesAgo = $this->_showMinutesAgo()) {
+        if ($minutesAgo = $this->showMinutesAgo()) {
             $this->key = 'timeAgo.minAgo';
             $this->params = array('label' => $minutesAgo);
             return;
         }
-        if ($this->_showTodayAt()) {
+        if ($this->showTodayAt()) {
             $this->key = 'timeAgo.todayAt';
             $this->params = array('label' => $date->format('H:i'));
             return;
         }
-        if ($this->_showYesterdayAt()) {
+        if ($this->showYesterdayAt()) {
             $this->key = 'timeAgo.yesterdayAt';
             $this->params = array('label' => $date->format('H:i'));
             return;
         }
-        if ($this->_showThisYear()) {
+        if ($this->showThisYear()) {
             $this->key = 'timeAgo.thisYear';
             $this->params = array('day' => $date->format('j'), 'month' => 'timeAgo.month.' . $date->format('n'));
             return;
@@ -49,72 +62,111 @@ class TimeAgo
         $this->key = $date->format('Y-m-d');
     }
 
-    private function _showJustNow()
+    /**
+     * @return bool
+     */
+    private function showJustNow()
     {
-        return $this->_getDateDiff() <= 60;
+        return $this->getDateDiff() <= 60;
     }
 
-    private function _showMinutesAgo()
+    /**
+     * @return int|null
+     */
+    private function showMinutesAgo()
     {
-        $difference = $this->_getDateDiff();
+        $difference = $this->getDateDiff();
         return ($difference > 60 && $difference < 3600) ? floor($difference / 60) : null;
     }
 
-    private function _showTodayAt()
+    /**
+     * @return bool
+     */
+    private function showTodayAt()
     {
-        $difference = $this->_getDateDiff();
-        return $this->_isSameDay() && $difference >= 3600 && $difference < 86400;
+        $difference = $this->getDateDiff();
+        return $this->isSameDay() && $difference >= 3600 && $difference < 86400;
     }
 
-    private function _getDateDiff()
+    /**
+     * @return int
+     */
+    private function getDateDiff()
     {
-        return $this->_nowAsTimestamp() - $this->_dateAsTimestamp();
+        return $this->nowAsTimestamp() - $this->dateAsTimestamp();
     }
 
-    private function _nowAsTimestamp()
+    /**
+     * @return int
+     */
+    private function nowAsTimestamp()
     {
         return Clock::now()->getTimestamp();
     }
 
-    private function _dateAsTimestamp()
+    /**
+     * @return int
+     */
+    private function dateAsTimestamp()
     {
-        return strtotime($this->_date);
+        return strtotime($this->date);
     }
 
-    private function _isSameDay()
+    /**
+     * @return bool
+     */
+    private function isSameDay()
     {
-        $now = $this->_nowAsTimestamp();
-        $date = $this->_dateAsTimestamp();
+        $now = $this->nowAsTimestamp();
+        $date = $this->dateAsTimestamp();
         return date('Y-m-d', $now) == date('Y-m-d', $date);
     }
 
-    private function _showYesterdayAt()
+    /**
+     * @return bool
+     */
+    private function showYesterdayAt()
     {
-        $now = $this->_nowAsTimestamp();
-        $date = $this->_dateAsTimestamp();
+        $now = $this->nowAsTimestamp();
+        $date = $this->dateAsTimestamp();
         if (date('Y-m', $now) == date('Y-m', $date)) {
             return date('d', $now) - date('d', $date) == 1;
         }
         return false;
     }
 
-    private function _showThisYear()
+    /**
+     * @return bool
+     */
+    private function showThisYear()
     {
-        $now = $this->_nowAsTimestamp();
-        $date = $this->_dateAsTimestamp();
+        $now = $this->nowAsTimestamp();
+        $date = $this->dateAsTimestamp();
         return date('Y', $now) == date('Y', $date);
     }
 
+    /**
+     * Creates TimeAgo object for passed date.
+     *
+     * @param string $date
+     * @return TimeAgo
+     */
     public static function create($date)
     {
         return new self($date);
     }
 
+    /**
+     * @return string
+     */
     public function getKey()
     {
         return $this->key;
     }
 
+    /**
+     * @return array
+     */
     public function getParams()
     {
         return $this->params;
