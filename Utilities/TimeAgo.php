@@ -10,7 +10,6 @@ use DateTime;
 class TimeAgo
 {
     private $_date;
-
     private $key;
     private $params = array();
 

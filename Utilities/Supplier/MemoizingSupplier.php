@@ -7,7 +7,6 @@ namespace Ouzo\Utilities\Supplier;
 
 /**
  * Class MemoizingSupplier
- *
  * @package Ouzo\Utilities\Supplier
  */
 class MemoizingSupplier implements Supplier

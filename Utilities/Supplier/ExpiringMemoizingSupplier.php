@@ -9,7 +9,6 @@ use Ouzo\Utilities\Clock;
 
 /**
  * Class ExpiringMemoizingSupplier
- *
  * @package Ouzo\Utilities\Supplier
  */
 class ExpiringMemoizingSupplier implements Supplier
