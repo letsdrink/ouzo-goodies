@@ -7,19 +7,35 @@ namespace Ouzo\Utilities\Supplier;
 
 use Ouzo\Utilities\Clock;
 
+/**
+ * Class ExpiringMemoizingSupplier
+ *
+ * @package Ouzo\Utilities\Supplier
+ */
 class ExpiringMemoizingSupplier implements Supplier
 {
+    /** @var mixed */
     private $cachedResult;
+    /** @var int */
     private $lastCallTime;
+    /** @var callable */
     private $function;
+    /** @var int */
     private $expireTime;
 
+    /**
+     * @param callable $function
+     * @param int $expireTime
+     */
     public function __construct($function, $expireTime = 3600)
     {
         $this->function = $function;
         $this->expireTime = $expireTime;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function get()
     {
         $function = $this->function;
