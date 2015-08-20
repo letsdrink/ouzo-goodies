@@ -23,6 +23,11 @@ class Verifier
         return new NotCalledVerifier($this->mock);
     }
 
+    public function receivedTimes($times)
+    {
+        return new ReceivedTimesCallVerifier($this->mock, $times);
+    }
+
     public function __call($name, $arguments)
     {
         if ($this->_wasCalled($name, $arguments)) {
@@ -52,5 +57,10 @@ class Verifier
     protected function _wasCalled($name, $arguments)
     {
         return Arrays::find($this->mock->_called_methods, new MethodCallMatcher($name, $arguments));
+    }
+
+    protected function numberOfActualCalls($name, $arguments)
+    {
+        return count(Arrays::filter($this->mock->_called_methods, new MethodCallMatcher($name, $arguments)));
     }
 }
