@@ -667,7 +667,7 @@ class Strings
     }
 
     /**
-     * Uppercase first letter (multibyte safe).
+     * Uppercase first letter (multi-byte safe).
      *
      * Example:
      * <code>
