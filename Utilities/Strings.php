@@ -530,6 +530,19 @@ class Strings
     }
 
     /**
+     * Gets the substring after the first occurrence of a separator. The separator is not returned.
+     *
+     * @param string $string
+     * @param string $separator
+     * @return string
+     */
+    public static function substringAfter($string, $separator)
+    {
+        $pos = mb_strpos($string, $separator);
+        return $pos !== false ? mb_substr($string, $pos + 1, null) : $string;
+    }
+
+    /**
      * @param string $subject
      * @param string $search
      * @param string $replace
