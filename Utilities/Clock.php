@@ -188,6 +188,16 @@ class Clock
         return $this->getTimestamp() < $other->getTimestamp();
     }
 
+    public function isAfterOrEqualTo($other)
+    {
+        return $this->getTimestamp() >= $other->getTimestamp();
+    }
+
+    public function isBeforeOrEqualTo($other)
+    {
+        return $this->getTimestamp() <= $other->getTimestamp();
+    }
+
     public function setTimezone($timezone)
     {
         $this->dateTime->setTimezone(new DateTimeZone($timezone));
