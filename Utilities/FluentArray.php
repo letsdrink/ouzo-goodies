@@ -73,6 +73,12 @@ class FluentArray
         return $this->toMap(Functions::extractExpression($selector))->values();
     }
 
+    public function sort($comparator)
+    {
+        $this->_array = Arrays::sort($this->_array, $comparator);
+        return $this;
+    }
+
     public function keys()
     {
         $this->_array = array_keys($this->_array);
