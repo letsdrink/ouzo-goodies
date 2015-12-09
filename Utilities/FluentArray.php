@@ -57,6 +57,12 @@ class FluentArray
         return $this;
     }
 
+    public function filterByAllowedKeys($allowedKeys)
+    {
+        $this->_array = Arrays::filterByAllowedKeys($this->_array, $allowedKeys);
+        return $this;
+    }
+
     public function unique()
     {
         $this->_array = array_unique($this->_array);
