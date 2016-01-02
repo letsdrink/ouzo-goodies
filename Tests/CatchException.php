@@ -62,7 +62,6 @@ class CatchExceptionAssert
     public function isInstanceOf($exception)
     {
         AssertAdapter::assertTrue(class_exists($exception), "Cannot find expected exception class: $exception.");
-        AssertAdapter::assertTrue(is_subclass_of($exception, '\Exception'), 'Expected class is not an Exception.');
         AssertAdapter::assertInstanceOf($exception, $this->exception);
         return $this;
     }
