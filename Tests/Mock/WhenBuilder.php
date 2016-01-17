@@ -25,12 +25,14 @@ class WhenBuilder
 
     /**
      * @param mixed ...
+     * @return $this
      */
     public function thenReturn()
     {
         foreach (func_get_args() as $result) {
             $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, Functions::constant($result));
         }
+        return $this;
     }
 
     /**
