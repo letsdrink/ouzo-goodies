@@ -37,21 +37,25 @@ class WhenBuilder
 
     /**
      * @param mixed ...
+     * @return $this
      */
     public function thenThrow($exception)
     {
         foreach (func_get_args() as $exception) {
             $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, Functions::throwException($exception));
         }
+        return $this;
     }
 
     /**
      * @param mixed ...
+     * @return $this
      */
     public function thenAnswer()
     {
         foreach (func_get_args() as $callback) {
             $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $callback);
         }
+        return $this;
     }
 }
