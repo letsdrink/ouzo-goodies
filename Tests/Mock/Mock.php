@@ -25,20 +25,26 @@ class Mock
 
     public static function when($mock)
     {
-        return new WhenBuilder(self::_extractMock($mock));
+        return new WhenBuilder(self::extractMock($mock));
     }
 
     public static function verify($mock)
     {
-        return new Verifier(self::_extractMock($mock));
+        return new Verifier(self::extractMock($mock));
     }
 
     public static function verifyZeroInteractions($mock)
     {
-        ZeroInteractionsVerifier::verify(self::_extractMock($mock));
+        ZeroInteractionsVerifier::verify(self::extractMock($mock));
     }
 
-    private static function _extractMock($mock)
+    public static function verifyInOrder($callback)
+    {
+        $inOrderVerifier = new InOrderVerifier();
+        $callback($inOrderVerifier);
+    }
+
+    public static function extractMock($mock)
     {
         if ($mock instanceof SimpleMock) {
             return $mock;
