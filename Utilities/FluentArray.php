@@ -79,6 +79,12 @@ class FluentArray
         return $this->toMap(Functions::extractExpression($selector))->values();
     }
 
+    public function groupBy($selector)
+    {
+        $this->_array = Arrays::groupBy($this->_array, $selector);
+        return $this;
+    }
+
     public function sort($comparator)
     {
         $this->_array = Arrays::sort($this->_array, $comparator);
