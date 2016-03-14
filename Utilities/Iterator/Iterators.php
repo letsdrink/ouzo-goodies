@@ -132,7 +132,7 @@ class Iterators
      */
     public static function skip(Iterator $iterator, $number)
     {
-        return new LimitIterator($iterator, $number);
+        return new SkippingIterator($iterator, $number);
     }
 
     /**
