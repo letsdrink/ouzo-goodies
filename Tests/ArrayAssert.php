@@ -28,7 +28,7 @@ class ArrayAssert
     public function extracting()
     {
         $selectors = func_get_args();
-        $actual = [];
+        $actual = array();
         foreach ($selectors as $selector) {
             $actual[] = Arrays::map($this->actual, Functions::extractExpression($selector, true));
         }
