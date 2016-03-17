@@ -11,13 +11,13 @@ use Ouzo\Utilities\Objects;
 
 class ArrayAssert
 {
-    private $_actual;
-    private $_actualString;
+    private $actual;
+    private $actualString;
 
     private function __construct(array $actual)
     {
-        $this->_actual = $actual;
-        $this->_actualString = Objects::toString($actual);
+        $this->actual = $actual;
+        $this->actualString = Objects::toString($actual);
     }
 
     public static function that(array $actual)
@@ -25,15 +25,28 @@ class ArrayAssert
         return new ArrayAssert($actual);
     }
 
+    public function extracting()
+    {
+        $selectors = func_get_args();
+        $actual = [];
+        foreach ($selectors as $selector) {
+            $actual[] = Arrays::map($this->actual, Functions::extractExpression($selector, true));
+        }
+        if (count($selectors) == 1) {
+            $actual = Arrays::flatten($actual);
+        }
+        return self::that($actual);
+    }
+
     public function contains()
     {
         $this->isNotNull();
 
         $elements = func_get_args();
-        $nonExistingElements = $this->_findNonExistingElements($elements);
+        $nonExistingElements = $this->findNonExistingElements($elements);
 
         $nonExistingString = Objects::toString($nonExistingElements);
-        AssertAdapter::assertFalse(!empty($nonExistingElements), "Cannot find expected {$nonExistingString} in actual {$this->_actualString}");
+        AssertAdapter::assertFalse(!empty($nonExistingElements), "Cannot find expected {$nonExistingString} in actual {$this->actualString}");
 
         return $this;
     }
@@ -43,23 +56,23 @@ class ArrayAssert
         $this->isNotNull();
 
         $elements = func_get_args();
-        $found = sizeof($elements) - sizeof($this->_findNonExistingElements($elements));
+        $found = sizeof($elements) - sizeof($this->findNonExistingElements($elements));
 
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertFalse(sizeof($elements) > sizeof($this->_actual) || sizeof($this->_actual) > $found,
-            "Expected only $elementsString elements in actual {$this->_actualString}"
+        AssertAdapter::assertFalse(sizeof($elements) > sizeof($this->actual) || sizeof($this->actual) > $found,
+            "Expected only $elementsString elements in actual {$this->actualString}"
         );
-        AssertAdapter::assertFalse((sizeof($elements) < sizeof($this->_actual) || sizeof($this->_actual) < $found),
-            "There are more in expected $elementsString than in actual {$this->_actualString}"
+        AssertAdapter::assertFalse((sizeof($elements) < sizeof($this->actual) || sizeof($this->actual) < $found),
+            "There are more in expected $elementsString than in actual {$this->actualString}"
         );
         return $this;
     }
 
-    private function _findNonExistingElements($elements)
+    private function findNonExistingElements($elements)
     {
         $nonExistingElements = array();
         foreach ($elements as $element) {
-            if (!Arrays::contains($this->_actual, $element)) {
+            if (!Arrays::contains($this->actual, $element)) {
                 $nonExistingElements[] = $element;
             }
         }
@@ -72,16 +85,16 @@ class ArrayAssert
 
         $elements = func_get_args();
         $found = 0;
-        $min = min(sizeof($this->_actual), sizeof($elements));
+        $min = min(sizeof($this->actual), sizeof($elements));
         for ($i = 0; $i < $min; $i++) {
-            if ($this->_actual[$i] == $elements[$i]) {
+            if ($this->actual[$i] == $elements[$i]) {
                 $found++;
             }
         }
         $elementsString = Objects::toString($elements);
         AssertAdapter::assertFalse(
-            (sizeof($elements) != $found || sizeof($this->_actual) != $found),
-            "Elements from expected $elementsString were not found in actual {$this->_actualString} or have different order"
+            (sizeof($elements) != $found || sizeof($this->actual) != $found),
+            "Elements from expected $elementsString were not found in actual {$this->actualString} or have different order"
         );
         return $this;
     }
@@ -89,48 +102,48 @@ class ArrayAssert
     public function hasSize($expectedSize)
     {
         $this->isNotNull();
-        $actualSize = sizeof($this->_actual);
-        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->_actualString);
+        $actualSize = sizeof($this->actual);
+        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->actualString);
         return $this;
     }
 
     public function isNotNull()
     {
-        AssertAdapter::assertNotNull($this->_actual, "Object is null");
+        AssertAdapter::assertNotNull($this->actual, "Object is null");
         return $this;
     }
 
     public function isEmpty()
     {
         $this->isNotNull();
-        AssertAdapter::assertEmpty($this->_actual, "Object should be empty, but is: {$this->_actualString}");
+        AssertAdapter::assertEmpty($this->actual, "Object should be empty, but is: {$this->actualString}");
         return $this;
     }
 
     public function isNotEmpty()
     {
         $this->isNotNull();
-        AssertAdapter::assertNotEmpty($this->_actual, "Object is empty");
+        AssertAdapter::assertNotEmpty($this->actual, "Object is empty");
         return $this;
     }
 
     public function onProperty($property)
     {
-        return new ArrayAssert(Arrays::map($this->_actual, Functions::extractExpression($property, true)));
+        return new ArrayAssert(Arrays::map($this->actual, Functions::extractExpression($property, true)));
     }
 
     public function onMethod($method)
     {
-        return new ArrayAssert(Arrays::map($this->_actual, function ($element) use ($method) {
+        return new ArrayAssert(Arrays::map($this->actual, function ($element) use ($method) {
             return $element->$method();
         }));
     }
 
     public function containsKeyAndValue($elements)
     {
-        $contains = array_intersect_key($this->_actual, $elements);
+        $contains = array_intersect_key($this->actual, $elements);
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->_actualString}");
+        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->actualString}");
         return $this;
     }
 
@@ -138,9 +151,9 @@ class ArrayAssert
     {
         $elements = func_get_args();
         $result = false;
-        $size = count($this->_actual) - count($elements) + 1;
+        $size = count($this->actual) - count($elements) + 1;
         for ($i = 0; $i < $size; ++$i) {
-            if (array_slice($this->_actual, $i, count($elements)) == $elements) {
+            if (array_slice($this->actual, $i, count($elements)) == $elements) {
                 $result = true;
             }
         }
@@ -151,7 +164,7 @@ class ArrayAssert
     public function excludes()
     {
         $elements = func_get_args();
-        $currentArray = $this->_actual;
+        $currentArray = $this->actual;
         $foundElement = '';
         $anyFound = Arrays::any($elements, function ($element) use ($currentArray, &$foundElement) {
             $checkInArray = Arrays::contains($currentArray, $element);
@@ -160,13 +173,13 @@ class ArrayAssert
             }
             return $checkInArray;
         });
-        AssertAdapter::assertFalse($anyFound, "Found element {$foundElement} in array {$this->_actualString}");
+        AssertAdapter::assertFalse($anyFound, "Found element {$foundElement} in array {$this->actualString}");
         return $this;
     }
 
     public function hasEqualKeysRecursively(array $array)
     {
-        $currentArrayFlatten = array_keys(Arrays::flattenKeysRecursively($this->_actual));
+        $currentArrayFlatten = array_keys(Arrays::flattenKeysRecursively($this->actual));
         $arrayFlatten = array_keys(Arrays::flattenKeysRecursively($array));
         AssertAdapter::assertSame(array_diff($currentArrayFlatten, $arrayFlatten), array_diff($arrayFlatten, $currentArrayFlatten));
         return $this;
@@ -174,6 +187,6 @@ class ArrayAssert
 
     public function isEqualTo($array)
     {
-        AssertAdapter::assertEquals($array, $this->_actual);
+        AssertAdapter::assertEquals($array, $this->actual);
     }
 }
