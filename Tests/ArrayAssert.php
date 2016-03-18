@@ -29,11 +29,13 @@ class ArrayAssert
     {
         $selectors = func_get_args();
         $actual = array();
-        foreach ($selectors as $selector) {
-            $actual[] = Arrays::map($this->actual, Functions::extractExpression($selector, true));
-        }
         if (count($selectors) == 1) {
-            $actual = Arrays::flatten($actual);
+            $selector = Arrays::first($selectors);
+            $actual = Arrays::map($this->actual, Functions::extractExpression($selector, true));
+        } else {
+            foreach ($selectors as $selector) {
+                $actual[] = Arrays::map($this->actual, Functions::extractExpression($selector, true));
+            }
         }
         return self::that($actual);
     }
