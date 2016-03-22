@@ -78,7 +78,7 @@ class Cache
      */
     public static function contains($key)
     {
-        return isset(self::$_cache[$key]);
+        return array_key_exists($key, self::$_cache);
     }
 
     /**
