@@ -264,6 +264,56 @@ class Strings
     }
 
     /**
+     * Adds suffix to the string, if string does not end with the suffix already.
+     *
+     * Example:
+     * <code>
+     * $string = 'Daenerys Targaryen';
+     * $stringWithPrefix = Strings::appendMissingSuffix($string, ' Targaryen');
+     * </code>
+     * Result:
+     * <code>
+     * Daenerys Targaryen
+     * </code>
+     *
+     * @param string $string
+     * @param string $suffix
+     * @return string
+     */
+    public static function appendMissingSuffix($string, $suffix)
+    {
+        if (Strings::endsWith($string, $suffix)) {
+            return $string;
+        }
+        return Strings::appendSuffix($string, $suffix);
+    }
+
+    /**
+     * Adds prefix to the string, if string does not start with the prefix already.
+     *
+     * Example:
+     * <code>
+     * $string = 'Daenerys Targaryen';
+     * $stringWithPrefix = Strings::appendMissingPrefix($string, 'Daenerys ');
+     * </code>
+     * Result:
+     * <code>
+     * Daenerys Targaryen
+     * </code>
+     *
+     * @param string $string
+     * @param string $prefix
+     * @return string
+     */
+    public static function appendMissingPrefix($string, $prefix)
+    {
+        if (Strings::startsWith($string, $prefix)) {
+            return $string;
+        }
+        return Strings::appendPrefix($string, $prefix);
+    }
+
+    /**
      * Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
      *
      * Example:
