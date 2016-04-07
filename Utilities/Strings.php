@@ -280,7 +280,7 @@ class Strings
      * @param string $suffix
      * @return string
      */
-    public static function appendMissingSuffix($string, $suffix)
+    public static function appendIfMissing($string, $suffix)
     {
         if (Strings::endsWith($string, $suffix)) {
             return $string;
@@ -305,7 +305,7 @@ class Strings
      * @param string $prefix
      * @return string
      */
-    public static function appendMissingPrefix($string, $prefix)
+    public static function prependIfMissing($string, $prefix)
     {
         if (Strings::startsWith($string, $prefix)) {
             return $string;
