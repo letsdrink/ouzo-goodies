@@ -563,7 +563,7 @@ class Strings
      */
     public static function contains($string, $substring)
     {
-        return strstr($string, $substring) !== false;
+        return mb_strpos($string, $substring) !== false;
     }
 
     /**
