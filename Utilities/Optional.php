@@ -12,6 +12,7 @@ use InvalidArgumentException;
  * @method bool isPresent
  * @method mixed get
  * @method mixed or
+ * @method mixed orNull
  */
 class Optional
 {
@@ -81,7 +82,7 @@ class Optional
 
     public function __get($field)
     {
-        if (!property_exists($this->object, $field)) {
+        if ($this->object === null || !property_exists($this->object, $field)) {
             return Optional::absent();
         }
         return Optional::fromNullable($this->object->$field);
