@@ -27,6 +27,8 @@ namespace Ouzo\Utilities;
  * @method FluentFunction equals($value)
  * @method FluentFunction notEquals($value)
  * @method FluentFunction isInstanceOf($value)
+ * @method FluentFunction inArray($array)
+ * @method FluentFunction notInArray($array)
  */
 class FluentFunction
 {

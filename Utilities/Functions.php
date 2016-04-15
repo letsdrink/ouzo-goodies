@@ -215,4 +215,18 @@ class Functions
             return Arrays::contains($array, $element);
         };
     }
+
+    public static function inArray($array)
+    {
+        return function ($value) use ($array) {
+            return in_array($value, $array);
+        };
+    }
+
+    public static function notInArray($array)
+    {
+        return function ($value) use ($array) {
+            return !in_array($value, $array);
+        };
+    }
 }
