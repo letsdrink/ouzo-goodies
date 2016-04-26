@@ -1128,4 +1128,37 @@ class Arrays
     {
         return ArrayContainFunctions::contains($array, $element);
     }
+
+    /**
+     * Returns shuffled array with retained key association.
+     * Example:
+     * <code>
+     * $result = Arrays::shuffle(array(1 => 'a', 2 => 'b', 3 => 'c'));
+     * </code>
+     * Result:
+     * <code>
+     * Array
+     * (
+     *      [1] => a
+     *      [3] => c
+     *      [2] => b
+     * )
+     * </code>
+     *
+     * @param array $array
+     * @return array
+     */
+    public static function shuffle(array $array)
+    {
+        if (!$array) {
+            return $array;
+        }
+        $result = array();
+        $keys = array_keys($array);
+        shuffle($keys);
+        foreach ($keys as $key) {
+            $result[$key] = $array[$key];
+        }
+        return $result;
+    }
 }
