@@ -17,17 +17,9 @@ class Booleans
      */
     public static function toBoolean($string)
     {
-        if (is_bool($string)) {
-            return $string;
+        if (is_numeric($string)) {
+            return $string != 0;
         }
-        $string = strtolower($string);
-        $specials = array('true', 'on', 'yes');
-        if (in_array($string, $specials)) {
-            return true;
-        }
-        if (Strings::equal($string, 'false')) {
-            return false;
-        }
-        return !is_string($string);
+        return filter_var($string, FILTER_VALIDATE_BOOLEAN);
     }
 }

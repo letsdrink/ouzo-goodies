@@ -28,6 +28,8 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction negate()
  * @method static FluentFunction notEquals($value)
  * @method static FluentFunction isInstanceOf($value)
+ * @method static FluentFunction inArray($array)
+ * @method static FluentFunction notInArray($array)
  */
 class FluentFunctions
 {
