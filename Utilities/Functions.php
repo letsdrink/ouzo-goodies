@@ -198,14 +198,14 @@ class Functions
     public static function equals($object)
     {
         return function ($value) use ($object) {
-            return $value == $object;
+            return $value === $object;
         };
     }
 
     public static function notEquals($object)
     {
         return function ($value) use ($object) {
-            return $value != $object;
+            return $value !== $object;
         };
     }
 
