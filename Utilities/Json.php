@@ -20,8 +20,8 @@ class Json
      */
     public static function decode($string, $asArray = false)
     {
-        if ($string === '') { // for PHP 7 compatibility
-            return null;
+        if ($string === '' || $string === null) { // for PHP 7 compatibility
+            $string = json_encode(null);
         }
         return json_decode($string, $asArray);
     }
