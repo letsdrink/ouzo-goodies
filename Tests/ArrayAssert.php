@@ -34,7 +34,7 @@ class ArrayAssert
             $actual = Arrays::map($this->actual, Functions::extractExpression($selector, true));
         } else {
             foreach ($this->actual as $item) {
-                $extracted = [];
+                $extracted = array();
                 foreach ($selectors as $selector) {
                     $extracted[] = Functions::call(Functions::extractExpression($selector, true), $item);
                 }
