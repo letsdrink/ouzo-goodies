@@ -33,8 +33,12 @@ class ArrayAssert
             $selector = Arrays::first($selectors);
             $actual = Arrays::map($this->actual, Functions::extractExpression($selector, true));
         } else {
-            foreach ($selectors as $selector) {
-                $actual[] = Arrays::map($this->actual, Functions::extractExpression($selector, true));
+            foreach ($this->actual as $item) {
+                $extracted = [];
+                foreach ($selectors as $selector) {
+                    $extracted[] = Functions::call(Functions::extractExpression($selector, true), $item);
+                }
+                $actual[] = $extracted;
             }
         }
         return self::that($actual);
