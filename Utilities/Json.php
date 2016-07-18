@@ -27,14 +27,14 @@ class Json
     }
 
     /**
-     * Returns the JSON representation of the $array
+     * Returns the JSON representation of the $value
      *
-     * @param array $array
+     * @param array|\JsonSerializable $value
      * @return string
      */
-    public static function encode($array)
+    public static function encode($value)
     {
-        return json_encode($array);
+        return json_encode($value);
     }
 
     /**
