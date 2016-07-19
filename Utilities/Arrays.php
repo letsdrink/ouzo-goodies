@@ -591,7 +591,7 @@ class Arrays
      */
     public static function toArray($element)
     {
-        return $element ? is_array($element) ? $element : array($element) : array();
+        return $element !== NULL ? is_array($element) ? $element : array($element) : array();
     }
 
     /**
