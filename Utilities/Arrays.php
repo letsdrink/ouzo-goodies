@@ -1161,4 +1161,54 @@ class Arrays
         }
         return $result;
     }
+
+    /**
+     * Checks if the given array is associative. An array is considered associative when it has at least one string key.
+     * Example:
+     * <code>
+     * $result = Arrays::isAssociative(array(1, '2', 'abc'));
+     * </code>
+     * Result:
+     * <code>
+     * FALSE
+     * </code>
+     *
+     * <code>
+     * $result = Arrays::isAssociative(array(1 => 'b', 'a' => 2, 'abc'));
+     * </code>
+     * Result:
+     * <code>
+     * TRUE
+     * </code>
+     * @param array $array
+     * @return bool
+     */
+    public static function isAssociative(array $array)
+    {
+        return count(array_filter(array_keys($array), 'is_string')) > 0;
+    }
+
+    /**
+     * Merges array of arrays into one array.
+     * Unlike flatten, concat does not merge arrays that are nested more that once.
+     * Example:
+     * <code>
+     * $result = Arrays::concat(array(array(1, 2), array(3, 4)));
+     * </code>
+     * Result:
+     * <code>
+     * Array (
+     *      [0] => 1
+     *      [1] => 2
+     *      [2] => 3
+     *      [3] => 4
+     * )
+     * </code>
+     * @param array $arrays
+     * @return array
+     */
+    public static function concat(array $arrays)
+    {
+        return call_user_func_array('array_merge', $arrays);
+    }
 }
