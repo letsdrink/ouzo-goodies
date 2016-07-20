@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Tests\Mock;
 
+use InvalidArgumentException;
 use Ouzo\Utilities\DynamicProxy;
 
 class Mock
@@ -46,6 +47,10 @@ class Mock
 
     public static function extractMock($mock)
     {
+        if (is_null($mock)) {
+            throw new InvalidArgumentException("Instance of class Mock or SimpleMock expected, null given");
+        }
+
         if ($mock instanceof SimpleMock) {
             return $mock;
         }
