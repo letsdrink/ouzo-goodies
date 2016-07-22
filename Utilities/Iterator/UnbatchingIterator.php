@@ -22,16 +22,17 @@ class UnbatchingIterator implements Iterator
     public function __construct(Iterator $iterator)
     {
         $this->iterator = $iterator;
-        $this->chunkIterator = $this->createChunkIterator();
     }
 
     public function current()
     {
+        $this->initializeChunkIterator();
         return $this->chunkIterator->current();
     }
 
     public function next()
     {
+        $this->initializeChunkIterator();
         $this->position++;
         $this->chunkIterator->next();
         if (!$this->chunkIterator->valid()) {
@@ -50,6 +51,7 @@ class UnbatchingIterator implements Iterator
 
     public function valid()
     {
+        $this->initializeChunkIterator();
         return $this->chunkIterator->valid();
     }
 
@@ -57,11 +59,13 @@ class UnbatchingIterator implements Iterator
     {
         $this->position = 0;
         $this->iterator->rewind();
-        $this->chunkIterator = $this->createChunkIterator();
+        $this->chunkIterator = null;
     }
 
-    private function createChunkIterator()
+    private function initializeChunkIterator()
     {
-        return new ArrayIterator($this->iterator->valid() ? $this->iterator->current() : array());
+        if (!$this->chunkIterator) {
+            $this->chunkIterator = new ArrayIterator($this->iterator->valid() ? $this->iterator->current() : array());
+        }
     }
 }
