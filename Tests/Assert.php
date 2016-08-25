@@ -74,11 +74,27 @@ class Assert
      *  Assert::thatString("Frodo")->startsWith("Fro")->endsWith("do")->contains("rod")->doesNotContain("fro")->hasSize(5)->matches('/Fro\w+/');
      * </code>
      *
-     * @param $string
+     * @param string $string
      * @return StringAssert
      */
     public static function thatString($string)
     {
         return StringAssert::that($string);
+    }
+
+    /**
+     * Fluent custom primitives' and objects' assertion to simplify your tests.
+     *
+     * Sample usage:
+     * <code>
+     *  Assert::that($object)->isInstanceOf(Controller::class);
+     * </code>
+     *
+     * @param bool|int|object|null $subject
+     * @return StringAssert
+     */
+    public static function that($subject)
+    {
+        return GeneralAssert::that($subject);
     }
 }
