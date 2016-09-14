@@ -83,6 +83,22 @@ class Assert
     }
 
     /**
+     * Fluent custom boolean assertion to simplify your tests.
+     *
+     * Sample usage:
+     * <code>
+     *  Assert::thatBool(isCool())->isTrue();
+     * </code>
+     *
+     * @param string $string
+     * @return BooleanAssert
+     */
+    public static function thatBool($string)
+    {
+        return BooleanAssert::that($string);
+    }
+
+    /**
      * Fluent custom primitives' and objects' assertion to simplify your tests.
      *
      * Sample usage:
