@@ -90,8 +90,8 @@ class Assert
      *  Assert::that($object)->isInstanceOf(Controller::class);
      * </code>
      *
-     * @param bool|int|object|null $subject
-     * @return StringAssert
+     * @param object|null $subject
+     * @return GeneralAssert
      */
     public static function that($subject)
     {
