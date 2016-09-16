@@ -20,6 +20,12 @@ class GeneralAssert
         return new GeneralAssert($actual);
     }
 
+    public function isEqualTo($object)
+    {
+        AssertAdapter::assertEquals($object, $this->_actual);
+        return $this;
+    }
+
     public function isInstanceOf($className)
     {
         AssertAdapter::assertInstanceOf($className, $this->_actual);
