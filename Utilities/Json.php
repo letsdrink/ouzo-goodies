@@ -52,7 +52,7 @@ class Json
         if (function_exists('json_last_error_msg')) {
             return json_last_error_msg();
         }
-        return 'Could not parse json';
+        return 'JSON string is malformed';
     }
 
     /**
