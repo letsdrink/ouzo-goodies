@@ -27,6 +27,35 @@ class Json
     }
 
     /**
+     * Decodes a JSON string, or throws JsonDecodeException on failure
+     *
+     * @param string $string
+     * @param bool $asArray
+     * @return mixed
+     * @throws JsonDecodeException
+     */
+    public static function decode($string, $asArray = false)
+    {
+        $decoded = self::safeDecode($string, $asArray);
+        if (is_null($decoded) == false) {
+            return $decoded;
+        }
+        $code = self::lastError();
+        if ($code == JSON_ERROR_NONE) {
+            return $decoded;
+        }
+        throw new JsonDecodeException(self::lastErrorMessage(), $code);
+    }
+
+    private static function lastErrorMessage()
+    {
+        if (function_exists('json_last_error_msg')) {
+            return json_last_error_msg();
+        }
+        return 'Could not parse json';
+    }
+
+    /**
      * Returns the JSON representation of the $value
      *
      * @param array|\JsonSerializable $value
