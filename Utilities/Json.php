@@ -18,7 +18,7 @@ class Json
      * @param bool $asArray
      * @return mixed
      */
-    public static function decode($string, $asArray = false)
+    public static function safeDecode($string, $asArray = false)
     {
         if ($string === '' || $string === null) { // for PHP 7 compatibility
             $string = json_encode(null);
