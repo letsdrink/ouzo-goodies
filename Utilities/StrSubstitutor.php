@@ -60,6 +60,8 @@ class StrSubstitutor
 
     /**
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+     * @param array $match
+     * @return string
      */
     private function _replace_vars($match)
     {

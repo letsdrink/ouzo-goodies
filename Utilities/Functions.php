@@ -182,6 +182,8 @@ class Functions
     /**
      * @SuppressWarnings("unused")
      * $type is just a hint for dynamicReturnType plugin
+     * @param null $type
+     * @return NonCallableExtractor
      */
     public static function extract($type = null)
     {
