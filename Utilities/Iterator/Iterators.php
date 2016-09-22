@@ -27,7 +27,7 @@ class Iterators
     /**
      * Returns an iterator that cycles indefinitely over the elements of $iterator.
      * @param Iterator $iterator
-     * @return GeneratingIterator
+     * @return InfiniteIterator
      */
     public static function cycle(Iterator $iterator)
     {
@@ -128,7 +128,7 @@ class Iterators
      * Creates an iterator returning all but first $number elements of the given iterator.
      * @param Iterator $iterator
      * @param $number
-     * @return LimitIterator
+     * @return SkippingIterator
      */
     public static function skip(Iterator $iterator, $number)
     {
