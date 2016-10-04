@@ -197,7 +197,3 @@ class Files
         return $fileInfo->file($path);
     }
 }
-
-class FileNotFoundException extends Exception
-{
-}
