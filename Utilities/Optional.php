@@ -49,20 +49,18 @@ class Optional
 
     private function _get()
     {
-        $value = $this->object;
-        if ($value === null) {
-            throw new Exception('Optional value is null');
+        if ($this->isPresent()) {
+            return $this->object;
         }
-        return $value;
+        throw new Exception('Optional value is null');
     }
 
     private function _or($alternativeValue)
     {
-        $value = $this->object;
-        if ($value === null) {
-            return $alternativeValue;
+        if ($this->isPresent()) {
+            return $this->object;
         }
-        return $value;
+        return $alternativeValue;
     }
 
     private function _orNull()
@@ -91,7 +89,7 @@ class Optional
 
     public function __get($field)
     {
-        if ($this->object === null || !property_exists($this->object, $field)) {
+        if (!$this->isPresent() || !property_exists($this->object, $field)) {
             return Optional::absent();
         }
         return Optional::fromNullable($this->object->$field);
