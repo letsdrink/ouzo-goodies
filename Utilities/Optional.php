@@ -13,6 +13,7 @@ use InvalidArgumentException;
  * @method mixed get
  * @method mixed or
  * @method mixed orNull
+ * @method mixed map($closure)
  */
 class Optional
 {
@@ -69,9 +70,17 @@ class Optional
         return $this->_or(null);
     }
 
+    private function _map($closure)
+    {
+        if ($this->isPresent()) {
+            return Optional::fromNullable(Functions::call($closure, $this->object));
+        }
+        return Optional::absent();
+    }
+
     public function __call($name, $arguments)
     {
-        if (!in_array($name, array('isPresent', 'get', 'or', 'orNull'))) {
+        if (!in_array($name, array('isPresent', 'get', 'or', 'orNull', 'map'))) {
             if (!method_exists($this->object, $name)) {
                 return Optional::absent();
             }
