@@ -14,6 +14,7 @@ use InvalidArgumentException;
  * @method mixed or
  * @method mixed orNull
  * @method mixed map($closure)
+ * @method mixed flatten
  */
 class Optional
 {
@@ -76,9 +77,18 @@ class Optional
         return Optional::absent();
     }
 
+    private function _flatten()
+    {
+        $object = $this->object;
+        while ($object instanceof Optional) {
+            $object = $object->orNull();
+        }
+        return Optional::fromNullable($object);
+    }
+
     public function __call($name, $arguments)
     {
-        if (!in_array($name, array('isPresent', 'get', 'or', 'orNull', 'map'))) {
+        if (!in_array($name, array('isPresent', 'get', 'or', 'orNull', 'map', 'flatten'))) {
             if (!method_exists($this->object, $name)) {
                 return Optional::absent();
             }
