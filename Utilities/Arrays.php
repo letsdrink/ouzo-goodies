@@ -1209,6 +1209,9 @@ class Arrays
      */
     public static function concat(array $arrays)
     {
+        if (empty($arrays)) {
+            return array();
+        }
         return call_user_func_array('array_merge', $arrays);
     }
 }
