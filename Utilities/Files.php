@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities;
 
-use Exception;
 use finfo;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
