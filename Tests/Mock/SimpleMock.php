@@ -29,22 +29,22 @@ class SimpleMock
         return $firstMatching->evaluate($methodCall);
     }
 
-    private function getMatchingStubbedCalls($methodCall)
+    private function getMatchingStubbedCalls(MethodCall $methodCall)
     {
-        $matching = Arrays::filter($this->_stubbed_calls, function ($stubbed_call) use ($methodCall) {
+        $matching = Arrays::filter($this->_stubbed_calls, function (CallStub $stubbed_call) use ($methodCall) {
             return $stubbed_call->matches($methodCall);
         });
         return $matching;
     }
 
-    private function removeMatchedCallIfMultipleResults($matching)
+    private function removeMatchedCallIfMultipleResults(array $matching)
     {
         if (count($matching) > 1) {
             $this->removeStubbedCall(Arrays::first($matching));
         }
     }
 
-    private function removeStubbedCall($call)
+    private function removeStubbedCall(CallStub $call)
     {
         if (($key = array_search($call, $this->_stubbed_calls)) !== false) {
             unset($this->_stubbed_calls[$key]);

@@ -15,6 +15,8 @@ use DateTimeZone;
 class Clock
 {
     public static $freeze = false;
+
+    /** @var DateTime|Clock */
     public static $freezeDate;
 
     public $dateTime;
@@ -178,22 +180,22 @@ class Clock
         return $this->_modify("+$years years");
     }
 
-    public function isAfter($other)
+    public function isAfter(Clock $other)
     {
         return $this->getTimestamp() > $other->getTimestamp();
     }
 
-    public function isBefore($other)
+    public function isBefore(Clock $other)
     {
         return $this->getTimestamp() < $other->getTimestamp();
     }
 
-    public function isAfterOrEqualTo($other)
+    public function isAfterOrEqualTo(Clock $other)
     {
         return $this->getTimestamp() >= $other->getTimestamp();
     }
 
-    public function isBeforeOrEqualTo($other)
+    public function isBeforeOrEqualTo(Clock $other)
     {
         return $this->getTimestamp() <= $other->getTimestamp();
     }

@@ -50,7 +50,11 @@ class DynamicProxy
         return $code;
     }
 
-    private static function getClassMethods($class)
+    /**
+     * @param ReflectionClass $class
+     * @return ReflectionMethod[]
+     */
+    private static function getClassMethods(ReflectionClass $class)
     {
         $methods = $class->getMethods();
         return Arrays::filter($methods, function (ReflectionMethod $method) {
