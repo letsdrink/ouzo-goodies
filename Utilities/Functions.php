@@ -12,6 +12,7 @@ class Functions
     public static function extractId()
     {
         return function ($object) {
+            /** @var \Ouzo\Model $object */
             return $object->getId();
         };
     }
@@ -122,6 +123,13 @@ class Functions
     {
         return function ($string) {
             return Strings::isNotBlank($string);
+        };
+    }
+
+    public static function notNull()
+    {
+        return function ($value) {
+            return !is_null($value);
         };
     }
 
