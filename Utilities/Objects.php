@@ -38,9 +38,6 @@ class Objects
 
     private static function objectToString($object)
     {
-        if (method_exists($object, '__toString')) {
-            return (string)$object;
-        }
         $array = get_object_vars($object);
         $elements = self::stringifyArrayElements($array);
         return get_class($object) . ' {' . implode(', ', $elements) . '}';
