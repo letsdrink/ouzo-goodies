@@ -162,7 +162,7 @@ class Files
     {
         $directory = new RecursiveDirectoryIterator($dir);
         $iterator = new RecursiveIteratorIterator($directory);
-        $filter = new RegexIterator($iterator, "/.$extension$/i", RecursiveRegexIterator::GET_MATCH);
+        $filter = new RegexIterator($iterator, "/\.$extension$/i", RecursiveRegexIterator::GET_MATCH);
         return array_keys(iterator_to_array($filter));
     }
 
