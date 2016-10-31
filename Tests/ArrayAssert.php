@@ -11,7 +11,10 @@ use Ouzo\Utilities\Objects;
 
 class ArrayAssert
 {
+    /** @var array */
     private $actual;
+
+    /** @var string */
     private $actualString;
 
     private function __construct(array $actual)
