@@ -216,7 +216,7 @@ class Strings
      */
     public static function remove($string, $stringToRemove)
     {
-        return $string && $stringToRemove ? str_replace($stringToRemove, '', $string) : $string;
+        return !is_null($string) && !is_null($stringToRemove) ? str_replace($stringToRemove, '', $string) : $string;
     }
 
     /**
