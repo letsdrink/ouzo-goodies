@@ -47,6 +47,11 @@ class ArrayAssert
         return self::that($actual);
     }
 
+    public function keys()
+    {
+        return new ArrayAssert(array_keys($this->actual));
+    }
+
     public function contains()
     {
         $this->isNotNull();
