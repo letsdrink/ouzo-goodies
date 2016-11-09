@@ -380,9 +380,9 @@ class Strings
     public static function htmlEntities($text)
     {
         $flag = defined('ENT_SUBSTITUTE') ? ENT_SUBSTITUTE : ENT_IGNORE;
-        $htmlentities = htmlentities($text, ENT_COMPAT | $flag, 'UTF-8');
-        $htmlentities = str_replace(array('&Oacute;', '&oacute;'), array('Ó', 'ó'), $htmlentities);
-        return $htmlentities;
+        $htmlEntities = htmlentities($text, ENT_COMPAT | $flag, 'UTF-8');
+        $htmlEntities = str_replace(array('&Oacute;', '&oacute;'), array('Ó', 'ó'), $htmlEntities);
+        return $htmlEntities;
     }
 
     /**
@@ -517,8 +517,8 @@ class Strings
      */
     public static function sprintAssoc($string, $params)
     {
-        foreach ($params as $k => $v) {
-            $string = preg_replace("/%{($k)}/", $v, $string);
+        foreach ($params as $key => $value) {
+            $string = preg_replace("/%{($key)}/", $value, $string);
         }
         return $string;
     }
@@ -547,8 +547,8 @@ class Strings
      */
     public static function sprintAssocDefault($string, $params, $default = '')
     {
-        foreach ($params as $k => $v) {
-            $string = preg_replace("/%{($k)}/", $v, $string);
+        foreach ($params as $key => $value) {
+            $string = preg_replace("/%{($key)}/", $value, $string);
         }
         $string = preg_replace("/%{\w*}/", $default, $string);
         return $string;
