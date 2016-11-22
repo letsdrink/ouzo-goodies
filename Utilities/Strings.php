@@ -32,7 +32,7 @@ class Strings
         $words = explode('_', $string);
         $return = '';
         foreach ($words as $word) {
-            $return .= ucfirst(trim($word));
+            $return .= Strings::uppercaseFirst(trim($word));
         }
         return $return;
     }
@@ -55,7 +55,7 @@ class Strings
      */
     public static function camelCaseToUnderscore($string)
     {
-        return mb_strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
+        return mb_strtolower(preg_replace('/([[:lower:]])([[:upper:]])/u', '$1_$2', $string));
     }
 
     /**
@@ -637,7 +637,7 @@ class Strings
      */
     public static function removeAccent($string)
     {
-        if (!preg_match('/[\x80-\xff]/', $string)) {
+        if (false === preg_match('/[\x80-\xff]/', $string)) {
             return $string;
         }
 
@@ -737,8 +737,7 @@ class Strings
             chr(197) . chr(188) => 'z', chr(197) . chr(189) => 'Z',
             chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's'
         );
-        $string = strtr($string, $chars);
-        return $string;
+        return strtr($string, $chars);;
     }
 
     /**
@@ -754,7 +753,6 @@ class Strings
      * </code>
      *
      * @param string $string
-     * @param string $encoding
      * @return string
      */
     public static function uppercaseFirst($string)
