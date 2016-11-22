@@ -757,9 +757,9 @@ class Strings
      * @param string $encoding
      * @return string
      */
-    public static function uppercaseFirst($string, $encoding = 'UTF-8')
+    public static function uppercaseFirst($string)
     {
-        $first = mb_substr($string, 0, 1, $encoding);
-        return mb_strtoupper($first, $encoding) . mb_substr($string, 1, null, $encoding);
+        $first = mb_substr($string, 0, 1);
+        return mb_strtoupper($first) . mb_substr($string, 1);
     }
 }
