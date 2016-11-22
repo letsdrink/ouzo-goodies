@@ -151,9 +151,9 @@ class Strings
      */
     public static function startsWith($string, $prefix)
     {
-        $prefix = is_int($prefix) ? "$prefix" : $prefix;
         $string = is_int($string) ? "$string" : $string;
-        return $string && $prefix && strpos($string, $prefix) === 0;
+        $prefix = is_int($prefix) ? "$prefix" : $prefix;
+        return !is_null($string) && !is_null($prefix) && substr($string, 0, strlen($prefix)) === $prefix;
     }
 
     /**
@@ -175,9 +175,10 @@ class Strings
      */
     public static function endsWith($string, $suffix)
     {
-        $suffix = is_int($suffix) ? "$suffix" : $suffix;
         $string = is_int($string) ? "$string" : $string;
-        return $string && $suffix && substr($string, -strlen($suffix)) === $suffix;
+        $suffix = is_int($suffix) ? "$suffix" : $suffix;
+        $suffixLength = strlen($suffix);
+        return !is_null($string) && !is_null($suffix) && substr($string, -$suffixLength, $suffixLength) === $suffix;
     }
 
     /**
