@@ -55,7 +55,7 @@ class Strings
      */
     public static function camelCaseToUnderscore($string)
     {
-        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
+        return mb_strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $string));
     }
 
     /**
@@ -199,7 +199,7 @@ class Strings
      */
     public static function equalsIgnoreCase($string1, $string2)
     {
-        return strtolower($string1) == strtolower($string2);
+        return mb_strtolower($string1) == mb_strtolower($string2);
     }
 
     /**
