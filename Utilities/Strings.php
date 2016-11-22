@@ -475,7 +475,6 @@ class Strings
         return $string;
     }
 
-
     /**
      * Removes control characters from both ends of this string returning null if the string is empty ("") after the trim or if it is null.
      *
