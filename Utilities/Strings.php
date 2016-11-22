@@ -78,7 +78,7 @@ class Strings
     public static function removePrefix($string, $prefix)
     {
         if (self::startsWith($string, $prefix)) {
-            return substr($string, strlen($prefix));
+            return substr($string, mb_strlen($prefix));
         }
         return $string;
     }
@@ -127,7 +127,7 @@ class Strings
     public static function removeSuffix($string, $suffix)
     {
         if (self::endsWith($string, $suffix)) {
-            return substr($string, 0, -strlen($suffix));
+            return mb_substr($string, 0, -mb_strlen($suffix));
         }
         return $string;
     }
@@ -153,7 +153,7 @@ class Strings
     {
         $string = is_int($string) ? "$string" : $string;
         $prefix = is_int($prefix) ? "$prefix" : $prefix;
-        return !is_null($string) && !is_null($prefix) && substr($string, 0, strlen($prefix)) === $prefix;
+        return is_string($string) && is_string($prefix) && mb_substr($string, 0, mb_strlen($prefix)) === $prefix;
     }
 
     /**
@@ -177,8 +177,8 @@ class Strings
     {
         $string = is_int($string) ? "$string" : $string;
         $suffix = is_int($suffix) ? "$suffix" : $suffix;
-        $suffixLength = strlen($suffix);
-        return !is_null($string) && !is_null($suffix) && substr($string, -$suffixLength, $suffixLength) === $suffix;
+        $suffixLength = mb_strlen($suffix);
+        return is_string($string) && is_string($suffix) && mb_substr($string, -$suffixLength, $suffixLength) === $suffix;
     }
 
     /**
@@ -216,12 +216,14 @@ class Strings
      * </code>
      *
      * @param string $string
-     * @param string $stringToRemove
+     * @param string $toRemove
      * @return mixed
      */
-    public static function remove($string, $stringToRemove)
+    public static function remove($string, $toRemove)
     {
-        return !is_null($string) && !is_null($stringToRemove) ? str_replace($stringToRemove, '', $string) : $string;
+        $string = is_int($string) ? "$string" : $string;
+        $toRemove = is_int($toRemove) ? "$toRemove" : $toRemove;
+        return !is_null($string) && !is_null($toRemove) ? str_replace($toRemove, '', $string) : $string;
     }
 
     /**
@@ -243,7 +245,10 @@ class Strings
      */
     public static function appendSuffix($string, $suffix = '')
     {
-        return $string ? $string . $suffix : $string;
+        if (is_null($string)) {
+            return $string;
+        }
+        return $string . $suffix;
     }
 
     /**
@@ -265,7 +270,10 @@ class Strings
      */
     public static function appendPrefix($string, $prefix = '')
     {
-        return $string ? $prefix . $string : $string;
+        if (is_null($string)) {
+            return $string;
+        }
+        return $prefix . $string;
     }
 
     /**
@@ -607,7 +615,7 @@ class Strings
     {
         $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
         if (false !== $found && $found > $nth) {
-            return substr_replace($subject, $replace, $matches[0][$nth][1], strlen($search));
+            return substr_replace($subject, $replace, $matches[0][$nth][1], mb_strlen($search));
         }
         return $subject;
     }
