@@ -213,8 +213,7 @@ class Arrays
         if (empty($elements)) {
             throw new InvalidArgumentException('empty array');
         }
-        $keys = array_keys($elements);
-        return $elements[$keys[0]];
+        return reset($elements);
     }
 
     /**
