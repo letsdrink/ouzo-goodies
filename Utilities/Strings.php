@@ -223,7 +223,10 @@ class Strings
     {
         $string = is_int($string) ? "$string" : $string;
         $toRemove = is_int($toRemove) ? "$toRemove" : $toRemove;
-        return !is_null($string) && !is_null($toRemove) ? str_replace($toRemove, '', $string) : $string;
+        if (is_null($string) || is_null($toRemove)) {
+            return $string;
+        }
+        return str_replace($toRemove, '', $string);
     }
 
     /**
@@ -246,7 +249,7 @@ class Strings
     public static function appendSuffix($string, $suffix = '')
     {
         if (is_null($string)) {
-            return $string;
+            return null;
         }
         return $string . $suffix;
     }
@@ -271,7 +274,7 @@ class Strings
     public static function appendPrefix($string, $prefix = '')
     {
         if (is_null($string)) {
-            return $string;
+            return null;
         }
         return $prefix . $string;
     }
