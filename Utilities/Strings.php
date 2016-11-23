@@ -604,7 +604,10 @@ class Strings
     public static function substringAfter($string, $separator)
     {
         $pos = mb_strpos($string, $separator);
-        return $pos !== false ? mb_substr($string, $pos + 1, mb_strlen($string)) : $string;
+        if ($pos === false) {
+            return $string;
+        }
+        return mb_substr($string, $pos + 1, mb_strlen($string));
     }
 
     /**
