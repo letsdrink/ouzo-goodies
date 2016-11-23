@@ -740,7 +740,7 @@ class Strings
             chr(197) . chr(188) => 'z', chr(197) . chr(189) => 'Z',
             chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's'
         );
-        return strtr($string, $chars);;
+        return strtr($string, $chars);
     }
 
     /**
