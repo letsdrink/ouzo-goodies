@@ -590,7 +590,10 @@ class Arrays
      */
     public static function toArray($element)
     {
-        return $element !== NULL ? is_array($element) ? $element : array($element) : array();
+        if (is_null($element)) {
+            return array();
+        }
+        return is_array($element) ? $element : array($element);
     }
 
     /**
@@ -636,10 +639,10 @@ class Arrays
      */
     public static function combine(array $keys, array $values)
     {
-        if (!empty($keys) && !empty($values)) {
-            return array_combine($keys, $values);
+        if (empty($keys) || empty($values)) {
+            return array();
         }
-        return array();
+        return array_combine($keys, $values);
     }
 
     /**
