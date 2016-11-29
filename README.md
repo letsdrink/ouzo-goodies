@@ -111,7 +111,7 @@ This is just a taste of Ouzo. Look at the documentation for more goodies.
 
 Download from github or simply add composer dependency:
 ```
-"letsdrink/ouzo-goodies": "1.5.1"
+"letsdrink/ouzo-goodies": "1.6.0"
 ```
 
 [Ouzo Goodies at packagist](https://packagist.org/packages/letsdrink/ouzo-goodies).
