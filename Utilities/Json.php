@@ -27,6 +27,17 @@ class Json
     }
 
     /**
+     * Returns the JSON representation of the $value
+     *
+     * @param mixed $value
+     * @return string|false
+     */
+    public static function safeEncode($value)
+    {
+        return json_encode($value);
+    }
+
+    /**
      * Decodes a JSON string, or throws JsonDecodeException on failure
      *
      * @param string $string
@@ -41,7 +52,7 @@ class Json
             return $decoded;
         }
         $code = self::lastError();
-        if ($code == JSON_ERROR_NONE) {
+        if ($code === JSON_ERROR_NONE) {
             return $decoded;
         }
         throw new JsonDecodeException(self::lastErrorMessage(), $code);
@@ -52,18 +63,24 @@ class Json
         if (function_exists('json_last_error_msg')) {
             return json_last_error_msg();
         }
-        return 'JSON string is malformed';
+        return 'JSON input is malformed';
     }
 
     /**
      * Returns the JSON representation of the $value
      *
-     * @param array|\JsonSerializable $value
+     * @param null|bool|int|float|string|object|array|\JsonSerializable $value
      * @return string
+     * @throws JsonEncodeException
      */
     public static function encode($value)
     {
-        return json_encode($value);
+        $encoded = self::safeEncode($value);
+        $lastErrorCode = self::lastError();
+        if ($lastErrorCode !== JSON_ERROR_NONE || $encoded === false) {
+            throw new JsonEncodeException(self::lastErrorMessage(), $lastErrorCode);
+        }
+        return $encoded;
     }
 
     /**
