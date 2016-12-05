@@ -609,7 +609,7 @@ class Arrays
      * @param array $elements
      * @return null
      */
-    public static function randElement($elements)
+    public static function randElement(array $elements)
     {
         return $elements ? $elements[array_rand($elements)] : null;
     }
@@ -1085,7 +1085,7 @@ class Arrays
      * @param array $array2
      * @return array
      */
-    public static function recursiveDiff($array1, $array2)
+    public static function recursiveDiff(array $array1, array $array2)
     {
         $result = array();
         foreach ($array1 as $key => $value) {
@@ -1152,7 +1152,7 @@ class Arrays
      */
     public static function shuffle(array $array)
     {
-        if (!$array) {
+        if (empty($array)) {
             return $array;
         }
         $result = array();
