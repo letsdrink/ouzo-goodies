@@ -117,7 +117,10 @@ class Clock
 
     private function _modify($interval)
     {
-        return new Clock($this->dateTime->modify($interval));
+        $freshDateTime = new DateTime();
+        $freshDateTime->setTimestamp($this->dateTime->getTimestamp());
+        $freshDateTime->modify($interval);
+        return new Clock($freshDateTime);
     }
 
     public function minusDays($days)
