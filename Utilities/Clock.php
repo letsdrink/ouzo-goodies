@@ -74,7 +74,7 @@ class Clock
 
     /**
      * Obtains a Clock set to to a specific point.
-     * @param $date
+     * @param string $date
      * @return Clock
      */
     public static function at($date)
@@ -84,7 +84,7 @@ class Clock
 
     /**
      * Obtains a Clock set to to a specific point using Unix timestamp.
-     * @param $timestamp
+     * @param int $timestamp
      * @return Clock
      */
     public static function fromTimestamp($timestamp)
@@ -203,9 +203,17 @@ class Clock
         return $this->getTimestamp() <= $other->getTimestamp();
     }
 
+    /**
+     * @param string|DateTimeZone $timezone
+     * @return Clock
+     */
     public function setTimezone($timezone)
     {
-        $this->dateTime->setTimezone(new DateTimeZone($timezone));
+        if (is_string($timezone)) {
+            $this->dateTime->setTimezone(new DateTimeZone($timezone));
+        } else {
+            $this->dateTime->setTimezone($timezone);
+        }
         return $this;
     }
 }
