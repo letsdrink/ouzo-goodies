@@ -207,11 +207,12 @@ class Clock
      */
     public function setTimezone($timezone)
     {
+        $freshDateTime = clone $this->dateTime;
         if (is_string($timezone)) {
-            $this->dateTime->setTimezone(new DateTimeZone($timezone));
+            $freshDateTime->setTimezone(new DateTimeZone($timezone));
         } else {
-            $this->dateTime->setTimezone($timezone);
+            $freshDateTime->setTimezone($timezone);
         }
-        return $this;
+        return new Clock($freshDateTime);
     }
 }
