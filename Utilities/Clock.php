@@ -205,7 +205,7 @@ class Clock
      * @param string|DateTimeZone $timezone
      * @return Clock
      */
-    public function setTimezone($timezone)
+    public function withTimezone($timezone)
     {
         $freshDateTime = clone $this->dateTime;
         if (is_string($timezone)) {
