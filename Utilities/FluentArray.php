@@ -91,6 +91,12 @@ class FluentArray
         return $this;
     }
 
+    public function flip()
+    {
+        $this->_array = array_flip($this->_array);
+        return $this;
+    }
+
     public function keys()
     {
         $this->_array = array_keys($this->_array);
@@ -134,7 +140,7 @@ class FluentArray
 
     public function firstOr($default)
     {
-        return Arrays::firstOrNull($this->_array) ? : $default;
+        return Arrays::firstOrNull($this->_array) ?: $default;
     }
 
     public function toJson()
