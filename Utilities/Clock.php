@@ -19,11 +19,12 @@ class Clock
     /** @var DateTime|Clock */
     public static $freezeDate;
 
+    /** @var DateTime */
     public $dateTime;
 
     public function __construct(DateTime $dateTime)
     {
-        $this->dateTime = $dateTime;
+        $this->dateTime = clone $dateTime;
     }
 
     /**
