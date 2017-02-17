@@ -139,7 +139,7 @@ class FluentArray
 
     public function toJson()
     {
-        return json_encode($this->_array);
+        return Json::encode($this->_array);
     }
 
     public function limit($number)
