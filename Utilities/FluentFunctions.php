@@ -9,9 +9,9 @@ namespace Ouzo\Utilities;
  * Class FluentFunctions
  * @package Ouzo\Utilities
  *
- * @method static FluentFunction extractField($expression)
- * @method static FluentFunction extractFieldRecursively($expression)
- * @method static FluentFunction extractExpression($expression)
+ * @method static FluentFunction extractField($expression, $boolean)
+ * @method static FluentFunction extractFieldRecursively($expression, $boolean)
+ * @method static FluentFunction extractExpression($expression, $boolean)
  * @method static FluentFunction trim()
  * @method static FluentFunction isArray()
  * @method static FluentFunction prepend($string)

@@ -35,11 +35,11 @@ class Functions
     {
         if (!is_string($selector)) {
             return $selector;
-        } elseif (strpos($selector, '()') !== false || strpos($selector, '->') !== false) {
-            return Functions::extractFieldRecursively($selector, $accessPrivate);
-        } else {
-            return Functions::extractField($selector, $accessPrivate);
         }
+        if (strpos($selector, '()') !== false || strpos($selector, '->') !== false) {
+            return Functions::extractFieldRecursively($selector, $accessPrivate);
+        }
+        return Functions::extractField($selector, $accessPrivate);
     }
 
     public static function identity()
@@ -161,7 +161,7 @@ class Functions
         };
     }
 
-    public static function call($function, $argument)
+    public static function call($function, $argument = null)
     {
         return call_user_func($function, $argument);
     }
@@ -188,7 +188,6 @@ class Functions
     }
 
     /**
-     * @SuppressWarnings("unused")
      * $type is just a hint for dynamicReturnType plugin
      * @param null $type
      * @return NonCallableExtractor
