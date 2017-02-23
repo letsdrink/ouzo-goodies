@@ -9,27 +9,36 @@ namespace Ouzo\Utilities;
  * Class FluentFunctions
  * @package Ouzo\Utilities
  *
+ * @method static FluentFunction extractId()
  * @method static FluentFunction extractField($expression, $boolean)
  * @method static FluentFunction extractFieldRecursively($expression, $boolean)
  * @method static FluentFunction extractExpression($expression, $boolean)
+ * @method static FluentFunction identity()
+ * @method static FluentFunction constant($value)
+ * @method static FluentFunction random($min, $max)
+ * @method static FluentFunction throwException($exception)
  * @method static FluentFunction trim()
+ * @method static FluentFunction not($predicate)
  * @method static FluentFunction isArray()
+ * @method static FluentFunction isInstanceOf($value)
  * @method static FluentFunction prepend($string)
  * @method static FluentFunction append($string)
  * @method static FluentFunction notEmpty()
  * @method static FluentFunction notBlank()
+ * @method static FluentFunction notNull()
  * @method static FluentFunction removePrefix($string)
  * @method static FluentFunction startsWith($string)
  * @method static FluentFunction endsWith($string)
  * @method static FluentFunction formatDateTime($format)
+ * @method static FluentFunction compose($fa, $fb)
  * @method static FluentFunction toString()
  * @method static FluentFunction surroundWith($string)
  * @method static FluentFunction equals($value)
- * @method static FluentFunction negate()
  * @method static FluentFunction notEquals($value)
- * @method static FluentFunction isInstanceOf($value)
+ * @method static FluentFunction contains($value)
  * @method static FluentFunction inArray($array)
  * @method static FluentFunction notInArray($array)
+ * @method static FluentFunction negate()
  */
 class FluentFunctions
 {
