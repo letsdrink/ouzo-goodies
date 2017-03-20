@@ -195,10 +195,10 @@ class Objects
         if ($a === $b) {
             return true;
         }
-        return self::convertToComparable($a) == self::convertToComparable($b);
+        return self::_convertToComparable($a) == self::_convertToComparable($b);
     }
 
-    private static function convertToComparable($value)
+    static function _convertToComparable($value)
     {
         if ($value === NULL) {
             return "____ouzo_null_marker_so_that_null_!=_''";
@@ -208,7 +208,7 @@ class Objects
             $value = $value ? 'true' : 'false';
         } else if ($type == 'array') {
             array_walk_recursive($value, function (&$value) {
-                $value = Objects::convertToComparable($value);
+                $value = Objects::_convertToComparable($value);
             });
         } else if ($type != 'object') {
             $value = $type != 'object' ? (string)$value : $value;
