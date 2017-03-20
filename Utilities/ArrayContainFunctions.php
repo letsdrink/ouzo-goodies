@@ -9,28 +9,20 @@ class ArrayContainFunctions
 {
     public static function contains(array $array, $element)
     {
-        if (is_array($element)) {
-            return self::containsArray($array, $element);
-        }
-        return self::containsElement($array, $element);
+        return Arrays::any($array, self::isEqual($element));
     }
 
-    public static function containsArray(array $array, array $elements)
+    public static function containsAll(array $array, $elements)
     {
-        if (empty($elements)) {
+        if (empty($elements) || !is_array($elements)) {
             return false;
         }
         foreach ($elements as $element) {
-            if (!Arrays::any($array, Functions::contains($element))) {
+            if (!Arrays::contains($array, $element)) {
                 return false;
             }
         }
         return true;
-    }
-
-    public static function containsElement(array $array, $element)
-    {
-        return Arrays::any($array, self::isEqual($element));
     }
 
     private static function isEqual($var2)
@@ -41,8 +33,11 @@ class ArrayContainFunctions
             if ($var1 === $var2) {
                 return true;
             }
-            if ($type1 == $type2 && ($type1 == 'object' || $type1 == 'array') && $var1 == $var2) {
+            if ($type1 == $type2 && $type1 == 'object' && $var1 == $var2) {
                 return true;
+            }
+            if ($type1 == $type2 && $type1 == 'array') {
+                return ArrayContainFunctions::arraysEqual($var1, $var2);
             }
             if (ArrayContainFunctions::bothEquals($type1, $type2, 'string', 'integer') && $var1 == $var2) {
                 return true;
@@ -52,6 +47,22 @@ class ArrayContainFunctions
             }
             return false;
         };
+    }
+
+    private static function arraysEqual($var1, $var2)
+    {
+        $toStringFunction = function (&$value) {
+            $type = gettype($value);
+            if ($type == 'boolean') {
+                $value = $value ? 'true' : 'false';
+            } else if ($type != 'object') {
+                $value = $type != 'object' ? (string)$value : $value;
+            }
+        };
+        array_walk_recursive($var1, $toStringFunction);
+        array_walk_recursive($var2, $toStringFunction);
+
+        return $var1 == $var2;
     }
 
     public static function bothEquals($var1, $var2, $value1, $value2)

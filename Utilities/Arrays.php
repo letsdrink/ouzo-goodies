@@ -1109,7 +1109,7 @@ class Arrays
      * Returns true if array contains given element. Comparison is based on the following rules:
      *  - same type + same type = strict check
      *  - object + object = loose check
-     *  - array + array = goes through all elements and invokes Arrays::contains
+     *  - array + array = compares arrays recursively with these rules
      *  - string + integer = loose check
      *  - boolean + string ('true' or 'false') = loose check
      *  - false in other cases
@@ -1129,6 +1129,32 @@ class Arrays
     public static function contains(array $array, $element)
     {
         return ArrayContainFunctions::contains($array, $element);
+    }
+
+    /**
+     * Returns true if array contains given elements. Comparison is based on the following rules:
+     *  - same type + same type = strict check
+     *  - object + object = loose check
+     *  - array + array = compares arrays recursively with these rules
+     *  - string + integer = loose check
+     *  - boolean + string ('true' or 'false') = loose check
+     *  - false in other cases
+     * Example:
+     * <code>
+     * $result = Arrays::contains(array(1, 2, 3), 2);
+     * </code>
+     * Result:
+     * <code>
+     * true
+     * </code>
+     *
+     * @param array $array
+     * @param mixed $element expected value
+     * @return bool
+     */
+    public static function containsAll(array $array, $element)
+    {
+        return ArrayContainFunctions::containsAll($array, $element);
     }
 
     /**

@@ -218,6 +218,13 @@ class Functions
         };
     }
 
+    public static function containsAll($element)
+    {
+        return function ($array) use ($element) {
+            return Arrays::containsAll($array, $element);
+        };
+    }
+
     public static function contains($element)
     {
         return function ($array) use ($element) {
