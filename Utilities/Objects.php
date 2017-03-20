@@ -208,7 +208,7 @@ class Objects
             $value = $value ? 'true' : 'false';
         } else if ($type == 'array') {
             array_walk_recursive($value, function (&$value) {
-                $value = self::convertToComparable($value);
+                $value = Objects::convertToComparable($value);
             });
         } else if ($type != 'object') {
             $value = $type != 'object' ? (string)$value : $value;
