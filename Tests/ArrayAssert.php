@@ -60,7 +60,15 @@ class ArrayAssert
         $nonExistingElements = $this->findNonExistingElements($elements);
 
         $nonExistingString = Objects::toString($nonExistingElements);
-        AssertAdapter::assertFalse(!empty($nonExistingElements), "Cannot find expected {$nonExistingString} in actual {$this->actualString}");
+
+        if (!empty($nonExistingElements)) {
+            AssertAdapter::failWithDiff("Cannot find expected {$nonExistingString} in actual {$this->actualString}",
+                $elements,
+                $this->actual,
+                $nonExistingString,
+                $this->actualString
+            );
+        }
 
         return $this;
     }
@@ -73,12 +81,24 @@ class ArrayAssert
         $found = sizeof($elements) - sizeof($this->findNonExistingElements($elements));
 
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertFalse(sizeof($elements) > sizeof($this->actual) || sizeof($this->actual) > $found,
-            "Expected only $elementsString elements in actual {$this->actualString}"
-        );
-        AssertAdapter::assertFalse((sizeof($elements) < sizeof($this->actual) || sizeof($this->actual) < $found),
-            "There are more in expected $elementsString than in actual {$this->actualString}"
-        );
+
+        if (sizeof($elements) > sizeof($this->actual) || sizeof($this->actual) > $found) {
+            AssertAdapter::failWithDiff("Expected only $elementsString elements in actual {$this->actualString}",
+                $elements,
+                $this->actual,
+                $elementsString,
+                $this->actualString
+            );
+        }
+
+        if (sizeof($elements) < sizeof($this->actual) || sizeof($this->actual) < $found) {
+            AssertAdapter::failWithDiff("There are more in expected $elementsString than in actual {$this->actualString}",
+                $elements,
+                $this->actual,
+                $elementsString,
+                $this->actualString
+            );
+        }
         return $this;
     }
 
@@ -106,10 +126,14 @@ class ArrayAssert
             }
         }
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertFalse(
-            (sizeof($elements) != $found || sizeof($this->actual) != $found),
-            "Elements from expected $elementsString were not found in actual {$this->actualString} or have different order"
-        );
+        if (sizeof($elements) != $found || sizeof($this->actual) != $found) {
+            AssertAdapter::failWithDiff("Elements from expected $elementsString were not found in actual {$this->actualString} or have different order",
+                $elements,
+                $this->actual,
+                $elementsString,
+                $this->actualString
+            );
+        }
         return $this;
     }
 

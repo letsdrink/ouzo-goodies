@@ -6,6 +6,8 @@
 namespace Ouzo\Tests;
 
 use PHPUnit_Framework_Assert;
+use PHPUnit_Framework_ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 class AssertAdapter
 {
@@ -92,5 +94,13 @@ class AssertAdapter
     public static function fail($message = '')
     {
         PHPUnit_Framework_Assert::fail($message);
+    }
+
+    public static function failWithDiff($description, $expected, $actual, $expectedAsString, $actualAsString)
+    {
+        throw new PHPUnit_Framework_ExpectationFailedException(
+            $description,
+            new ComparisonFailure($expected, $actual, $expectedAsString, $actualAsString)
+        );
     }
 }
