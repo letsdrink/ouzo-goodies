@@ -5,9 +5,8 @@
  */
 namespace Ouzo\Tests\Mock;
 
+use Ouzo\Tests\AssertAdapter;
 use Ouzo\Utilities\Arrays;
-use PHPUnit_Framework_ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
 
 class Verifier
 {
@@ -40,9 +39,11 @@ class Verifier
 
     protected function _fail($description, $expected, $actual)
     {
-        throw new PHPUnit_Framework_ExpectationFailedException(
-            $description,
-            new ComparisonFailure($expected, $actual, $expected, $actual)
+        AssertAdapter::failWithDiff($description,
+            $expected,
+            $actual,
+            $expected,
+            $actual
         );
     }
 

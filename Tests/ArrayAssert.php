@@ -101,7 +101,7 @@ class ArrayAssert
         $found = 0;
         $min = min(sizeof($this->actual), sizeof($elements));
         for ($i = 0; $i < $min; $i++) {
-            if ($this->actual[$i] == $elements[$i]) {
+            if (Objects::equal($this->actual[$i], $elements[$i])) {
                 $found++;
             }
         }
@@ -167,7 +167,7 @@ class ArrayAssert
         $result = false;
         $size = count($this->actual) - count($elements) + 1;
         for ($i = 0; $i < $size; ++$i) {
-            if (array_slice($this->actual, $i, count($elements)) == $elements) {
+            if (Objects::equal(array_slice($this->actual, $i, count($elements)), $elements)) {
                 $result = true;
             }
         }

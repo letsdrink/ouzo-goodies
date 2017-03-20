@@ -6,6 +6,7 @@
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Arrays;
+use Ouzo\Utilities\Objects;
 
 class MethodCallMatcher
 {
@@ -42,7 +43,7 @@ class MethodCallMatcher
 
     public function argMatches($expected, $actual)
     {
-        return ($expected instanceof ArgumentMatcher && $expected->matches($actual)) || $expected == $actual;
+        return ($expected instanceof ArgumentMatcher && $expected->matches($actual)) || Objects::equal($expected, $actual);
     }
 
     public function __invoke(MethodCall $methodCall)
