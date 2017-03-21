@@ -582,6 +582,18 @@ class Strings
     }
 
     /**
+     * Checks if string contains the substring, ignoring the case of the letters in the strings.
+     *
+     * @param string $string
+     * @param string $substring
+     * @return bool
+     */
+    public static function containsIgnoreCase($string, $substring)
+    {
+        return self::contains(mb_strtolower($string), mb_strtolower($substring));
+    }
+
+    /**
      * Gets the substring before the first occurrence of a separator. The separator is not returned.
      *
      * @param string $string
