@@ -65,7 +65,7 @@ class UnbatchingIterator implements Iterator
     private function initializeChunkIterator()
     {
         if (!$this->chunkIterator) {
-            $this->chunkIterator = new ArrayIterator($this->iterator->valid() ? $this->iterator->current() : array());
+            $this->chunkIterator = new ArrayIterator($this->iterator->valid() ? $this->iterator->current() : []);
         }
     }
 }

@@ -20,7 +20,7 @@ class RecursiveStrSubstitutor
      * @param null|string $default
      * @param int $maxNestLevel
      */
-    public function __construct($values = array(), $default = null, $maxNestLevel = 10)
+    public function __construct($values = [], $default = null, $maxNestLevel = 10)
     {
         $this->_maxNestLevel = $maxNestLevel;
         $this->_substitutor = new StrSubstitutor($values, $default);

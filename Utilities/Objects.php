@@ -48,7 +48,7 @@ class Objects
 
     private static function stringifyArrayElements($array)
     {
-        $elements = array();
+        $elements = [];
         $isAssociative = array_keys($array) !== range(0, sizeof($array) - 1);
         array_walk($array, function ($element, $key) use (&$elements, $isAssociative) {
             if ($isAssociative) {

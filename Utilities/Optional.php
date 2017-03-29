@@ -88,13 +88,13 @@ class Optional
 
     public function __call($name, $arguments)
     {
-        if (!in_array($name, array('isPresent', 'get', 'or', 'orNull', 'map', 'flatten'))) {
+        if (!in_array($name, ['isPresent', 'get', 'or', 'orNull', 'map', 'flatten'])) {
             if (!method_exists($this->object, $name)) {
                 return Optional::absent();
             }
-            return Optional::fromNullable(call_user_func_array(array($this->object, $name), $arguments));
+            return Optional::fromNullable(call_user_func_array([$this->object, $name], $arguments));
         }
-        return call_user_func_array(array($this, '_' . $name), $arguments);
+        return call_user_func_array([$this, '_' . $name], $arguments);
     }
 
     public function __get($field)

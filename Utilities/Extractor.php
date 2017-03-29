@@ -17,7 +17,7 @@ use BadMethodCallException;
  */
 class Extractor implements ArrayAccess
 {
-    private $_operations = array();
+    private $_operations = [];
 
     public function __get($field)
     {
@@ -30,7 +30,7 @@ class Extractor implements ArrayAccess
     public function __call($name, $arguments)
     {
         $this->_operations[] = function ($input) use ($name, $arguments) {
-            return call_user_func_array(array($input, $name), $arguments);
+            return call_user_func_array([$input, $name], $arguments);
         };
         return $this;
     }

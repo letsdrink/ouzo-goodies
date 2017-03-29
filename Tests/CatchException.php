@@ -40,7 +40,7 @@ class CatchExceptionObject
     public function __call($method, $args)
     {
         try {
-            call_user_func_array(array($this->object, $method), $args);
+            call_user_func_array([$this->object, $method], $args);
         } catch (Exception $exception) {
             CatchException::$exception = $exception;
         }

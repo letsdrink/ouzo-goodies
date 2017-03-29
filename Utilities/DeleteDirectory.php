@@ -33,7 +33,7 @@ class DeleteDirectory
 
     private static function _deleteFile(SplFileInfo $file)
     {
-        if (in_array($file->getBasename(), array('.', '..'))) {
+        if (in_array($file->getBasename(), ['.', '..'])) {
             return;
         } elseif ($file->isDir()) {
             rmdir($file->getPathname());

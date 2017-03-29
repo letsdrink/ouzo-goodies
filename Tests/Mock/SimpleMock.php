@@ -9,8 +9,8 @@ use Ouzo\Utilities\Arrays;
 
 class SimpleMock
 {
-    public $_stubbed_calls = array();
-    public $_called_methods = array();
+    public $_stubbed_calls = [];
+    public $_called_methods = [];
 
     public function __call($name, $arguments)
     {

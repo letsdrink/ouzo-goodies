@@ -21,7 +21,7 @@ class StrSubstitutor
      * @param array $values
      * @param null|string $default
      */
-    public function __construct($values = array(), $default = null)
+    public function __construct($values = [], $default = null)
     {
         $this->_values = $values;
         $this->_default = $default;
@@ -55,7 +55,7 @@ class StrSubstitutor
      */
     public function replace($string)
     {
-        return preg_replace_callback('/\{\{(.+?)}}/u', array($this, '_replace_vars'), $string);
+        return preg_replace_callback('/\{\{(.+?)}}/u', [$this, '_replace_vars'], $string);
     }
 
     /**

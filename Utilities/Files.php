@@ -119,7 +119,7 @@ class Files
      */
     public static function convertUnitFileSize($size)
     {
-        $units = array(" B", " KB", " MB", " GB");
+        $units = [" B", " KB", " MB", " GB"];
         $calculatedSize = $size;
         $unit = Arrays::first($units);
         if ($size) {

@@ -45,6 +45,6 @@ class FluentFunctions
     public static function __callStatic($name, $arguments)
     {
         $fluentFunction = new FluentFunction();
-        return call_user_func_array(array($fluentFunction, $name), $arguments);
+        return call_user_func_array([$fluentFunction, $name], $arguments);
     }
 }

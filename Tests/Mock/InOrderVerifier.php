@@ -13,7 +13,7 @@ class InOrderVerifier
     /**
      * @var array
      */
-    private $scope = array();
+    private $scope = [];
     /**
      * @var null|MethodCall
      */

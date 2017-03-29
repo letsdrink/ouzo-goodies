@@ -41,7 +41,7 @@ namespace Ouzo\Utilities;
  */
 class FluentFunction
 {
-    private $_functions = array();
+    private $_functions = [];
 
     public function __call($name, $arguments)
     {

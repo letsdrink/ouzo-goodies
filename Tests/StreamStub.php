@@ -43,7 +43,7 @@ class StreamStub
 
     public function stream_stat()
     {
-        return array();
+        return [];
     }
 
     public function stream_close()

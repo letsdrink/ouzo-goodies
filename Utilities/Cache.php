@@ -13,7 +13,7 @@ use ReflectionFunction;
  */
 class Cache
 {
-    private static $_cache = array();
+    private static $_cache = [];
 
     /**
      * Caches the given closure using filename:line as a key.
@@ -96,6 +96,6 @@ class Cache
      */
     public static function clear()
     {
-        self::$_cache = array();
+        self::$_cache = [];
     }
 }

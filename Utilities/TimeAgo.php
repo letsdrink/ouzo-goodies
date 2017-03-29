@@ -18,7 +18,7 @@ class TimeAgo
     /** @var string */
     private $key;
     /** @var array */
-    private $params = array();
+    private $params = [];
 
     /**
      * @param string $date
@@ -41,22 +41,22 @@ class TimeAgo
         }
         if ($minutesAgo = $this->showMinutesAgo()) {
             $this->key = 'timeAgo.minAgo';
-            $this->params = array('label' => $minutesAgo);
+            $this->params = ['label' => $minutesAgo];
             return;
         }
         if ($this->showTodayAt()) {
             $this->key = 'timeAgo.todayAt';
-            $this->params = array('label' => $date->format('H:i'));
+            $this->params = ['label' => $date->format('H:i')];
             return;
         }
         if ($this->showYesterdayAt()) {
             $this->key = 'timeAgo.yesterdayAt';
-            $this->params = array('label' => $date->format('H:i'));
+            $this->params = ['label' => $date->format('H:i')];
             return;
         }
         if ($this->showThisYear()) {
             $this->key = 'timeAgo.thisYear';
-            $this->params = array('day' => $date->format('j'), 'month' => 'timeAgo.month.' . $date->format('n'));
+            $this->params = ['day' => $date->format('j'), 'month' => 'timeAgo.month.' . $date->format('n')];
             return;
         }
         $this->key = $date->format('Y-m-d');

@@ -59,7 +59,7 @@ class BatchingIterator implements Iterator
 
     private function fetchChunk()
     {
-        $this->currentChunk = array();
+        $this->currentChunk = [];
         for ($i = 0; $i < $this->chunkSize && $this->iterator->valid(); $i++, $this->iterator->next()) {
             $this->currentChunk[] = $this->iterator->current();
         }

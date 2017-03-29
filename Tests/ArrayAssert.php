@@ -31,13 +31,13 @@ class ArrayAssert
     public function extracting()
     {
         $selectors = func_get_args();
-        $actual = array();
+        $actual = [];
         if (count($selectors) == 1) {
             $selector = Arrays::first($selectors);
             $actual = Arrays::map($this->actual, Functions::extractExpression($selector, true));
         } else {
             foreach ($this->actual as $item) {
-                $extracted = array();
+                $extracted = [];
                 foreach ($selectors as $selector) {
                     $extracted[] = Functions::call(Functions::extractExpression($selector, true), $item);
                 }
@@ -104,7 +104,7 @@ class ArrayAssert
 
     private function findNonExistingElements($elements)
     {
-        $nonExistingElements = array();
+        $nonExistingElements = [];
         foreach ($elements as $element) {
             if (!Arrays::contains($this->actual, $element)) {
                 $nonExistingElements[] = $element;

@@ -18,8 +18,8 @@ class Inflector
      */
     private static
         /** @noinspection SpellCheckingInspection */
-        $plural = array(
-        'rules' => array(
+        $plural = [
+        'rules' => [
             '/(s)tatus$/i' => '\1\2tatuses',
             '/(quiz)$/i' => '\1zes',
             '/^(ox)$/i' => '\1\2en',
@@ -42,11 +42,11 @@ class Inflector
             '/s$/' => 's',
             '/^$/' => '',
             '/$/' => 's',
-        ),
-        'uninflected' => array(
+        ],
+        'uninflected' => [
             '.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox', '.*sheep', 'people', 'cookie'
-        ),
-        'irregular' => array(
+        ],
+        'irregular' => [
             'atlas' => 'atlases',
             'beef' => 'beefs',
             'brother' => 'brothers',
@@ -80,8 +80,8 @@ class Inflector
             'trilby' => 'trilbys',
             'turf' => 'turfs',
             'foot' => 'feet'
-        )
-    );
+        ]
+    ];
 
     /**
      * Singular inflector rules.
@@ -90,8 +90,8 @@ class Inflector
      */
     private static
         /** @noinspection SpellCheckingInspection */
-        $singular = array(
-        'rules' => array(
+        $singular = [
+        'rules' => [
             '/(s)tatuses$/i' => '\1\2tatus',
             '/^(.*)(menu)s$/i' => '\1\2',
             '/(quiz)zes$/i' => '\\1',
@@ -126,16 +126,16 @@ class Inflector
             '/eaus$/' => 'eau',
             '/^(.*us)$/' => '\\1',
             '/s$/i' => ''
-        ),
-        'uninflected' => array(
+        ],
+        'uninflected' => [
             '.*[nrlm]ese', '.*deer', '.*fish', '.*measles', '.*ois', '.*pox', '.*sheep', '.*ss'
-        ),
-        'irregular' => array(
+        ],
+        'irregular' => [
             'foes' => 'foe',
             'waves' => 'wave',
             'curves' => 'curve'
-        )
-    );
+        ]
+    ];
 
     /**
      * Words that should not be inflected.
@@ -143,7 +143,7 @@ class Inflector
      * @var array
      */
     private static /** @noinspection SpellCheckingInspection */
-        $uninflected = array(
+        $uninflected = [
         'Amoyese', 'bison', 'Borghese', 'bream', 'breeches', 'britches', 'buffalo', 'cantus',
         'carp', 'chassis', 'clippers', 'cod', 'coitus', 'Congoese', 'contretemps', 'corps',
         'debris', 'diabetes', 'djinn', 'eland', 'elk', 'equipment', 'Faroese', 'flounder',
@@ -156,21 +156,21 @@ class Inflector
         'sea[- ]bass', 'series', 'Shavese', 'shears', 'siemens', 'species', 'staff', 'swine',
         'testes', 'trousers', 'trout', 'tuna', 'Vermontese', 'Wenchowese', 'whiting',
         'wildebeest', 'Yengeese'
-    );
+    ];
 
     /**
      * Method cache array.
      *
      * @var array
      */
-    private static $cache = array();
+    private static $cache = [];
 
     /**
      * The initial state of Inflector so reset() works.
      *
      * @var array
      */
-    private static $initialState = array();
+    private static $initialState = [];
 
     /**
      * Clears Inflectors inflected value caches, and resets the inflection
@@ -189,7 +189,7 @@ class Inflector
                 self::${$key} = $val;
             }
         }
-        self::$cache = array();
+        self::$cache = [];
     }
 
     /**
@@ -231,9 +231,9 @@ class Inflector
                     unset(self::${$type}['merged'][$rule]);
                 }
                 if ($type === 'plural') {
-                    self::$cache['pluralize'] = self::$cache['tableize'] = array();
+                    self::$cache['pluralize'] = self::$cache['tableize'] = [];
                 } elseif ($type === 'singular') {
-                    self::$cache['singularize'] = array();
+                    self::$cache['singularize'] = [];
                 }
             }
         }
