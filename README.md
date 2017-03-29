@@ -26,11 +26,11 @@ $result = FluentArray::from($users)
 
 [Fluent iterator](http://ouzo.readthedocs.org/en/latest/utils/fluent_iterator.html):
 ```php
-$result = FluentIterator::fromArray(array(1, 2, 3))
+$result = FluentIterator::fromArray([1, 2, 3])
              ->cycle()
              ->limit(10)
              ->reindex()
-             ->toArray(); // array(1, 2, 3, 1, 2, 3, 1, 2, 3, 1)
+             ->toArray(); // [1, 2, 3, 1, 2, 3, 1, 2, 3, 1]
 ```
 
 [Fluent functions](http://ouzo.readthedocs.org/en/latest/utils/fluent_functions.html):
