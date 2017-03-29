@@ -54,7 +54,7 @@ class StreamStub
     public static function register($streamName)
     {
         self::$streamName = $streamName;
-        stream_wrapper_register($streamName, '\Ouzo\Tests\StreamStub');
+        stream_wrapper_register($streamName, StreamStub::class);
     }
 
     public static function unregister()

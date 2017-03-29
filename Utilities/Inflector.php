@@ -181,7 +181,7 @@ class Inflector
     public static function reset()
     {
         if (empty(self::$initialState)) {
-            self::$initialState = get_class_vars('Ouzo\Utilities\Inflector');
+            self::$initialState = get_class_vars(Inflector::class);
             return;
         }
         foreach (self::$initialState as $key => $val) {
