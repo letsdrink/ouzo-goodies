@@ -51,7 +51,7 @@ class Path
      */
     public static function joinWithTemp()
     {
-        $args = array_merge(array(sys_get_temp_dir()), func_get_args());
+        $args = array_merge([sys_get_temp_dir()], func_get_args());
         return call_user_func_array([Path::class, 'join'], $args);
     }
 
@@ -86,7 +86,7 @@ class Path
     public static function normalize($path)
     {
         $parts = explode('/', trim($path, '/'));
-        $result = array();
+        $result = [];
         foreach ($parts as $part) {
             if ($part == '..' && !empty($result)) {
                 array_pop($result);
