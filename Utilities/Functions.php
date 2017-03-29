@@ -245,4 +245,11 @@ class Functions
             return !in_array($value, $array);
         };
     }
+
+    public static function equalsIgnoreCase($string)
+    {
+        return function ($value) use ($string) {
+            return Strings::equalsIgnoreCase($value, $string);
+        };
+    }
 }

@@ -39,6 +39,7 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction inArray($array)
  * @method static FluentFunction notInArray($array)
  * @method static FluentFunction negate()
+ * @method static FluentFunction equalsIgnoreCase($string)
  */
 class FluentFunctions
 {
