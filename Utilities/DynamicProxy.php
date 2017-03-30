@@ -72,6 +72,9 @@ class DynamicProxy
             if ($param->isArray()) {
                 $result .= 'array ';
             }
+            if ($param->isVariadic()) {
+                $result .= '... ';
+            }
             if ($param->isPassedByReference()) {
                 $result .= '&';
             }
