@@ -1,7 +1,5 @@
 <?php
-
 namespace Ouzo\Utilities\Iterator;
-
 
 use ArrayIterator;
 use Iterator;

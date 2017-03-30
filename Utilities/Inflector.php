@@ -16,9 +16,7 @@ class Inflector
      *
      * @var array
      */
-    private static
-        /** @noinspection SpellCheckingInspection */
-        $plural = [
+    private static $plural = [
         'rules' => [
             '/(s)tatus$/i' => '\1\2tatuses',
             '/(quiz)$/i' => '\1zes',
@@ -87,10 +85,9 @@ class Inflector
      * Singular inflector rules.
      *
      * @var array
+     * @noinspection SpellCheckingInspection
      */
-    private static
-        /** @noinspection SpellCheckingInspection */
-        $singular = [
+    private static $singular = [
         'rules' => [
             '/(s)tatuses$/i' => '\1\2tatus',
             '/^(.*)(menu)s$/i' => '\1\2',
@@ -142,8 +139,7 @@ class Inflector
      *
      * @var array
      */
-    private static /** @noinspection SpellCheckingInspection */
-        $uninflected = [
+    private static $uninflected = [
         'Amoyese', 'bison', 'Borghese', 'bream', 'breeches', 'britches', 'buffalo', 'cantus',
         'carp', 'chassis', 'clippers', 'cod', 'coitus', 'Congoese', 'contretemps', 'corps',
         'debris', 'diabetes', 'djinn', 'eland', 'elk', 'equipment', 'Faroese', 'flounder',

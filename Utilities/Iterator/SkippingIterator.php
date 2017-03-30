@@ -1,5 +1,4 @@
 <?php
-
 namespace Ouzo\Utilities\Iterator;
 
 use Iterator;

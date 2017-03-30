@@ -198,19 +198,19 @@ class Objects
         return self::_convertToComparable($a) == self::_convertToComparable($b);
     }
 
-    static function _convertToComparable($value)
+    public static function _convertToComparable($value)
     {
-        if ($value === NULL) {
+        if ($value === null) {
             return "____ouzo_null_marker_so_that_null_!=_''";
         }
         $type = gettype($value);
         if ($type == 'boolean') {
             $value = $value ? 'true' : 'false';
-        } else if ($type == 'array') {
+        } elseif ($type == 'array') {
             array_walk_recursive($value, function (&$value) {
                 $value = Objects::_convertToComparable($value);
             });
-        } else if ($type != 'object') {
+        } elseif ($type != 'object') {
             $value = $type != 'object' ? (string)$value : $value;
         }
         return $value;

@@ -5,7 +5,6 @@
  */
 namespace Ouzo\Utilities;
 
-
 class JsonEncodeException extends \Exception
 {
     public function __construct($lastErrorMessage = "", $lastErrorCode = 0)
