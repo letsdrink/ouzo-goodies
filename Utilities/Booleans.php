@@ -12,7 +12,7 @@ namespace Ouzo\Utilities;
 class Booleans
 {
     /**
-     * @param $string
+     * @param mixed $string
      * @return bool
      */
     public static function toBoolean($string)

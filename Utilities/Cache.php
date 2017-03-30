@@ -26,7 +26,7 @@ class Cache
      * })
      * </code>
      *
-     * @param $function
+     * @param callable $function
      * @return mixed|null
      */
     public static function memoize($function)
@@ -48,8 +48,8 @@ class Cache
      * })
      * </code>
      *
-     * @param $key
-     * @param null $function
+     * @param string $key
+     * @param callable|null $function
      * @return mixed|null
      */
     public static function get($key, $function = null)
@@ -61,8 +61,8 @@ class Cache
     }
 
     /**
-     * @param $key
-     * @param $object
+     * @param string $key
+     * @param callable $object
      * @return mixed
      */
     public static function put($key, $object)
@@ -73,7 +73,7 @@ class Cache
     /**
      * Checks if cache contains an object for the given key.
      *
-     * @param $key
+     * @param string $key
      * @return bool
      */
     public static function contains($key)
@@ -93,6 +93,8 @@ class Cache
 
     /**
      * Clears all items stored in cache.
+     *
+     * @return void
      */
     public static function clear()
     {

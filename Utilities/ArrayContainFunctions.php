@@ -7,11 +7,21 @@ namespace Ouzo\Utilities;
 
 class ArrayContainFunctions
 {
+    /**
+     * @param array $array
+     * @param string $element
+     * @return bool
+     */
     public static function contains(array $array, $element)
     {
         return Arrays::any($array, Functions::equals($element));
     }
 
+    /**
+     * @param array $array
+     * @param mixed $elements
+     * @return bool
+     */
     public static function containsAll(array $array, $elements)
     {
         if (empty($elements) || !is_array($elements)) {

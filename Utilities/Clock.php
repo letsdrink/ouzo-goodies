@@ -14,8 +14,8 @@ use DateTimeZone;
  */
 class Clock
 {
+    /** @var bool */
     public static $freeze = false;
-
     /** @var DateTime|Clock */
     public static $freezeDate;
 

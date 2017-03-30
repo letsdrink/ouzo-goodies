@@ -24,7 +24,7 @@ class ClassName
      * Api\\MultipleNs
      * </code>
      *
-     * @param $string
+     * @param string $string
      * @return string
      */
     public static function pathToFullyQualifiedName($string)
