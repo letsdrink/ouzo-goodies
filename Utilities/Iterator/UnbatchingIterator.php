@@ -1,4 +1,8 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 namespace Ouzo\Utilities\Iterator;
 
 use ArrayIterator;
@@ -6,28 +10,33 @@ use Iterator;
 
 class UnbatchingIterator implements Iterator
 {
-    /**
-     * @var Iterator $iterator
-     */
+    /** @var Iterator $iterator */
     private $iterator;
-
-    /**
-     * @var Iterator $iterator
-     */
+    /** @var Iterator $chunkIterator */
     private $chunkIterator;
+    /** @var int */
     private $position = 0;
 
+    /**
+     * @param Iterator $iterator
+     */
     public function __construct(Iterator $iterator)
     {
         $this->iterator = $iterator;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function current()
     {
         $this->initializeChunkIterator();
         return $this->chunkIterator->current();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function next()
     {
         $this->initializeChunkIterator();
@@ -42,17 +51,26 @@ class UnbatchingIterator implements Iterator
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function key()
     {
         return $this->position;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function valid()
     {
         $this->initializeChunkIterator();
         return $this->chunkIterator->valid();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function rewind()
     {
         $this->position = 0;
@@ -60,6 +78,9 @@ class UnbatchingIterator implements Iterator
         $this->chunkIterator = null;
     }
 
+    /**
+     * @return void
+     */
     private function initializeChunkIterator()
     {
         if (!$this->chunkIterator) {

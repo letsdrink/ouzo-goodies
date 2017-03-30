@@ -6,6 +6,7 @@
 namespace Ouzo\Utilities\Iterator;
 
 use ArrayIterator;
+use Closure;
 use InfiniteIterator;
 use InvalidArgumentException;
 use Iterator;
@@ -16,7 +17,7 @@ class Iterators
     /**
      * Returns an iterator that uses $function to generate elements
      * $function takes one argument which is the current position of the iterator.
-     * @param $function
+     * @param Closure $function
      * @return GeneratingIterator
      */
     public static function generate($function)
@@ -37,7 +38,7 @@ class Iterators
     /**
      * Returns the elements of $iterator grouped in chunks of $chunkSize
      * @param Iterator $iterator
-     * @param $chunkSize
+     * @param int $chunkSize
      * @return BatchingIterator
      */
     public static function batch(Iterator $iterator, $chunkSize)
@@ -48,7 +49,7 @@ class Iterators
     /**
      * Returns the elements of $iterator that satisfy a predicate.
      * @param Iterator $iterator
-     * @param $predicate
+     * @param Closure $predicate
      * @return FilteringIterator
      */
     public static function filter(Iterator $iterator, $predicate)
@@ -79,7 +80,7 @@ class Iterators
     /**
      * Returns an iterator that applies function to each element of $iterator.
      * @param Iterator $iterator
-     * @param $function
+     * @param Closure $function
      * @return TransformingIterator
      */
     public static function map(Iterator $iterator, $function)
@@ -90,7 +91,7 @@ class Iterators
     /**
      * Returns the first element in iterator or defaultValue.
      * @param Iterator $iterator
-     * @param $default
+     * @param mixed $default
      * @return mixed
      */
     public static function firstOr(Iterator $iterator, $default)
@@ -116,7 +117,7 @@ class Iterators
     /**
      * Creates an iterator returning the first $number elements of the given iterator.
      * @param Iterator $iterator
-     * @param $number
+     * @param int $number
      * @return LimitIterator
      */
     public static function limit(Iterator $iterator, $number)
@@ -127,7 +128,7 @@ class Iterators
     /**
      * Creates an iterator returning all but first $number elements of the given iterator.
      * @param Iterator $iterator
-     * @param $number
+     * @param int $number
      * @return SkippingIterator
      */
     public static function skip(Iterator $iterator, $number)

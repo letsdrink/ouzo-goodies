@@ -5,6 +5,7 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
+use Closure;
 use FilterIterator;
 use Iterator;
 
@@ -16,14 +17,22 @@ use Iterator;
  */
 class FilteringIterator extends FilterIterator
 {
+    /** @var Closure */
     private $predicate;
 
+    /**
+     * @param Iterator $iterator
+     * @param Closure $predicate
+     */
     public function __construct(Iterator $iterator, $predicate)
     {
         parent::__construct($iterator);
         $this->predicate = $predicate;
     }
 
+    /**
+     * @return mixed
+     */
     public function accept()
     {
         $predicate = $this->predicate;

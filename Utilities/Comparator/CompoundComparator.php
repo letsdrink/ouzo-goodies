@@ -5,22 +5,30 @@
  */
 namespace Ouzo\Utilities\Comparator;
 
+use Closure;
+
 /**
  * Class CompoundComparator
  * @package Ouzo\Utilities\Comparator
  */
 class CompoundComparator
 {
-    /**
-     * @var array
-     */
+    /** @var Closure[] */
     private $comparators;
 
+    /**
+     * @param Closure[] $comparators
+     */
     public function __construct(array $comparators)
     {
         $this->comparators = $comparators;
     }
 
+    /**
+     * @param mixed $lhs
+     * @param mixed $rhs
+     * @return mixed
+     */
     public function __invoke($lhs, $rhs)
     {
         foreach ($this->comparators as $comparator) {

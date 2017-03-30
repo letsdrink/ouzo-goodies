@@ -9,36 +9,52 @@ use Iterator;
 
 class ForwardingIterator implements Iterator
 {
-    /**
-     * @var Iterator
-     */
+    /** @var Iterator */
     protected $iterator;
 
+    /**
+     * @param Iterator $iterator
+     */
     public function __construct(Iterator $iterator)
     {
         $this->iterator = $iterator;
     }
 
+    /**
+     * @return mixed
+     */
     public function current()
     {
         return $this->iterator->current();
     }
 
+    /**
+     * @return void
+     */
     public function next()
     {
         $this->iterator->next();
     }
 
+    /**
+     * @return mixed
+     */
     public function key()
     {
         return $this->iterator->key();
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return $this->iterator->valid();
     }
 
+    /**
+     * @return void
+     */
     public function rewind()
     {
         $this->iterator->rewind();

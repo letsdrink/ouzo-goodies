@@ -9,30 +9,37 @@ use Iterator;
 
 class BatchingIterator implements Iterator
 {
-    /**
-     * @var Iterator $iterator
-     */
+    /** @var Iterator $iterator */
     private $iterator;
+    /** @var int */
     private $chunkSize;
-
-    /**
-     * @var array $currentChunk
-     */
+    /** @var array $currentChunk */
     private $currentChunk;
+    /** @var int */
     private $position = 0;
 
+    /**
+     * @param Iterator $iterator
+     * @param int $chunkSize
+     */
     public function __construct(Iterator $iterator, $chunkSize)
     {
         $this->iterator = $iterator;
         $this->chunkSize = $chunkSize;
     }
 
+    /**
+     * @return void
+     */
     public function rewind()
     {
         $this->position = 0;
         $this->iterator->rewind();
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         if (!isset($this->currentChunk)) {
@@ -41,22 +48,34 @@ class BatchingIterator implements Iterator
         return !empty($this->currentChunk);
     }
 
+    /**
+     * @return int
+     */
     public function key()
     {
         return $this->position;
     }
 
+    /**
+     * @return array
+     */
     public function current()
     {
         return $this->currentChunk;
     }
 
+    /**
+     * @return void
+     */
     public function next()
     {
         $this->position++;
         $this->fetchChunk();
     }
 
+    /**
+     * @return void
+     */
     private function fetchChunk()
     {
         $this->currentChunk = [];

@@ -5,8 +5,11 @@
  */
 namespace Ouzo\Utilities\Comparator;
 
+use Closure;
+
 class ReversedComparator
 {
+    /** @var Closure */
     private $comparator;
 
     public function __construct($comparator)

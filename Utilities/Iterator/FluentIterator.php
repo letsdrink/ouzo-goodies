@@ -5,14 +5,17 @@
  */
 namespace Ouzo\Utilities\Iterator;
 
+use Closure;
+use Iterator;
+
 class FluentIterator extends ForwardingIterator
 {
     /**
      * Returns a fluent iterator that wraps $iterator
-     * @param $iterator
+     * @param Iterator $iterator
      * @return FluentIterator
      */
-    public static function from($iterator)
+    public static function from(Iterator $iterator)
     {
         return new self($iterator);
     }
@@ -22,7 +25,7 @@ class FluentIterator extends ForwardingIterator
      * @param array $array
      * @return FluentIterator
      */
-    public static function fromArray($array)
+    public static function fromArray(array $array)
     {
         return new self(Iterators::forArray($array));
     }
@@ -30,7 +33,7 @@ class FluentIterator extends ForwardingIterator
     /**
      * Returns a fluent iterator that uses $function to generate elements
      * $function takes one argument which is the current position of the iterator.
-     * @param $generator
+     * @param Closure $generator
      * @return FluentIterator
      */
     public static function fromFunction($generator)
@@ -40,7 +43,7 @@ class FluentIterator extends ForwardingIterator
 
     /**
      * Returns a fluent iterator that applies function to each element of this fluent iterator.
-     * @param $function
+     * @param Closure $function
      * @return $this
      */
     public function map($function)
@@ -51,7 +54,7 @@ class FluentIterator extends ForwardingIterator
 
     /**
      * Returns the first element in this iterator or defaultValue.
-     * @param $default
+     * @param mixed $default
      * @return mixed
      */
     public function firstOr($default)
@@ -70,7 +73,7 @@ class FluentIterator extends ForwardingIterator
 
     /**
      * Returns a fluent iterator returning the first $number elements of of this fluent iterator.
-     * @param $number
+     * @param int $number
      * @return $this
      */
     public function limit($number)
@@ -81,7 +84,7 @@ class FluentIterator extends ForwardingIterator
 
     /**
      * Returns a fluent iterator returning all but first $number elements of this fluent iterator.
-     * @param $number
+     * @param int $number
      * @return $this
      */
     public function skip($number)
@@ -93,7 +96,7 @@ class FluentIterator extends ForwardingIterator
     /**
      * Returns a fluent iterator returning elements of this fluent iterator grouped in chunks of $chunkSize
      * Returns the
-     * @param $chunkSize
+     * @param int $chunkSize
      * @return $this
      */
     public function batch($chunkSize)
@@ -124,7 +127,7 @@ class FluentIterator extends ForwardingIterator
 
     /**
      * Returns a fluent iterator returning elements of this fluent iterator that satisfy a predicate.
-     * @param $predicate
+     * @param Closure $predicate
      * @return $this
      */
     public function filter($predicate)
