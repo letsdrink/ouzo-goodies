@@ -9,95 +9,32 @@ use Exception;
 
 class CatchException
 {
+    /** @var Exception|null */
     public static $exception;
 
+    /**
+     * @param object $object
+     * @return CatchExceptionObject
+     */
     public static function when($object)
     {
         self::$exception = null;
         return new CatchExceptionObject($object);
     }
 
+    /**
+     * @return CatchExceptionAssert
+     */
     public static function assertThat()
     {
         return new CatchExceptionAssert(self::$exception);
     }
 
+    /**
+     * @return Exception
+     */
     public static function get()
     {
         return self::$exception;
-    }
-}
-
-class CatchExceptionObject
-{
-    private $object;
-
-    public function __construct($object)
-    {
-        $this->object = $object;
-    }
-
-    public function __call($method, $args)
-    {
-        try {
-            call_user_func_array([$this->object, $method], $args);
-        } catch (Exception $exception) {
-            CatchException::$exception = $exception;
-        }
-    }
-}
-
-class CatchExceptionAssert
-{
-    /**
-     * @var Exception
-     */
-    private $exception;
-
-    public function __construct($exception)
-    {
-        $this->exception = $exception;
-    }
-
-    public function isInstanceOf($exception)
-    {
-        AssertAdapter::assertTrue(class_exists($exception), "Cannot find expected exception class: $exception.");
-        AssertAdapter::assertInstanceOf($exception, $this->exception);
-        return $this;
-    }
-
-    public function isEqualTo($exception)
-    {
-        AssertAdapter::assertEquals($exception, $this->exception);
-        return $this;
-    }
-
-    public function notCaught()
-    {
-        if ($this->exception) {
-            throw $this->exception;
-        }
-        return $this;
-    }
-
-    public function hasMessage($message)
-    {
-        $this->_validateExceptionThrown();
-        AssertAdapter::assertEquals($message, $this->exception->getMessage());
-        return $this;
-    }
-
-    public function hasCode($code)
-    {
-        $this->_validateExceptionThrown();
-        AssertAdapter::assertEquals($code, $this->exception->getCode());
-        return $this;
-    }
-
-    private function _validateExceptionThrown()
-    {
-        if (!$this->exception) {
-            AssertAdapter::fail('Exception was not thrown.');
-        }
     }
 }

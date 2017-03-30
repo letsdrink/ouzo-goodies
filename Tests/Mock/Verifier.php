@@ -10,34 +10,56 @@ use Ouzo\Utilities\Arrays;
 
 class Verifier
 {
+    /** @var SimpleMock */
     private $mock;
 
+    /**
+     * @param SimpleMock $mock
+     */
     public function __construct(SimpleMock $mock)
     {
         $this->mock = $mock;
     }
 
+    /**
+     * @return NotCalledVerifier
+     */
     public function neverReceived()
     {
         return new NotCalledVerifier($this->mock);
     }
 
+    /**
+     * @param int $times
+     * @return ReceivedTimesCallVerifier
+     */
     public function receivedTimes($times)
     {
         return new ReceivedTimesCallVerifier($this->mock, $times);
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return $this
+     */
     public function __call($name, $arguments)
     {
-        if ($this->_wasCalled($name, $arguments)) {
+        if ($this->wasCalled($name, $arguments)) {
             return $this;
         }
-        $calls = $this->_actualCalls();
+        $calls = $this->actualCalls();
         $expected = MethodCall::newInstance($name, $arguments)->__toString();
-        $this->_fail("Expected method was not called", $expected, $calls);
+        $this->fail("Expected method was not called", $expected, $calls);
     }
 
-    protected function _fail($description, $expected, $actual)
+    /**
+     * @param string $description
+     * @param mixed $expected
+     * @param mixed $actual
+     * @return void
+     */
+    protected function fail($description, $expected, $actual)
     {
         AssertAdapter::failWithDiff($description,
             $expected,
@@ -47,21 +69,34 @@ class Verifier
         );
     }
 
-    protected function _actualCalls()
+    /**
+     * @return string
+     */
+    protected function actualCalls()
     {
-        if (empty($this->mock->_called_methods)) {
+        if (empty($this->mock->calledMethods)) {
             return "no interactions";
         }
-        return MethodCall::arrayToString($this->mock->_called_methods);
+        return MethodCall::arrayToString($this->mock->calledMethods);
     }
 
-    protected function _wasCalled($name, $arguments)
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return MethodCall
+     */
+    protected function wasCalled($name, $arguments)
     {
-        return Arrays::find($this->mock->_called_methods, new MethodCallMatcher($name, $arguments));
+        return Arrays::find($this->mock->calledMethods, new MethodCallMatcher($name, $arguments));
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return int
+     */
     protected function numberOfActualCalls($name, $arguments)
     {
-        return count(Arrays::filter($this->mock->_called_methods, new MethodCallMatcher($name, $arguments)));
+        return count(Arrays::filter($this->mock->calledMethods, new MethodCallMatcher($name, $arguments)));
     }
 }

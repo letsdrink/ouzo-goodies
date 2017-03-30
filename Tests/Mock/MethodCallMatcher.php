@@ -10,15 +10,25 @@ use Ouzo\Utilities\Objects;
 
 class MethodCallMatcher
 {
+    /** @var string */
     private $name;
+    /** @var string */
     private $arguments;
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     */
     public function __construct($name, $arguments)
     {
         $this->name = $name;
         $this->arguments = $arguments;
     }
 
+    /**
+     * @param MethodCall $methodCall
+     * @return bool
+     */
     public function matches(MethodCall $methodCall)
     {
         if ($methodCall->name != $this->name) {
@@ -41,11 +51,20 @@ class MethodCallMatcher
         return true;
     }
 
+    /**
+     * @param mixed $expected
+     * @param mixed $actual
+     * @return bool
+     */
     public function argMatches($expected, $actual)
     {
         return ($expected instanceof ArgumentMatcher && $expected->matches($actual)) || Objects::equal($expected, $actual);
     }
 
+    /**
+     * @param MethodCall $methodCall
+     * @return bool
+     */
     public function __invoke(MethodCall $methodCall)
     {
         return $this->matches($methodCall);

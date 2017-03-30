@@ -58,8 +58,7 @@ class Assert
      *  Assert::thatSession()->hasSize(1)->contains('value1');
      * </code>
      *
-     * Class Assert
-     * @package Ouzo\Tests
+     * @return ArrayAssert
      */
     public static function thatSession()
     {

@@ -7,5 +7,9 @@ namespace Ouzo\Tests\Mock;
 
 interface ArgumentMatcher
 {
+    /**
+     * @param mixed $argument
+     * @return mixed
+     */
     public function matches($argument);
 }

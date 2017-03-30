@@ -19,93 +19,149 @@ namespace Ouzo\Tests;
  */
 class StringAssert
 {
-    private $_actual;
+    /** @var string */
+    private $actual;
 
+    /**
+     * @param string $actual
+     */
     private function __construct($actual)
     {
-        $this->_actual = $actual;
+        $this->actual = $actual;
     }
 
+    /**
+     * @param string $actual
+     * @return StringAssert
+     */
     public static function that($actual)
     {
         return new StringAssert($actual);
     }
 
+    /**
+     * @param string $substring
+     * @return $this
+     */
     public function contains($substring)
     {
-        AssertAdapter::assertContains($substring, $this->_actual);
+        AssertAdapter::assertContains($substring, $this->actual);
         return $this;
     }
 
+    /**
+     * @param string $substring
+     * @return $this
+     */
     public function doesNotContain($substring)
     {
-        AssertAdapter::assertNotContains($substring, $this->_actual);
+        AssertAdapter::assertNotContains($substring, $this->actual);
         return $this;
     }
 
+    /**
+     * @param string $prefix
+     * @return $this
+     */
     public function startsWith($prefix)
     {
-        AssertAdapter::assertStringStartsWith($prefix, $this->_actual);
+        AssertAdapter::assertStringStartsWith($prefix, $this->actual);
         return $this;
     }
 
+    /**
+     * @param string $postfix
+     * @return $this
+     */
     public function endsWith($postfix)
     {
-        AssertAdapter::assertStringEndsWith($postfix, $this->_actual);
+        AssertAdapter::assertStringEndsWith($postfix, $this->actual);
         return $this;
     }
 
+    /**
+     * @param string $string
+     * @return $this
+     */
     public function isEqualToIgnoringCase($string)
     {
-        AssertAdapter::assertEqualsIgnoringCase($string, $this->_actual, 'Failed asserting that two strings are equal ignoring case.');
+        AssertAdapter::assertEqualsIgnoringCase($string, $this->actual, 'Failed asserting that two strings are equal ignoring case.');
         return $this;
     }
 
+    /**
+     * @param string $string
+     * @return $this
+     */
     public function isEqualTo($string)
     {
-        AssertAdapter::assertEquals($string, $this->_actual);
+        AssertAdapter::assertEquals($string, $this->actual);
         return $this;
     }
 
+    /**
+     * @param string $string
+     * @return $this
+     */
     public function isNotEqualTo($string)
     {
-        AssertAdapter::assertNotEquals($string, $this->_actual);
+        AssertAdapter::assertNotEquals($string, $this->actual);
         return $this;
     }
 
+    /**
+     * @param string $regex
+     * @return $this
+     */
     public function matches($regex)
     {
-        AssertAdapter::assertRegExp($regex, $this->_actual);
+        AssertAdapter::assertRegExp($regex, $this->actual);
         return $this;
     }
 
+    /**
+     * @param int $length
+     * @return $this
+     */
     public function hasSize($length)
     {
-        AssertAdapter::assertEquals($length, mb_strlen($this->_actual));
+        AssertAdapter::assertEquals($length, mb_strlen($this->actual));
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isNull()
     {
-        AssertAdapter::assertNull($this->_actual);
+        AssertAdapter::assertNull($this->actual);
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isNotNull()
     {
-        AssertAdapter::assertNotNull($this->_actual);
+        AssertAdapter::assertNotNull($this->actual);
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isEmpty()
     {
-        AssertAdapter::assertEmpty($this->_actual);
+        AssertAdapter::assertEmpty($this->actual);
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isNotEmpty()
     {
-        AssertAdapter::assertNotEmpty($this->_actual);
+        AssertAdapter::assertNotEmpty($this->actual);
         return $this;
     }
 }

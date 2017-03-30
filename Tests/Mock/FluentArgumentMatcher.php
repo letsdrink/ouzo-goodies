@@ -10,13 +10,23 @@ use Ouzo\Utilities\Functions;
 
 class FluentArgumentMatcher extends FluentFunction implements ArgumentMatcher
 {
+    /** @var string */
     private $description = 'argThat()';
 
+    /**
+     * @param mixed $argument
+     * @return mixed
+     */
     public function matches($argument)
     {
         return Functions::call($this, $argument);
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return $this
+     */
     public function __call($name, $arguments)
     {
         parent::__call($name, $arguments);
@@ -25,6 +35,9 @@ class FluentArgumentMatcher extends FluentFunction implements ArgumentMatcher
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->description;

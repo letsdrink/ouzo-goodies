@@ -7,11 +7,17 @@ namespace Ouzo\Tests\Mock;
 
 class AnyArgument implements ArgumentMatcher
 {
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return "any";
     }
 
+    /**
+     * @inheritdoc
+     */
     public function matches($argument)
     {
         return true;

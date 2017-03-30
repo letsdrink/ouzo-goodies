@@ -5,28 +5,41 @@
  */
 namespace Ouzo\Tests;
 
-
 class BooleanAssert
 {
-    private $_actual;
+    /** @var mixed */
+    private $actual;
 
+    /**
+     * @param mixed $actual
+     */
     private function __construct($actual)
     {
-        $this->_actual = $actual;
+        $this->actual = $actual;
     }
 
+    /**
+     * @param mixed $actual
+     * @return BooleanAssert
+     */
     public static function that($actual)
     {
         return new BooleanAssert($actual);
     }
 
+    /**
+     * @return void
+     */
     public function isTrue()
     {
-        AssertAdapter::assertTrue($this->_actual);
+        AssertAdapter::assertTrue($this->actual);
     }
 
+    /**
+     * @return void
+     */
     public function isFalse()
     {
-        AssertAdapter::assertFalse($this->_actual);
+        AssertAdapter::assertFalse($this->actual);
     }
 }

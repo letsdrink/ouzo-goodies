@@ -9,14 +9,24 @@ use Ouzo\Utilities\Functions;
 
 class WhenBuilder
 {
+    /** @var SimpleMock */
     private $mock;
+    /** @var MethodCall */
     private $methodCall;
 
+    /**
+     * @param SimpleMock $mock
+     */
     public function __construct(SimpleMock $mock)
     {
         $this->mock = $mock;
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return $this
+     */
     public function __call($name, $arguments)
     {
         $this->methodCall = new MethodCall($name, $arguments);
@@ -24,13 +34,13 @@ class WhenBuilder
     }
 
     /**
-     * @param mixed ...
+     * @param array $results
      * @return $this
      */
-    public function thenReturn()
+    public function thenReturn(...$results)
     {
-        foreach (func_get_args() as $result) {
-            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, Functions::constant($result));
+        foreach ($results as $result) {
+            $this->mock->stubbedCalls[] = new CallStub($this->methodCall, Functions::constant($result));
         }
         return $this;
     }
@@ -42,19 +52,19 @@ class WhenBuilder
     public function thenThrow($exception)
     {
         foreach (func_get_args() as $exception) {
-            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, Functions::throwException($exception));
+            $this->mock->stubbedCalls[] = new CallStub($this->methodCall, Functions::throwException($exception));
         }
         return $this;
     }
 
     /**
-     * @param mixed ...
+     * @param array $callbacks
      * @return $this
      */
-    public function thenAnswer()
+    public function thenAnswer(...$callbacks)
     {
-        foreach (func_get_args() as $callback) {
-            $this->mock->_stubbed_calls[] = new CallStub($this->methodCall, $callback);
+        foreach ($callbacks as $callback) {
+            $this->mock->stubbedCalls[] = new CallStub($this->methodCall, $callback);
         }
         return $this;
     }

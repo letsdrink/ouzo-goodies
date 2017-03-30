@@ -13,24 +13,33 @@ class ArrayAssert
 {
     /** @var array */
     private $actual;
-
     /** @var string */
     private $actualString;
 
+    /**
+     * @param array $actual
+     */
     private function __construct(array $actual)
     {
         $this->actual = $actual;
         $this->actualString = Objects::toString($actual);
     }
 
+    /**
+     * @param array $actual
+     * @return ArrayAssert
+     */
     public static function that(array $actual)
     {
         return new ArrayAssert($actual);
     }
 
-    public function extracting()
+    /**
+     * @param array $selectors
+     * @return ArrayAssert
+     */
+    public function extracting(...$selectors)
     {
-        $selectors = func_get_args();
         $actual = [];
         if (count($selectors) == 1) {
             $selector = Arrays::first($selectors);
@@ -47,16 +56,22 @@ class ArrayAssert
         return self::that($actual);
     }
 
+    /**
+     * @return ArrayAssert
+     */
     public function keys()
     {
         return new ArrayAssert(array_keys($this->actual));
     }
 
-    public function contains()
+    /**
+     * @param array $elements
+     * @return $this
+     */
+    public function contains(...$elements)
     {
         $this->isNotNull();
 
-        $elements = func_get_args();
         $nonExistingElements = $this->findNonExistingElements($elements);
 
         $nonExistingString = Objects::toString($nonExistingElements);
@@ -73,11 +88,14 @@ class ArrayAssert
         return $this;
     }
 
-    public function containsOnly()
+    /**
+     * @param array $elements
+     * @return $this
+     */
+    public function containsOnly(...$elements)
     {
         $this->isNotNull();
 
-        $elements = func_get_args();
         $found = sizeof($elements) - sizeof($this->findNonExistingElements($elements));
 
         $elementsString = Objects::toString($elements);
@@ -102,7 +120,11 @@ class ArrayAssert
         return $this;
     }
 
-    private function findNonExistingElements($elements)
+    /**
+     * @param array $elements
+     * @return array
+     */
+    private function findNonExistingElements(array $elements)
     {
         $nonExistingElements = [];
         foreach ($elements as $element) {
@@ -113,11 +135,14 @@ class ArrayAssert
         return $nonExistingElements;
     }
 
-    public function containsExactly()
+    /**
+     * @param array $elements
+     * @return $this
+     */
+    public function containsExactly(...$elements)
     {
         $this->isNotNull();
 
-        $elements = func_get_args();
         $found = 0;
         $min = min(sizeof($this->actual), sizeof($elements));
         for ($i = 0; $i < $min; $i++) {
@@ -137,6 +162,10 @@ class ArrayAssert
         return $this;
     }
 
+    /**
+     * @param int $expectedSize
+     * @return $this
+     */
     public function hasSize($expectedSize)
     {
         $this->isNotNull();
@@ -145,12 +174,18 @@ class ArrayAssert
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isNotNull()
     {
         AssertAdapter::assertNotNull($this->actual, "Object is null");
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isEmpty()
     {
         $this->isNotNull();
@@ -158,6 +193,9 @@ class ArrayAssert
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function isNotEmpty()
     {
         $this->isNotNull();
@@ -165,11 +203,19 @@ class ArrayAssert
         return $this;
     }
 
+    /**
+     * @param string $property
+     * @return ArrayAssert
+     */
     public function onProperty($property)
     {
         return new ArrayAssert(Arrays::map($this->actual, Functions::extractExpression($property, true)));
     }
 
+    /**
+     * @param string $method
+     * @return ArrayAssert
+     */
     public function onMethod($method)
     {
         return new ArrayAssert(Arrays::map($this->actual, function ($element) use ($method) {
@@ -177,7 +223,11 @@ class ArrayAssert
         }));
     }
 
-    public function containsKeyAndValue($elements)
+    /**
+     * @param array $elements
+     * @return $this
+     */
+    public function containsKeyAndValue(array $elements)
     {
         $contains = array_intersect_key($this->actual, $elements);
         $elementsString = Objects::toString($elements);
@@ -185,9 +235,12 @@ class ArrayAssert
         return $this;
     }
 
-    public function containsSequence()
+    /**
+     * @param array $elements
+     * @return $this
+     */
+    public function containsSequence(...$elements)
     {
-        $elements = func_get_args();
         $result = false;
         $size = count($this->actual) - count($elements) + 1;
         for ($i = 0; $i < $size; ++$i) {
@@ -199,9 +252,12 @@ class ArrayAssert
         return $this;
     }
 
-    public function excludes()
+    /**
+     * @param array $elements
+     * @return $this
+     */
+    public function excludes(...$elements)
     {
-        $elements = func_get_args();
         $currentArray = $this->actual;
         $foundElement = '';
         $anyFound = Arrays::any($elements, function ($element) use ($currentArray, &$foundElement) {
@@ -215,6 +271,10 @@ class ArrayAssert
         return $this;
     }
 
+    /**
+     * @param array $array
+     * @return $this
+     */
     public function hasEqualKeysRecursively(array $array)
     {
         $currentArrayFlatten = array_keys(Arrays::flattenKeysRecursively($this->actual));
@@ -223,6 +283,10 @@ class ArrayAssert
         return $this;
     }
 
+    /**
+     * @param mixed $array
+     * @return void
+     */
     public function isEqualTo($array)
     {
         AssertAdapter::assertEquals($array, $this->actual);

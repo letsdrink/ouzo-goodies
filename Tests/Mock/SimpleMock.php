@@ -9,13 +9,20 @@ use Ouzo\Utilities\Arrays;
 
 class SimpleMock
 {
-    public $_stubbed_calls = [];
-    public $_called_methods = [];
+    /** @var CallStub[] */
+    public $stubbedCalls = [];
+    /** @var MethodCall[] */
+    public $calledMethods = [];
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         $methodCall = new MethodCall($name, $arguments);
-        $this->_called_methods[] = $methodCall;
+        $this->calledMethods[] = $methodCall;
 
         $matching = $this->getMatchingStubbedCalls($methodCall);
 
@@ -29,14 +36,22 @@ class SimpleMock
         return $firstMatching->evaluate($methodCall);
     }
 
+    /**
+     * @param MethodCall $methodCall
+     * @return CallStub[]
+     */
     private function getMatchingStubbedCalls(MethodCall $methodCall)
     {
-        $matching = Arrays::filter($this->_stubbed_calls, function (CallStub $stubbed_call) use ($methodCall) {
+        $matching = Arrays::filter($this->stubbedCalls, function (CallStub $stubbed_call) use ($methodCall) {
             return $stubbed_call->matches($methodCall);
         });
         return $matching;
     }
 
+    /**
+     * @param CallStub[] $matching
+     * @return void
+     */
     private function removeMatchedCallIfMultipleResults(array $matching)
     {
         if (count($matching) > 1) {
@@ -44,10 +59,14 @@ class SimpleMock
         }
     }
 
+    /**
+     * @param CallStub $call
+     * @return void
+     */
     private function removeStubbedCall(CallStub $call)
     {
-        if (($key = array_search($call, $this->_stubbed_calls)) !== false) {
-            unset($this->_stubbed_calls[$key]);
+        if (($key = array_search($call, $this->stubbedCalls)) !== false) {
+            unset($this->stubbedCalls[$key]);
         }
     }
 }

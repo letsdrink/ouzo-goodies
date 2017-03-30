@@ -9,10 +9,14 @@ use Ouzo\Tests\AssertAdapter;
 
 class ZeroInteractionsVerifier
 {
+    /**
+     * @param SimpleMock $mock
+     * @return void
+     */
     public static function verify($mock)
     {
-        if (!empty($mock->_called_methods)) {
-            AssertAdapter::fail("Expected zero interactions but got " . MethodCall::arrayToString($mock->_called_methods));
+        if (!empty($mock->calledMethods)) {
+            AssertAdapter::fail("Expected zero interactions but got " . MethodCall::arrayToString($mock->calledMethods));
         }
     }
 }

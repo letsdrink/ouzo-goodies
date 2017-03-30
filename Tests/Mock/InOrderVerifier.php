@@ -10,28 +10,29 @@ use PHPUnit_Framework_ExpectationFailedException;
 
 class InOrderVerifier
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $scope = [];
-    /**
-     * @var null|MethodCall
-     */
+    /** @var null|MethodCall */
     private $current = null;
 
     /**
-     * @param $mock
+     * @param Mock|SimpleMock $mock
      * @return $this
      */
     public function verify($mock)
     {
         if (!$this->scope) {
             $extractMock = Mock::extractMock($mock);
-            $this->scope = $extractMock->_called_methods;
+            $this->scope = $extractMock->calledMethods;
         }
         return $this;
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @return $this
+     */
     public function __call($name, $arguments)
     {
         if ($this->wasCalledInOrder($name, $arguments)) {

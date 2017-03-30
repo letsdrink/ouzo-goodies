@@ -7,6 +7,9 @@ namespace Ouzo\Tests\Mock;
 
 class AnyArgumentList
 {
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return "any arguments";
