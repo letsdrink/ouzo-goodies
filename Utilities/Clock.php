@@ -3,8 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 
@@ -16,15 +18,20 @@ class Clock
 {
     /** @var bool */
     public static $freeze = false;
+
     /** @var DateTime|Clock */
     public static $freezeDate;
 
     /** @var DateTime */
     public $dateTime;
 
+    /** @var DateTimeZone */
+    private $dateTimeZone;
+
     public function __construct(DateTime $dateTime)
     {
         $this->dateTime = clone $dateTime;
+        $this->dateTimeZone = $dateTime->getTimezone();
     }
 
     /**
@@ -69,6 +76,7 @@ class Clock
         $date = new DateTime();
         if (self::$freeze) {
             $date->setTimestamp(self::$freezeDate->getTimestamp());
+            $date->setTimezone(self::$freezeDate->getTimezone());
         }
         return new Clock($date);
     }
@@ -80,7 +88,8 @@ class Clock
      */
     public static function at($date)
     {
-        return new Clock(new DateTime($date));
+        $dateTime = new DateTime($date);
+        return new Clock($dateTime);
     }
 
     /**
@@ -116,70 +125,77 @@ class Clock
         return $this->dateTime;
     }
 
-    private function _modify($interval)
+    private function modify($interval)
     {
-        $freshDateTime = clone $this->dateTime;
-        return new Clock($freshDateTime->modify($interval));
+        $dateTime = clone $this->dateTime;
+        return new Clock($dateTime->modify($interval));
+    }
+
+    private function modifyWithDstChangeSupport($interval)
+    {
+        $dateTime = clone $this->dateTime;
+        $dateTimeZone = new DateTimeZone('GMT');
+        return new Clock($dateTime->setTimezone($dateTimeZone)->modify($interval)->setTimezone($this->dateTimeZone));
     }
 
     public function minusDays($days)
     {
-        return $this->_modify("-$days days");
+        return $this->modify("-$days days");
     }
 
     public function minusHours($hours)
     {
-        return $this->_modify("-$hours hours");
+        return $this->modifyWithDstChangeSupport("-$hours hours");
     }
 
     public function minusMinutes($minutes)
     {
-        return $this->_modify("-$minutes minutes");
+        return $this->modifyWithDstChangeSupport("-$minutes minutes");
     }
 
     public function minusMonths($months)
     {
-        return $this->_modify("-$months months");
+        return $this->modify("-$months months");
     }
 
     public function minusSeconds($seconds)
     {
-        return $this->_modify("-$seconds seconds");
+        return $this->modifyWithDstChangeSupport("-$seconds seconds");
     }
 
     public function minusYears($years)
     {
-        return $this->_modify("-$years years");
+        return $this->modify("-$years years");
     }
 
     public function plusDays($days)
     {
-        return $this->_modify("+$days days");
+        return $this->modify("+$days days");
     }
 
     public function plusHours($hours)
     {
-        return $this->_modify("+$hours hours");
+        return $this->modifyWithDstChangeSupport("+$hours hours");
     }
 
     public function plusMinutes($minutes)
     {
-        return $this->_modify("+$minutes minutes");
+        return $this->modifyWithDstChangeSupport("+$minutes minutes");
     }
 
     public function plusMonths($months)
     {
-        return $this->_modify("+$months months");
+        return $this->modify("+$months months");
     }
 
     public function plusSeconds($seconds)
     {
-        return $this->_modify("+$seconds seconds");
+        return $this->modifyWithDstChangeSupport("+$seconds seconds");
     }
 
     public function plusYears($years)
     {
-        return $this->_modify("+$years years");
+        return $this->modify("+$years years");
     }
 
     public function isAfter(Clock $other)
@@ -208,12 +224,16 @@ class Clock
      */
     public function withTimezone($timezone)
     {
-        $freshDateTime = clone $this->dateTime;
-        if (is_string($timezone)) {
-            $freshDateTime->setTimezone(new DateTimeZone($timezone));
-        } else {
-            $freshDateTime->setTimezone($timezone);
-        }
-        return new Clock($freshDateTime);
+        $dateTime = clone $this->dateTime;
+        $dateTime->setTimezone(is_string($timezone) ? new DateTimeZone($timezone) : $timezone);
+        return new Clock($dateTime);
+    }
+
+    /**
+     * @return DateTimeZone
+     */
+    private function getTimezone()
+    {
+        return $this->dateTimeZone;
     }
 }
