@@ -6,7 +6,6 @@
 
 namespace Ouzo\Utilities;
 
-use DateInterval;
 use DateTime;
 use DateTimeZone;
 
@@ -138,6 +137,18 @@ class Clock
         return new Clock($dateTime->setTimezone($dateTimeZone)->modify($interval)->setTimezone($this->dateTimeZone));
     }
 
+    private function modifyMonths($interval)
+    {
+        $dateTime = clone $this->dateTime;
+        $currentDay = $dateTime->format('j');
+        $dateTime->modify($interval);
+        $endDay = $dateTime->format('j');
+        if ($currentDay != $endDay) {
+            $dateTime->modify('last day of last month');
+        }
+        return new Clock($dateTime);
+    }
+
     public function minusDays($days)
     {
         return $this->modify("-$days days");
@@ -155,7 +166,7 @@ class Clock
 
     public function minusMonths($months)
     {
-        return $this->modify("-$months months");
+        return $this->modifyMonths("-$months months");
     }
 
     public function minusSeconds($seconds)
@@ -185,7 +196,7 @@ class Clock
 
     public function plusMonths($months)
     {
-        return $this->modify("+$months months");
+        return $this->modifyMonths("+$months months");
     }
 
     public function plusSeconds($seconds)
