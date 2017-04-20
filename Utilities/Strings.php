@@ -388,7 +388,7 @@ class Strings
     }
 
     /**
-     * Alias for htmlentities() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
+     * Alias for htmlspecialchars() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
      *
      * @param string $text
      * @return string
@@ -396,9 +396,7 @@ class Strings
     public static function htmlEntities($text)
     {
         $flag = defined('ENT_SUBSTITUTE') ? ENT_SUBSTITUTE : ENT_IGNORE;
-        $htmlEntities = htmlentities($text, ENT_COMPAT | $flag, 'UTF-8');
-        $htmlEntities = str_replace(['&Oacute;', '&oacute;'], ['Ó', 'ó'], $htmlEntities);
-        return $htmlEntities;
+        return htmlspecialchars($text, ENT_COMPAT | $flag, 'UTF-8');
     }
 
     /**
