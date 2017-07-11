@@ -58,6 +58,18 @@ class Json
         throw new JsonDecodeException(self::lastErrorMessage(), $code);
     }
 
+    /**
+     * Decodes a JSON string to array, or throws JsonDecodeException on failure
+     *
+     * @param string $string
+     * @return mixed
+     * @throws JsonDecodeException
+     */
+    public static function decodeToArray($string)
+    {
+        return self::decode($string, true);
+    }
+
     private static function lastErrorMessage()
     {
         if (function_exists('json_last_error_msg')) {
