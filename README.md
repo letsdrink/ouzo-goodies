@@ -46,6 +46,10 @@ $function = FluentFunctions::extractField('name')
 $result = Functions::call($function, $product); //=> '*** extra phone! ***'
 ```
 
+```php
+$phones = Arrays::filter($products, FluentFunctions::extractField('type')->equals('PHONE'));
+```
+
 [Extract (from Functions)](http://ouzo.readthedocs.org/en/latest/utils/functions.html#extract):
 ```php
 $cities = Arrays::map($users, Functions::extract()->getAddress('home')->city);
