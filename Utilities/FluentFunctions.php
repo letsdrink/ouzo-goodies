@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 /**
@@ -10,9 +11,9 @@ namespace Ouzo\Utilities;
  * @package Ouzo\Utilities
  *
  * @method static FluentFunction extractId()
- * @method static FluentFunction extractField($expression, $boolean)
- * @method static FluentFunction extractFieldRecursively($expression, $boolean)
- * @method static FluentFunction extractExpression($expression, $boolean)
+ * @method static FluentFunction extractField($expression, $boolean = false)
+ * @method static FluentFunction extractFieldRecursively($expression, $boolean = false)
+ * @method static FluentFunction extractExpression($expression, $boolean = false)
  * @method static FluentFunction identity()
  * @method static FluentFunction constant($value)
  * @method static FluentFunction random($min, $max)
