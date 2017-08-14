@@ -21,6 +21,11 @@ class FluentArray
         return new self($_array);
     }
 
+    public function each($function)
+    {
+        Arrays::each($this->_array, $function);
+    }
+
     public function map($function)
     {
         $this->_array = Arrays::map($this->_array, $function);

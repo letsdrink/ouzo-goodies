@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use Exception;
@@ -44,6 +45,30 @@ class Arrays
             }
         }
         return true;
+    }
+
+    /**
+     * Executes the function for each element of the array.
+     *
+     * Example:
+     * <code>
+     * $array = array('one', 'two');
+     * $all = Arrays::each($array, function ($element) {
+     *      echo $element.PHP_EOL;
+     * });
+     * </code>
+     * Result:
+     * <code>
+     * one
+     * two
+     * </code>
+     *
+     * @param array $elements
+     * @param callable $function
+     */
+    public static function each(array $elements, $function)
+    {
+        array_map($function, $elements);
     }
 
     /**
