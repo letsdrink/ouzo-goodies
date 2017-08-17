@@ -154,6 +154,13 @@ class Functions
         };
     }
 
+    public static function containsSubstring($substring)
+    {
+        return function ($string) use ($substring) {
+            return Strings::contains($string, $substring);
+        };
+    }
+
     public static function formatDateTime($format = Date::DEFAULT_TIME_FORMAT)
     {
         return function ($date) use ($format) {

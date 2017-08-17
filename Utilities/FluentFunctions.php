@@ -30,6 +30,7 @@ namespace Ouzo\Utilities;
  * @method static FluentFunction removePrefix($string)
  * @method static FluentFunction startsWith($string)
  * @method static FluentFunction endsWith($string)
+ * @method static FluentFunction containsSubstring($string)
  * @method static FluentFunction formatDateTime($format)
  * @method static FluentFunction compose($fa, $fb)
  * @method static FluentFunction toString()
