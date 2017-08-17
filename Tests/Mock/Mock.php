@@ -108,4 +108,12 @@ class Mock
     {
         return new FluentArgumentMatcher();
     }
+
+    /**
+     * @return ArgumentMatcher
+     */
+    public static function all()
+    {
+        return new AndArgumentMatcher(func_get_args());
+    }
 }
