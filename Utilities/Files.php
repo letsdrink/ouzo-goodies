@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use finfo;
@@ -194,5 +195,42 @@ class Files
     {
         $fileInfo = new finfo(FILEINFO_MIME_TYPE);
         return $fileInfo->file($path);
+    }
+
+    /**
+     * Returns class name if file contains class or false if not, throws FileNotFoundException when file does not exist
+     *
+     * @param string $filePath - path to file
+     * @return bool|string - false if file doesn't contain class or class name if file contains class
+     * @throws FileNotFoundException - error thrown when file does not exist
+     */
+    public static function checkWhetherFileContainsClass($filePath)
+    {
+        if (!self::exists($filePath)) {
+            throw new FileNotFoundException('Cannot find source file: ' . $filePath);
+        }
+        $fp = fopen($filePath, 'r');
+        $class = false;
+        $buffer = '';
+        $i = 0;
+        while (!$class) {
+            if (feof($fp)) break;
+
+            $buffer .= fread($fp, 512);
+            $tokens = token_get_all($buffer);
+
+            if (strpos($buffer, '{') === false) continue;
+
+            for (; $i < count($tokens); $i++) {
+                if ($tokens[$i][0] === T_CLASS) {
+                    for ($j = $i + 1; $j < count($tokens); $j++) {
+                        if ($tokens[$j] === '{') {
+                            $class = $tokens[$i + 2][1];
+                        }
+                    }
+                }
+            }
+        }
+        return $class;
     }
 }
