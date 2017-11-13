@@ -213,8 +213,7 @@ class Files
         $class = false;
         $buffer = '';
         $i = 0;
-        while (!$class) {
-            if (feof($fp)) break;
+        while (!$class && !feof($fp)) {
 
             $buffer .= fread($fp, 512);
             $tokens = token_get_all($buffer);
