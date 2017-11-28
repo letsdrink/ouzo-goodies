@@ -3,9 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
-use Exception;
+use Throwable;
 
 class CatchExceptionObject
 {
@@ -28,7 +29,7 @@ class CatchExceptionObject
     {
         try {
             call_user_func_array([$this->object, $method], $args);
-        } catch (Exception $exception) {
+        } catch (Throwable $exception) {
             CatchException::$exception = $exception;
         }
     }
