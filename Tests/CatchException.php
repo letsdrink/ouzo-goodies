@@ -3,13 +3,14 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
-use Exception;
+use Throwable;
 
 class CatchException
 {
-    /** @var Exception|null */
+    /** @var Throwable|null */
     public static $exception;
 
     /**
@@ -31,7 +32,7 @@ class CatchException
     }
 
     /**
-     * @return Exception
+     * @return Throwable
      */
     public static function get()
     {

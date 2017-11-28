@@ -6,6 +6,7 @@
 
 namespace Ouzo\Tests;
 
+use Exception;
 use Throwable;
 
 class CatchExceptionObject
@@ -29,6 +30,8 @@ class CatchExceptionObject
     {
         try {
             call_user_func_array([$this->object, $method], $args);
+        } catch (Exception $exception) {
+            CatchException::$exception = $exception;
         } catch (Throwable $exception) {
             CatchException::$exception = $exception;
         }

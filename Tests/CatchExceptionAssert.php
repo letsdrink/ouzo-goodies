@@ -3,17 +3,18 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
-use Exception;
+use Throwable;
 
 class CatchExceptionAssert
 {
-    /** @var Exception */
+    /** @var Throwable */
     private $exception;
 
     /**
-     * @param Exception $exception
+     * @param Throwable $exception
      */
     public function __construct($exception)
     {
@@ -43,7 +44,7 @@ class CatchExceptionAssert
 
     /**
      * @return $this
-     * @throws Exception
+     * @throws Throwable
      */
     public function notCaught()
     {
