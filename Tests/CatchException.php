@@ -57,6 +57,31 @@ class CatchException
         return self::$exception;
     }
 
+    /**
+     * <code>
+     * //given
+     * class Color {
+     *  public function __construct($firstParam, $secondParam, $thirdParam){
+     *      throw new Exception();
+     *  }
+     * }
+     *
+     * class ColorTest extends TestCase{
+     *  public function testConstructor(){
+     *      //given
+     *      $params =["firstParam", ["secondParam"], 3];
+     *
+     *      //when
+     *      CatchException::inConstructor(Color::class, $params);
+     *
+     *      //then
+     *      CatchException::assertThat()->isInstanceOf(Exception::class);
+     *  }
+     * }
+     * </code>
+     * @param $className
+     * @param array $params
+     */
     public static function inConstructor($className, array $params)
     {
         try {
