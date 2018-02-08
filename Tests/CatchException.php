@@ -6,6 +6,8 @@
 
 namespace Ouzo\Tests;
 
+use Exception;
+use ReflectionClass;
 use Throwable;
 
 /**
@@ -53,5 +55,15 @@ class CatchException
     public static function get()
     {
         return self::$exception;
+    }
+
+    public static function inConstructor($className, array $params)
+    {
+        try {
+            $class = new ReflectionClass($className);
+            $class->newInstanceArgs($params);
+        } catch (Exception $e) {
+            self::$exception = $e;
+        }
     }
 }
