@@ -24,6 +24,7 @@ class CatchExceptionAssert
     /**
      * @param string $exception
      * @return $this
+     * @throws \Exception
      */
     public function isInstanceOf($exception)
     {
@@ -35,6 +36,7 @@ class CatchExceptionAssert
     /**
      * @param string $exception
      * @return $this
+     * @throws \Exception
      */
     public function isEqualTo($exception)
     {
@@ -48,15 +50,14 @@ class CatchExceptionAssert
      */
     public function notCaught()
     {
-        if ($this->exception) {
-            throw $this->exception;
-        }
+        AssertAdapter::assertEmpty($this->exception);
         return $this;
     }
 
     /**
      * @param string $message
      * @return $this
+     * @throws \Exception
      */
     public function hasMessage($message)
     {
@@ -68,6 +69,7 @@ class CatchExceptionAssert
     /**
      * @param int $code
      * @return $this
+     * @throws \Exception
      */
     public function hasCode($code)
     {

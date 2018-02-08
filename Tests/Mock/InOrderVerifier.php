@@ -3,9 +3,11 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Tests\AssertAdapter;
+use PHPUnit\Framework\Assert;
 use PHPUnit_Framework_ExpectationFailedException;
 
 class InOrderVerifier
@@ -32,15 +34,19 @@ class InOrderVerifier
      * @param string $name
      * @param array $arguments
      * @return $this
+     * @throws \Exception
      */
     public function __call($name, $arguments)
     {
-        if ($this->wasCalledInOrder($name, $arguments)) {
+        $wasCalledInOrder = $this->wasCalledInOrder($name, $arguments);
+        if ($wasCalledInOrder) {
+            Assert::assertTrue($wasCalledInOrder);
             return $this;
+        } else {
+            $expected = MethodCall::newInstance($name, $arguments)->toString();
+            $actual = $this->actualCalls();
+            Assert::assertEquals($expected, $actual, 'Method was not called in order');
         }
-        $expected = MethodCall::newInstance($name, $arguments)->toString();
-        $actual = $this->actualCalls();
-        $this->fail('Method was not called in order', $expected, $actual);
     }
 
     /**

@@ -54,6 +54,7 @@ class Mock
     /**
      * @param Mock|SimpleMock $mock
      * @return void
+     * @throws \Exception
      */
     public static function verifyZeroInteractions($mock)
     {

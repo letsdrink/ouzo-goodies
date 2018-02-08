@@ -3,10 +3,12 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Tests\AssertAdapter;
 use Ouzo\Utilities\Arrays;
+use PHPUnit\Framework\Assert;
 
 class Verifier
 {
@@ -42,15 +44,19 @@ class Verifier
      * @param string $name
      * @param array $arguments
      * @return $this
+     * @throws \Exception
      */
     public function __call($name, $arguments)
     {
         if ($this->wasCalled($name, $arguments)) {
+            Assert::assertNotEmpty($this->wasCalled($name, $arguments));
             return $this;
+        } else {
+            $calls = $this->actualCalls();
+            $expected = MethodCall::newInstance($name, $arguments)->__toString();
+            Assert::assertEquals($expected, $calls, "Expected method was not called");
+//            $this->fail("Expected method was not called", $expected, $calls);
         }
-        $calls = $this->actualCalls();
-        $expected = MethodCall::newInstance($name, $arguments)->__toString();
-        $this->fail("Expected method was not called", $expected, $calls);
     }
 
     /**
