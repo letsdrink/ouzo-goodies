@@ -6,7 +6,7 @@
 
 namespace Ouzo\Tests;
 
-use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Assert as PHPUnit_Assert;
 use PHPUnit_Framework_ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
@@ -20,7 +20,7 @@ class AssertAdapter
      */
     public static function assertTrue($condition, $message = '')
     {
-        Assert::assertTrue($condition, $message);
+        PHPUnit_Assert::assertTrue($condition, $message);
     }
 
     /**
@@ -31,7 +31,7 @@ class AssertAdapter
      */
     public static function assertFalse($condition, $message = '')
     {
-        Assert::assertFalse($condition, $message);
+        PHPUnit_Assert::assertFalse($condition, $message);
     }
 
     /**
@@ -43,7 +43,7 @@ class AssertAdapter
      */
     public static function assertEquals($expected, $actual, $message = '')
     {
-        Assert::assertEquals($expected, $actual, $message);
+        PHPUnit_Assert::assertEquals($expected, $actual, $message);
     }
 
     /**
@@ -55,7 +55,7 @@ class AssertAdapter
      */
     public static function assertEqualsIgnoringCase($expected, $actual, $message = '')
     {
-        Assert::assertEquals($expected, $actual, $message, 0, 10, false, true);
+        PHPUnit_Assert::assertEquals($expected, $actual, $message, 0, 10, false, true);
     }
 
     /**
@@ -67,7 +67,7 @@ class AssertAdapter
      */
     public static function assertNotEquals($expected, $actual, $message = '')
     {
-        Assert::assertNotEquals($expected, $actual, $message);
+        PHPUnit_Assert::assertNotEquals($expected, $actual, $message);
     }
 
     /**
@@ -78,7 +78,7 @@ class AssertAdapter
      */
     public static function assertNull($actual, $message = '')
     {
-        Assert::assertNull($actual, $message);
+        PHPUnit_Assert::assertNull($actual, $message);
     }
 
     /**
@@ -89,7 +89,7 @@ class AssertAdapter
      */
     public static function assertNotNull($actual, $message = '')
     {
-        Assert::assertNotNull($actual, $message);
+        PHPUnit_Assert::assertNotNull($actual, $message);
     }
 
     /**
@@ -100,7 +100,7 @@ class AssertAdapter
      */
     public static function assertEmpty($actual, $message = '')
     {
-        Assert::assertEmpty($actual, $message);
+        PHPUnit_Assert::assertEmpty($actual, $message);
     }
 
     /**
@@ -111,7 +111,7 @@ class AssertAdapter
      */
     public static function assertNotEmpty($actual, $message = '')
     {
-        Assert::assertNotEmpty($actual, $message);
+        PHPUnit_Assert::assertNotEmpty($actual, $message);
     }
 
     /**
@@ -123,7 +123,7 @@ class AssertAdapter
      */
     public static function assertSame($expected, $actual, $message = '')
     {
-        Assert::assertSame($expected, $actual, $message);
+        PHPUnit_Assert::assertSame($expected, $actual, $message);
     }
 
     /**
@@ -135,7 +135,7 @@ class AssertAdapter
      */
     public static function assertInstanceOf($expected, $actual, $message = '')
     {
-        Assert::assertInstanceOf($expected, $actual, $message);
+        PHPUnit_Assert::assertInstanceOf($expected, $actual, $message);
     }
 
     /**
@@ -147,7 +147,7 @@ class AssertAdapter
      */
     public static function assertContains($needle, $haystack, $message = '')
     {
-        Assert::assertContains($needle, $haystack, $message);
+        PHPUnit_Assert::assertContains($needle, $haystack, $message);
     }
 
     /**
@@ -159,7 +159,7 @@ class AssertAdapter
      */
     public static function assertNotContains($needle, $haystack, $message = '')
     {
-        Assert::assertNotContains($needle, $haystack, $message);
+        PHPUnit_Assert::assertNotContains($needle, $haystack, $message);
     }
 
     /**
@@ -171,7 +171,7 @@ class AssertAdapter
      */
     public static function assertStringStartsWith($prefix, $string, $message = '')
     {
-        Assert::assertStringStartsWith($prefix, $string, $message);
+        PHPUnit_Assert::assertStringStartsWith($prefix, $string, $message);
     }
 
     /**
@@ -183,7 +183,7 @@ class AssertAdapter
      */
     public static function assertStringEndsWith($prefix, $string, $message = '')
     {
-        Assert::assertStringEndsWith($prefix, $string, $message);
+        PHPUnit_Assert::assertStringEndsWith($prefix, $string, $message);
     }
 
     /**
@@ -195,7 +195,7 @@ class AssertAdapter
      */
     public static function assertRegExp($pattern, $string, $message = '')
     {
-        Assert::assertRegExp($pattern, $string, $message);
+        PHPUnit_Assert::assertRegExp($pattern, $string, $message);
     }
 
     /**
@@ -204,7 +204,7 @@ class AssertAdapter
      */
     public static function fail($message = '')
     {
-        Assert::fail($message);
+        PHPUnit_Assert::fail($message);
     }
 
     /**
