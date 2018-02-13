@@ -81,12 +81,13 @@ class CatchException
      * </code>
      * @param $className
      * @param array $params
+     * @return object
      */
     public static function inConstructor($className, array $params)
     {
         try {
             $class = new ReflectionClass($className);
-            $class->newInstanceArgs($params);
+            return $class->newInstanceArgs($params);
         } catch (Exception $e) {
             self::$exception = $e;
         }
