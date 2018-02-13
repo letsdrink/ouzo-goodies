@@ -8,6 +8,7 @@ namespace Ouzo\Tests;
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit_Framework_ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 class AssertAdapter
@@ -217,7 +218,7 @@ class AssertAdapter
      */
     public static function failWithDiff($description, $expected, $actual, $expectedAsString, $actualAsString)
     {
-        throw new ExpectationFailedException(
+        throw new PHPUnit_Framework_ExpectationFailedException(
             $description,
             new ComparisonFailure($expected, $actual, $expectedAsString, $actualAsString)
         );
