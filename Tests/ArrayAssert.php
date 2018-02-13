@@ -8,6 +8,7 @@ namespace Ouzo\Tests;
 use Ouzo\Utilities\Arrays;
 use Ouzo\Utilities\Functions;
 use Ouzo\Utilities\Objects;
+use PHPUnit\Framework\Assert;
 
 class ArrayAssert
 {
@@ -170,7 +171,7 @@ class ArrayAssert
     {
         $this->isNotNull();
         $actualSize = sizeof($this->actual);
-        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->actualString);
+        Assert::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->actualString);
         return $this;
     }
 
@@ -179,7 +180,7 @@ class ArrayAssert
      */
     public function isNotNull()
     {
-        AssertAdapter::assertNotNull($this->actual, "Object is null");
+        Assert::assertNotNull($this->actual, "Object is null");
         return $this;
     }
 
@@ -189,7 +190,7 @@ class ArrayAssert
     public function isEmpty()
     {
         $this->isNotNull();
-        AssertAdapter::assertEmpty($this->actual, "Object should be empty, but is: {$this->actualString}");
+        Assert::assertEmpty($this->actual, "Object should be empty, but is: {$this->actualString}");
         return $this;
     }
 
@@ -199,7 +200,7 @@ class ArrayAssert
     public function isNotEmpty()
     {
         $this->isNotNull();
-        AssertAdapter::assertNotEmpty($this->actual, "Object is empty");
+        Assert::assertNotEmpty($this->actual, "Object is empty");
         return $this;
     }
 
@@ -231,7 +232,7 @@ class ArrayAssert
     {
         $contains = array_intersect_key($this->actual, $elements);
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->actualString}");
+        Assert::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->actualString}");
         return $this;
     }
 
@@ -248,7 +249,7 @@ class ArrayAssert
                 $result = true;
             }
         }
-        AssertAdapter::assertTrue($result, "Sequence doesn't match array");
+        Assert::assertTrue($result, "Sequence doesn't match array");
         return $this;
     }
 
@@ -267,7 +268,7 @@ class ArrayAssert
             }
             return $checkInArray;
         });
-        AssertAdapter::assertFalse($anyFound, "Found element {$foundElement} in array {$this->actualString}");
+        Assert::assertFalse($anyFound, "Found element {$foundElement} in array {$this->actualString}");
         return $this;
     }
 
@@ -279,7 +280,7 @@ class ArrayAssert
     {
         $currentArrayFlatten = array_keys(Arrays::flattenKeysRecursively($this->actual));
         $arrayFlatten = array_keys(Arrays::flattenKeysRecursively($array));
-        AssertAdapter::assertSame(array_diff($currentArrayFlatten, $arrayFlatten), array_diff($arrayFlatten, $currentArrayFlatten));
+        Assert::assertSame(array_diff($currentArrayFlatten, $arrayFlatten), array_diff($arrayFlatten, $currentArrayFlatten));
         return $this;
     }
 
@@ -289,6 +290,6 @@ class ArrayAssert
      */
     public function isEqualTo($array)
     {
-        AssertAdapter::assertEquals($array, $this->actual);
+        Assert::assertEquals($array, $this->actual);
     }
 }
