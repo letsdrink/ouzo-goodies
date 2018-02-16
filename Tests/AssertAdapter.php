@@ -223,7 +223,7 @@ class AssertAdapter
                 new ComparisonFailure($expected, $actual, $expectedAsString, $actualAsString)
             );
         } else {
-            throw new PHPUnit\Framework\ExpectationFailedException(
+            throw new \PHPUnit\Framework\ExpectationFailedException(
                 $description,
                 new ComparisonFailure($expected, $actual, $expectedAsString, $actualAsString)
             );
