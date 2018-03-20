@@ -116,7 +116,7 @@ class DynamicProxy
                 return '';
             }
         }
-        return 'return';
+        return 'return ';
     }
 
     /**
