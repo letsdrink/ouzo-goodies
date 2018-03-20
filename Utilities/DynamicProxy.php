@@ -44,7 +44,9 @@ class DynamicProxy
         foreach (self::getClassMethods($class) as $method) {
             $params = self::getParameterDeclaration($method);
             $modifier = $method->isStatic() ? 'static' : '';
-            $code .= "$modifier function {$method->name}($params) { return call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";
+            $return = self::getReturnType($method);
+            $returnCastToType = self::getReturnCastToType($method);
+            $code .= "$modifier function {$method->name}($params)$return { return {$returnCastToType}call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";
         }
         $code .= '}';
         return $code;
@@ -66,11 +68,12 @@ class DynamicProxy
     {
         return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function (ReflectionParameter $param) {
             $result = '';
-            if ($param->getClass()) {
-                $result .= $param->getClass()->getName() . ' ';
-            }
-            if ($param->isArray()) {
-                $result .= 'array ';
+            if ($param->hasType() || $param->getClass()) {
+                if ($param->getClass()) {
+                    $result .= $param->getClass()->getName() . ' ';
+                } else {
+                    $result .= $param->getType()->getName() . ' ';
+                }
             }
             if ($param->isVariadic()) {
                 $result .= '... ';
@@ -84,6 +87,26 @@ class DynamicProxy
             }
             return $result;
         }));
+    }
+
+    private static function getReturnType(ReflectionFunctionAbstract $method)
+    {
+        if (version_compare('7.1.0', PHP_VERSION, '<=')) {
+            if ($method->hasReturnType()) {
+                return ': ' . $method->getReturnType()->getName();
+            }
+        }
+        return '';
+    }
+
+    private static function getReturnCastToType(ReflectionFunctionAbstract $method)
+    {
+        if (version_compare('7.1.0', PHP_VERSION, '<=')) {
+            if ($method->hasReturnType() && $method->getReturnType()->isBuiltin()) {
+                return '(' . $method->getReturnType()->getName() . ')';
+            }
+        }
+        return '';
     }
 
     /**
