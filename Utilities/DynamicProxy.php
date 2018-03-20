@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use ReflectionClass;
@@ -68,7 +69,8 @@ class DynamicProxy
     {
         return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function (ReflectionParameter $param) {
             $result = '';
-            if ($param->hasType() || $param->getClass()) {
+            $hasType = version_compare('7.1.0', PHP_VERSION, '<=') ? $hasType = $param->hasType() : true;
+            if ($hasType || $param->getClass()) {
                 if ($param->getClass()) {
                     $result .= $param->getClass()->getName() . ' ';
                 } else {
