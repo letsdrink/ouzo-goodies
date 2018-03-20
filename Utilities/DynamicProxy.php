@@ -47,7 +47,7 @@ class DynamicProxy
             $modifier = $method->isStatic() ? 'static' : '';
             $return = self::getReturnType($method);
             $returnCastToType = self::getReturnCastToType($method);
-            $code .= "$modifier function {$method->name}($params)$return { return {$returnCastToType}call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";
+            $code .= "$modifier function {$method->name}($params)$return { {$returnCastToType}call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); }\n";
         }
         $code .= '}';
         return $code;
@@ -109,10 +109,14 @@ class DynamicProxy
     {
         if (version_compare('7.1.0', PHP_VERSION, '<=')) {
             if ($method->hasReturnType() && $method->getReturnType()->isBuiltin()) {
-                return '(' . $method->getReturnType()->getName() . ')';
+                $name = $method->getReturnType()->getName();
+                if ($name != 'void') {
+                    return 'return (' . $name . ')';
+                }
+                return '';
             }
         }
-        return '';
+        return 'return';
     }
 
     /**
