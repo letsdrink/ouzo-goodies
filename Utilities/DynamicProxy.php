@@ -69,11 +69,12 @@ class DynamicProxy
     {
         return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function (ReflectionParameter $param) {
             $result = '';
-            $hasType = version_compare('7.1.0', PHP_VERSION, '<=') ? $hasType = $param->hasType() : true;
+            $isPhp71 = version_compare('7.1.0', PHP_VERSION, '<=');
+            $hasType = $isPhp71 ? $hasType = $param->hasType() : true;
             if ($hasType || $param->getClass()) {
                 if ($param->getClass()) {
                     $result .= $param->getClass()->getName() . ' ';
-                } else {
+                } elseif ($isPhp71) {
                     $result .= $param->getType()->getName() . ' ';
                 }
             }
