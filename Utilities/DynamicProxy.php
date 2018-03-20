@@ -78,6 +78,9 @@ class DynamicProxy
                     $result .= $param->getType()->getName() . ' ';
                 }
             }
+            if (!$isPhp71 && $param->isArray()) {
+                $result .= 'array ';
+            }
             if ($param->isVariadic()) {
                 $result .= '... ';
             }
