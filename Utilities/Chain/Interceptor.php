@@ -10,8 +10,8 @@ interface Interceptor
 {
     /**
      * @param mixed $param
-     * @param Chain $chain
-     * @return mixed
+     * @param Chain $next
+     * @return mixed|void
      */
-    public function handle($param, Chain $chain);
+    public function handle($param, Chain $next);
 }

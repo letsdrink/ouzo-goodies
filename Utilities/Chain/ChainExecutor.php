@@ -24,6 +24,18 @@ class ChainExecutor
     }
 
     /**
+     * @param Interceptor[] $interceptors
+     * @return $this
+     */
+    public function addAll(array $interceptors)
+    {
+        foreach ($interceptors as $interceptor) {
+            $this->add($interceptor);
+        }
+        return $this;
+    }
+
+    /**
      * @param mixed $param
      * @param Closure $function
      * @return mixed
