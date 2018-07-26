@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use Exception;
@@ -119,10 +120,24 @@ class Functions
         };
     }
 
+    public static function isEmpty()
+    {
+        return function ($object) {
+            return !empty($object);
+        };
+    }
+
     public static function notBlank()
     {
         return function ($string) {
             return Strings::isNotBlank($string);
+        };
+    }
+
+    public static function isBlank()
+    {
+        return function ($string) {
+            return Strings::isBlank($string);
         };
     }
 
