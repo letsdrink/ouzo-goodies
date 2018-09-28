@@ -39,11 +39,12 @@ class Iterators
      * Returns the elements of $iterator grouped in chunks of $chunkSize
      * @param Iterator $iterator
      * @param int $chunkSize
+     * @param int $options
      * @return BatchingIterator
      */
-    public static function batch(Iterator $iterator, $chunkSize)
+    public static function batch(Iterator $iterator, $chunkSize, $options = 0)
     {
-        return new BatchingIterator($iterator, $chunkSize);
+        return new BatchingIterator($iterator, $chunkSize, $options);
     }
 
     /**
