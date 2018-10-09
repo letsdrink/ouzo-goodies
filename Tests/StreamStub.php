@@ -46,6 +46,12 @@ class StreamStub
         return [];
     }
 
+    public function stream_seek($offset, $whence)
+    {
+        static::$position = $offset;
+        return true;
+    }
+
     public function stream_close()
     {
         return null;
