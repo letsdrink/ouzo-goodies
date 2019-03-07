@@ -72,6 +72,9 @@ class DynamicProxy
             $isPhp71 = version_compare('7.1.0', PHP_VERSION, '<=');
             $hasType = $isPhp71 ? $hasType = $param->hasType() : true;
             if ($hasType || $param->getClass()) {
+                if ($param->allowsNull()) {
+                    $result .= '?';
+                }
                 if ($param->getClass()) {
                     $result .= $param->getClass()->getName() . ' ';
                 } elseif ($isPhp71) {
