@@ -123,7 +123,7 @@ class Date
      * </code>
      * Result:
      * <code>
-     * 2013-09-09 23:59:59.9999
+     * 2013-09-09 23:59:59.999
      * </code>
      *
      * @param string $date
@@ -131,7 +131,7 @@ class Date
      */
     public static function endOfDay($date)
     {
-        return self::formatDate($date) . ' 23:59:59.9999';
+        return self::formatDate($date) . ' 23:59:59.999';
     }
 
     /**
