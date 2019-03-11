@@ -14,7 +14,7 @@ class SimpleToStringStyle extends ToStringStyle
     {
         $this->setUseClassName(false);
         $this->setUseFieldNames(false);
-        $this->setContentStart(Strings::EMPTY);
-        $this->setContentEnd(Strings::EMPTY);
+        $this->setContentStart(Strings::EMPTY_STRING);
+        $this->setContentEnd(Strings::EMPTY_STRING);
     }
 }

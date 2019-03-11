@@ -12,7 +12,7 @@ namespace Ouzo\Utilities;
  */
 class Strings
 {
-    const EMPTY = '';
+    const EMPTY_STRING = '';
 
     /**
      * Changes underscored string to the camel case.
