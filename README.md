@@ -1,7 +1,8 @@
 Ouzo Goodies
 ==============
 
-###What is it
+What is it
+----------
 
 Utility classes, test assertions and mocking framework extracted from [Ouzo framework](http://ouzoframework.org). We are compatible with PHP 5.3 and later.
 
@@ -11,7 +12,8 @@ Utility classes, test assertions and mocking framework extracted from [Ouzo fram
 [![Total Downloads](https://poser.pugx.org/letsdrink/ouzo-goodies/downloads.svg)](https://packagist.org/packages/letsdrink/ouzo-goodies)
 [![License](https://poser.pugx.org/letsdrink/ouzo-goodies/license.svg)](https://packagist.org/packages/letsdrink/ouzo-goodies)
 
-###How to use it
+How to use it
+-------------
 
 Couple of examples.
 
@@ -111,7 +113,8 @@ CatchException::assertThat()->isInstanceOf("FooException");
 
 This is just a taste of Ouzo. Look at the documentation for more goodies.
 
-###Where to get it
+Where to get it
+---------------
 
 Download from github or simply add composer dependency:
 ```
@@ -120,7 +123,8 @@ Download from github or simply add composer dependency:
 
 [Ouzo Goodies at packagist](https://packagist.org/packages/letsdrink/ouzo-goodies).
 
-###Documentation
+Documentation
+-------------
 
 Tutorials:
 * [Functional programming with Ouzo](http://ouzo.readthedocs.org/en/latest/documentation/functional_programming.html)
@@ -148,7 +152,8 @@ Tests:
 
 Check out full docs at http://ouzo.readthedocs.org
 
-###PhpStorm plugins:
+PhpStorm plugins:
+-----------------
  * [Ouzo framework plugin](http://plugins.jetbrains.com/plugin/7565?pr=)
  * [DynamicReturnTypePlugin](http://plugins.jetbrains.com/plugin/7251) - for Mock and CatchException. You have to copy [dynamicReturnTypeMeta.json ](https://github.com/letsdrink/ouzo/blob/master/dynamicReturnTypeMeta.json) to your project root.
 
