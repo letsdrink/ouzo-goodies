@@ -117,8 +117,8 @@ Where to get it
 ---------------
 
 Download from github or simply add composer dependency:
-```
-"letsdrink/ouzo-goodies": "1.6.0"
+```sh
+composer require letsdrink/ouzo-goodies
 ```
 
 [Ouzo Goodies at packagist](https://packagist.org/packages/letsdrink/ouzo-goodies).
@@ -136,7 +136,7 @@ Utilities:
 * [FluentIterator](http://ouzo.readthedocs.org/en/latest/utils/fluent_iterator.html)- Interface for manipulating iterators in a chained fashion.
 * [Strings](http://ouzo.readthedocs.org/en/latest/utils/strings.html) - Helper functions for strings.
 * [Objects](http://ouzo.readthedocs.org/en/latest/utils/objects.html)- Helper functions that can operate on any PHP object.
-* [Functions](http://ouzo.readthedocs.org/en/latest/utils/functions.html) - Static utility methods returning closures that can be used with Arrays and FluentArray.
+* [Functions](http://ouzo.readthedocs.org/en/latest/utils/functions.html) - Static utility methods returning closures that can be used with Arrays and FluentArray, or other PHP functions.
 * [FluentFunctions](http://ouzo.readthedocs.org/en/latest/utils/fluent_functions.html) - Fluent utility for function composition.
 * [Cache](http://ouzo.readthedocs.org/en/latest/utils/cache.html) - General-purpose cache.
 * [Path](http://ouzo.readthedocs.org/en/latest/utils/path.html) - Helper functions for path operations.
