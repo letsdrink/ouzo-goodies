@@ -111,12 +111,13 @@ class DynamicProxy
     private static function getReturnCastToType(ReflectionFunctionAbstract $method)
     {
         if (version_compare('7.1.0', PHP_VERSION, '<=')) {
-            if ($method->hasReturnType() && $method->getReturnType()->isBuiltin()) {
-                $name = $method->getReturnType()->getName();
-                if ($name != 'void') {
-                    return 'return (' . $name . ')';
+            if ($method->hasReturnType()) {
+                $result = ': ';
+                if ($method->getReturnType()->allowsNull()) {
+                    $result .= '?';
                 }
-                return '';
+                $result .= $method->getReturnType()->getName();
+                return $result;
             }
         }
         return 'return ';
