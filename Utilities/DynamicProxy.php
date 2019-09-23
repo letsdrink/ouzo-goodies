@@ -102,7 +102,12 @@ class DynamicProxy
     {
         if (version_compare('7.1.0', PHP_VERSION, '<=')) {
             if ($method->hasReturnType()) {
-                return ': ' . $method->getReturnType()->getName();
+                $result = ': ';
+                if ($method->getReturnType()->allowsNull()) {
+                    $result .= '?';
+                }
+                $result .= $method->getReturnType()->getName();
+                return $result;
             }
         }
         return '';
@@ -111,13 +116,12 @@ class DynamicProxy
     private static function getReturnCastToType(ReflectionFunctionAbstract $method)
     {
         if (version_compare('7.1.0', PHP_VERSION, '<=')) {
-            if ($method->hasReturnType()) {
-                $result = ': ';
-                if ($method->getReturnType()->allowsNull()) {
-                    $result .= '?';
+            if ($method->hasReturnType() && $method->getReturnType()->isBuiltin()) {
+                $name = $method->getReturnType()->getName();
+                if ($name != 'void') {
+                    return 'return (' . $name . ')';
                 }
-                $result .= $method->getReturnType()->getName();
-                return $result;
+                return '';
             }
         }
         return 'return ';
