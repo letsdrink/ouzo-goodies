@@ -843,6 +843,10 @@ class Arrays
             if (!$array) {
                 return $array;
             }
+
+            if (!is_array($array) && self::last($keys) !== $key) {
+                return null;
+            }
         }
         return $array;
     }
