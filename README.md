@@ -4,7 +4,7 @@ Ouzo Goodies
 What is it
 ----------
 
-Utility classes, test assertions and mocking framework extracted from [Ouzo framework](http://ouzoframework.org). We are compatible with PHP 5.3 and later.
+Utility classes, test assertions and mocking framework extracted from [Ouzo framework](http://ouzoframework.org). We are compatible with PHP 7.2 and later.
 
 [![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
 [![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.svg)](https://coveralls.io/r/letsdrink/ouzo)
@@ -158,3 +158,8 @@ PhpStorm plugins:
  * [DynamicReturnTypePlugin](http://plugins.jetbrains.com/plugin/7251) - for Mock and CatchException. You have to copy [dynamicReturnTypeMeta.json ](https://github.com/letsdrink/ouzo/blob/master/dynamicReturnTypeMeta.json) to your project root.
 
 For ideas, questions, discussions write to *ouzo-framework@googlegroups.com*.
+
+Support for PHP 5.6, 7.0 and 7.1
+-----------------
+
+Ouzo has dropped support for PHP versions older than 7.2 since Ouzo 2.x. If you want to use Ouzo with PHP 5.6, 7.0 or 7.1, please try Ouzo 1.x branch.
