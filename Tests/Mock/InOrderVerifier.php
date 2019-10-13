@@ -8,7 +8,7 @@ namespace Ouzo\Tests\Mock;
 
 use Ouzo\Tests\AssertAdapter;
 use PHPUnit\Framework\Assert;
-use PHPUnit_Framework_ExpectationFailedException;
+use PHPUnit\Framework\ExpectationFailedException;
 
 class InOrderVerifier
 {

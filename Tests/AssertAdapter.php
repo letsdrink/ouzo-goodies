@@ -7,7 +7,7 @@
 namespace Ouzo\Tests;
 
 use PHPUnit\Framework\Assert as PHPUnit_Assert;
-use PHPUnit_Framework_ExpectationFailedException;
+use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 class AssertAdapter
@@ -55,7 +55,7 @@ class AssertAdapter
      */
     public static function assertEqualsIgnoringCase($expected, $actual, $message = '')
     {
-        PHPUnit_Assert::assertEquals($expected, $actual, $message, 0, 10, false, true);
+        PHPUnit_Assert::assertEqualsIgnoringCase($expected, $actual, $message);
     }
 
     /**
@@ -147,7 +147,7 @@ class AssertAdapter
      */
     public static function assertContains($needle, $haystack, $message = '')
     {
-        PHPUnit_Assert::assertContains($needle, $haystack, $message);
+        PHPUnit_Assert::assertStringContainsString($needle, $haystack, $message);
     }
 
     /**
@@ -159,7 +159,7 @@ class AssertAdapter
      */
     public static function assertNotContains($needle, $haystack, $message = '')
     {
-        PHPUnit_Assert::assertNotContains($needle, $haystack, $message);
+        PHPUnit_Assert::assertStringNotContainsString($needle, $haystack, $message);
     }
 
     /**
