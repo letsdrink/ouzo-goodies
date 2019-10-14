@@ -76,7 +76,7 @@ class InOrderVerifier
      * @param string $description
      * @param string $expected
      * @param string $actual
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     private function fail($description, $expected, $actual)
     {

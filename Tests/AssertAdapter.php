@@ -217,13 +217,13 @@ class AssertAdapter
      */
     public static function failWithDiff($description, $expected, $actual, $expectedAsString, $actualAsString)
     {
-        if (class_exists(PHPUnit_Framework_ExpectationFailedException::class)) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
+        if (class_exists(ExpectationFailedException::class)) {
+            throw new ExpectationFailedException(
                 $description,
                 new ComparisonFailure($expected, $actual, $expectedAsString, $actualAsString)
             );
         } else {
-            throw new \PHPUnit\Framework\ExpectationFailedException(
+            throw new ExpectationFailedException(
                 $description,
                 new ComparisonFailure($expected, $actual, $expectedAsString, $actualAsString)
             );
