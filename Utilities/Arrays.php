@@ -1265,4 +1265,50 @@ class Arrays
         }
         return call_user_func_array('array_merge', $arrays);
     }
+
+    /**
+     * Returns only duplicated values from an array.
+     * Unlike array_diff_assoc(), it removes multiple duplicates, and preserves order by the first duplicate found.
+     * Example:
+     * <code>
+     * $result = Arrays::getDuplicates(array('1', 'a', 'b', 'c', 'd', 'b', 'b', 'd', 'b', 'd', 'a'));
+     * </code>
+     * Result:
+     * <code>
+     * Array (
+     *      [0] => 'a'
+     *      [1] => 'b'
+     *      [2] => 'd'
+     * )
+     * </code>
+     * @param array $array
+     * @return array
+     */
+    public static function getDuplicates(array $array)
+    {
+        return array_values(self::getDuplicatesAssoc($array));
+    }
+
+    /**
+     * Returns only duplicated values from an array, preserving key-value pairs, based on the first duplicate found.
+     * Unlike array_diff_assoc(), it removes multiple duplicates, and preserves order by the first duplicate found.
+     * Example:
+     * <code>
+     * $result = Arrays::getDuplicatesAssoc(array('1', '2', 'a', 'b', '3', 'b', 'c', 'b', 'c', 'b', 'c', 'a'));
+     * </code>
+     * Result:
+     * <code>
+     * Array (
+     *      [2] => 'a'
+     *      [3] => 'b'
+     *      [6] => 'c'
+     * )
+     * </code>
+     * @param array $array
+     * @return array
+     */
+    public static function getDuplicatesAssoc(array $array)
+    {
+        return array_unique(array_intersect($array, array_diff_assoc($array, array_unique($array))));
+    }
 }
