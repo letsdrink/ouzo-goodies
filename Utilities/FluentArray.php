@@ -164,4 +164,16 @@ class FluentArray
         $this->_array = array_slice($this->_array, $number);
         return $this;
     }
+
+    public function getDuplicates()
+    {
+        $this->_array = Arrays::getDuplicates($this->_array);
+        return $this;
+    }
+
+    public function getDuplicatesAssoc()
+    {
+        $this->_array = Arrays::getDuplicatesAssoc($this->_array);
+        return $this;
+    }
 }
