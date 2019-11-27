@@ -31,9 +31,9 @@ class Loop
         $this->n = $n;
     }
 
-    public static function of(int $max): LoopBuilder
+    public static function of(int $iterations): LoopBuilder
     {
-        return new LoopBuilder($max);
+        return new LoopBuilder($iterations);
     }
 
     public static function forever(): LoopBuilder
