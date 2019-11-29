@@ -7,9 +7,7 @@
 namespace Ouzo\Utilities;
 
 use ReflectionClass;
-use ReflectionFunctionAbstract;
 use ReflectionMethod;
-use ReflectionParameter;
 
 /**
  * Class DynamicProxy
@@ -17,124 +15,123 @@ use ReflectionParameter;
  */
 class DynamicProxy
 {
-    private static $counter;
+    /** @var int */
+    private static $counter = 0;
 
     /**
      * Creates a proxy for the given class.
      * Returned object dispatches method invocations to $methodHandler.
-     * @param $className
-     * @param $methodHandler
-     * @return null
      */
-    public static function newInstance($className, $methodHandler)
+    public static function newInstance(string $className, ?object $methodHandler): ?object
     {
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
         eval(self::getProxyClassDefinition($name, $className));
         $object = null;
-        eval("\$object = new $name(\$methodHandler);");
+        eval("\$object = new {$name}(\$methodHandler);");
         return $object;
     }
 
-    private static function getProxyClassDefinition($name, $className)
+    private static function getProxyClassDefinition(string $name, string $className): string
     {
-        $class = new ReflectionClass($className);
-        $relation = $class->isInterface() ? 'implements' : 'extends';
+        $reflectionClass = new ReflectionClass($className);
+        $relation = $reflectionClass->isInterface() ? 'implements' : 'extends';
 
-        $code = "class {$name} $relation $className { public \$_methodHandler;\n";
-        $code .= "function __construct(\$methodHandler) { \$this->_methodHandler = \$methodHandler; }\n";
-        foreach (self::getClassMethods($class) as $method) {
-            $params = self::getParameterDeclaration($method);
-            $modifier = $method->isStatic() ? 'static' : '';
-            $return = self::getReturnType($method);
-            $returnCastToType = self::getReturnCastToType($method);
-            $code .= "$modifier function {$method->name}($params)$return { \$result = call_user_func_array(array(\$this->_methodHandler, __FUNCTION__), func_get_args()); if (is_null(\$result)) { return \$result; } else { {$returnCastToType} \$result; } }\n";
+        $code = "class {$name} {$relation} {$className} {";
+        $code .= "public \$methodHandler;\n";
+        $code .= "function __construct(\$methodHandler) { \$this->methodHandler = \$methodHandler; }\n";
+        foreach (self::getClassMethods($reflectionClass) as $method) {
+            $code .= self::generateMethod($method);
         }
         $code .= '}';
         return $code;
     }
 
-    /**
-     * @param ReflectionClass $class
-     * @return ReflectionMethod[]
-     */
-    private static function getClassMethods(ReflectionClass $class)
+    /** @return ReflectionMethod[] */
+    private static function getClassMethods(ReflectionClass $reflectionClass): array
     {
-        $methods = $class->getMethods();
-        return Arrays::filter($methods, function (ReflectionMethod $method) {
-            return !$method->isConstructor();
+        $reflectionMethods = $reflectionClass->getMethods();
+        return Arrays::filter($reflectionMethods, function (ReflectionMethod $reflectionMethod) {
+            return !$reflectionMethod->isConstructor();
         });
     }
 
-    private static function getParameterDeclaration(ReflectionFunctionAbstract $method)
+    private static function generateMethod(ReflectionMethod $reflectionMethod): string
     {
-        return Joiner::on(', ')->join(Arrays::map($method->getParameters(), function (ReflectionParameter $param) {
-            $result = '';
-            $isPhp71 = version_compare('7.1.0', PHP_VERSION, '<=');
-            $hasType = $isPhp71 ? $param->hasType() : true;
-            if ($hasType || $param->getClass()) {
-                if ($isPhp71 && $param->allowsNull()) {
-                    $result .= '?';
-                }
-                if ($param->getClass()) {
-                    $result .= $param->getClass()->getName() . ' ';
-                } elseif ($isPhp71) {
-                    $result .= $param->getType()->getName() . ' ';
-                }
+        $methodName = $reflectionMethod->name;
+        $modifier = $reflectionMethod->isStatic() ? 'static' : '';
+        $parameters = self::generateParameters($reflectionMethod);
+        $returnTypeInfo = self::getReturnTypeInfo($reflectionMethod);
+
+        $invoke = 'call_user_func_array(array($this->methodHandler, __FUNCTION__), func_get_args());';
+
+        if (is_null($returnTypeInfo)) {
+            $methodSignature = "{$modifier} function {$methodName}({$parameters})";
+            $methodBody = "return {$invoke}";
+        } elseif ($returnTypeInfo['type'] === 'void') {
+            $methodSignature = "{$modifier} function {$methodName}({$parameters}): void";
+            $methodBody = $invoke;
+        } else {
+            $type = $returnTypeInfo['type'];
+
+            $returnStatement = $returnTypeInfo['builtin'] ? "return ({$type})" : 'return';
+            if ($returnTypeInfo['nullable']) {
+                $nullable = '?';
+                $methodBody = "\$result = {$invoke} if (is_null(\$result)) { return \$result; } else { {$returnStatement} \$result; }";
+            } else {
+                $nullable = '';
+                $methodBody = "{$returnStatement} {$invoke}";
             }
-            if (!$isPhp71 && $param->isArray()) {
-                $result .= 'array ';
-            }
-            if ($param->isVariadic()) {
-                $result .= '... ';
-            }
-            if ($param->isPassedByReference()) {
-                $result .= '&';
-            }
-            $result .= '$' . $param->name;
-            if ($param->isDefaultValueAvailable()) {
-                $result .= " = null"; // methodHandler gets only the passed arguments so anything would work here
-            }
-            return $result;
-        }));
+
+            $methodSignature = "{$modifier} function {$methodName}({$parameters}): {$nullable}{$type}";
+        }
+
+        return "{$methodSignature} { {$methodBody} }\n";
     }
 
-    private static function getReturnType(ReflectionFunctionAbstract $method)
+    private static function generateParameters(ReflectionMethod $reflectionMethod): string
     {
-        if (version_compare('7.1.0', PHP_VERSION, '<=')) {
-            if ($method->hasReturnType()) {
-                $result = ': ';
-                if ($method->getReturnType()->allowsNull()) {
-                    $result .= '?';
-                }
-                $result .= $method->getReturnType()->getName();
-                return $result;
+        $parameters = [];
+        foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
+            $parameter = '';
+            if ($reflectionParameter->hasType()) {
+                $nullable = $reflectionParameter->allowsNull() ? '?' : '';
+                $parameter .= "{$nullable}{$reflectionParameter->getType()->getName()} ";
             }
+            if ($reflectionParameter->isVariadic()) {
+                $parameter .= '...';
+            }
+            if ($reflectionParameter->isPassedByReference()) {
+                $parameter .= '&';
+            }
+            $parameter .= "\${$reflectionParameter->getName()}";
+            if ($reflectionParameter->isDefaultValueAvailable()) {
+                $parameter .= ' = null'; // methodHandler gets only the passed arguments so anything would work here
+            }
+            $parameters[] = $parameter;
         }
-        return '';
+
+        return Joiner::on(', ')->join($parameters);
     }
 
-    private static function getReturnCastToType(ReflectionFunctionAbstract $method)
+    private static function getReturnTypeInfo(ReflectionMethod $reflectionMethod): ?array
     {
-        if (version_compare('7.1.0', PHP_VERSION, '<=')) {
-            if ($method->hasReturnType() && $method->getReturnType()->isBuiltin()) {
-                $name = $method->getReturnType()->getName();
-                if ($name != 'void') {
-                    return 'return (' . $name . ')';
-                }
-                return '';
-            }
+        if ($reflectionMethod->hasReturnType()) {
+            $methodReturnType = $reflectionMethod->getReturnType();
+            return [
+                'type' => $methodReturnType->getName(),
+                'builtin' => $methodReturnType->isBuiltin(),
+                'nullable' => $methodReturnType->allowsNull(),
+            ];
         }
-        return 'return ';
+
+        return null;
     }
 
     /**
      * Extracts method handler from proxy object.
-     *
-     * @param $proxy
-     * @return mixed
      */
-    public static function extractMethodHandler($proxy)
+    public static function extractMethodHandler(object $proxy): object
     {
-        return $proxy->_methodHandler;
+        return $proxy->methodHandler;
     }
 }
