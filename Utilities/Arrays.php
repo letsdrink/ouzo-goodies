@@ -363,8 +363,7 @@ class Arrays
      */
     public static function filterByKeys(array $elements, $predicate)
     {
-        $allowedKeys = array_filter(array_keys($elements), $predicate);
-        return self::filterByAllowedKeys($elements, $allowedKeys);
+        return array_filter($elements, $predicate, ARRAY_FILTER_USE_KEY);
     }
 
     /**
