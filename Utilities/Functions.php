@@ -123,7 +123,7 @@ class Functions
     public static function isEmpty()
     {
         return function ($object) {
-            return !empty($object);
+            return empty($object);
         };
     }
 
