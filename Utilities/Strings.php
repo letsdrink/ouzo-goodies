@@ -32,12 +32,7 @@ class Strings
      */
     public static function underscoreToCamelCase($string)
     {
-        $words = explode('_', $string);
-        $return = '';
-        foreach ($words as $word) {
-            $return .= Strings::uppercaseFirst(trim($word));
-        }
-        return $return;
+        return str_replace('_', '', ucwords($string, '_'));
     }
 
     /**
