@@ -53,7 +53,7 @@ class Strings
      */
     public static function camelCaseToUnderscore($string)
     {
-        return mb_strtolower(preg_replace('/([[:lower:]\d])([[:upper:]])/u', '$1_$2', $string));
+        return mb_strtolower(preg_replace('/(?<!^|_)\p{Lu}/', '_$0', $string));
     }
 
     /**
