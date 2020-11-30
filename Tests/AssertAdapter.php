@@ -195,7 +195,7 @@ class AssertAdapter
      */
     public static function assertRegExp($pattern, $string, $message = '')
     {
-        PHPUnit_Assert::assertRegExp($pattern, $string, $message);
+        PHPUnit_Assert::assertMatchesRegularExpression($pattern, $string, $message);
     }
 
     /**
