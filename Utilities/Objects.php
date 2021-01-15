@@ -101,7 +101,7 @@ class Objects
      */
     public static function getValueRecursively($object, $names, $default = null, $accessPrivate = false)
     {
-        $fields = Arrays::filterNotBlank(explode('->', $names));
+        $fields = Arrays::filter(explode('->', $names), Functions::notBlank());
         foreach ($fields as $field) {
             $object = self::getValueOrCallMethod($object, $field, null, $accessPrivate);
             if ($object === null) {
