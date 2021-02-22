@@ -74,7 +74,7 @@ class DynamicProxy
             $type = $returnTypeInfo['type'];
 
             $returnStatement = $returnTypeInfo['builtin'] ? "return ({$type})" : 'return';
-            if ($returnTypeInfo['nullable']) {
+            if ($type != 'mixed' && $returnTypeInfo['nullable']) {
                 $nullable = '?';
                 $methodBody = "\$result = {$invoke} if (is_null(\$result)) { return \$result; } else { {$returnStatement} \$result; }";
             } else {
@@ -94,8 +94,9 @@ class DynamicProxy
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $parameter = '';
             if ($reflectionParameter->hasType()) {
-                $nullable = $reflectionParameter->allowsNull() ? '?' : '';
-                $parameter .= "{$nullable}{$reflectionParameter->getType()->getName()} ";
+                $typeName = $reflectionParameter->getType()->getName();
+                $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : '';
+                $parameter .= "{$nullable}{$typeName} ";
             }
             if ($reflectionParameter->isVariadic()) {
                 $parameter .= '...';
