@@ -30,7 +30,9 @@ class Path
     public static function join()
     {
         $args = Arrays::filterNotBlank(func_get_args());
-        return preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
+        $path = preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
+        $path = str_replace("\0", '', $path);
+        return $path;
     }
 
     /**
