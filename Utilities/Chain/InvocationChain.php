@@ -10,23 +10,17 @@ use Closure;
 
 class InvocationChain implements Chain
 {
-    /** @var Closure */
-    private $invocation;
-
-    /** @param Closure $invocation */
-    public function __construct(Closure $invocation)
+    public function __construct(private Closure $invocation)
     {
-        $this->invocation = $invocation;
     }
 
-    /** @inheritdoc */
-    public function proceed($param)
+    public function proceed(mixed $param): mixed
     {
         $invocation = $this->invocation;
         return $invocation($param);
     }
 
-    public function __invoke($param)
+    public function __invoke(mixed $param): mixed
     {
         return $this->proceed($param);
     }

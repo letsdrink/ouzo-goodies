@@ -8,10 +8,5 @@ namespace Ouzo\Utilities\Chain;
 
 interface Interceptor
 {
-    /**
-     * @param mixed $param
-     * @param Chain $next
-     * @return mixed|void
-     */
-    public function handle($param, Chain $next);
+    public function handle(mixed $param, Chain $next): mixed;
 }

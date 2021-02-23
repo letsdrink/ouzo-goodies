@@ -11,13 +11,9 @@ use Closure;
 class ChainExecutor
 {
     /** @var Interceptor[] */
-    private $interceptors = [];
+    private array $interceptors = [];
 
-    /**
-     * @param Interceptor $interceptor
-     * @return $this
-     */
-    public function add(Interceptor $interceptor)
+    public function add(Interceptor $interceptor): static
     {
         $this->interceptors[] = $interceptor;
         return $this;
@@ -25,9 +21,8 @@ class ChainExecutor
 
     /**
      * @param Interceptor[] $interceptors
-     * @return $this
      */
-    public function addAll(array $interceptors)
+    public function addAll(array $interceptors): static
     {
         foreach ($interceptors as $interceptor) {
             $this->add($interceptor);
@@ -35,12 +30,7 @@ class ChainExecutor
         return $this;
     }
 
-    /**
-     * @param mixed $param
-     * @param Closure $function
-     * @return mixed
-     */
-    public function execute($param, Closure $function)
+    public function execute(mixed $param, Closure $function): mixed
     {
         $chain = new InvocationChain($function);
 

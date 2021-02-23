@@ -8,9 +8,5 @@ namespace Ouzo\Utilities\Chain;
 
 interface Chain
 {
-    /**
-     * @param mixed $param
-     * @return Chain|void
-     */
-    public function proceed($param);
+    public function proceed(mixed $param): mixed;
 }

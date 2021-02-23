@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use ReflectionObject;
@@ -15,11 +16,8 @@ class Objects
 {
     /**
      * Returns a string representation of the given object.
-     *
-     * @param mixed $var
-     * @return string
      */
-    public static function toString($var)
+    public static function toString(mixed $var): string
     {
         switch (gettype($var)) {
             case 'boolean':
@@ -36,7 +34,7 @@ class Objects
         return "$var";
     }
 
-    private static function objectToString($object)
+    private static function objectToString(object $object): string
     {
         if (method_exists($object, '__toString')) {
             return (string)$object;
@@ -46,7 +44,7 @@ class Objects
         return get_class($object) . ' {' . implode(', ', $elements) . '}';
     }
 
-    private static function stringifyArrayElements($array)
+    private static function stringifyArrayElements(array $array): array
     {
         $elements = [];
         $isAssociative = array_keys($array) !== range(0, sizeof($array) - 1);
@@ -60,7 +58,7 @@ class Objects
         return $elements;
     }
 
-    private static function arrayToString(array $array)
+    private static function arrayToString(array $array): string
     {
         $elements = self::stringifyArrayElements($array);
         return '[' . implode(', ', $elements) . ']';
@@ -68,21 +66,13 @@ class Objects
 
     /**
      * Convert boolean to string 'true' or 'false'.
-     *
-     * @param bool $var
-     * @return string
      */
-    public static function booleanToString($var)
+    public static function booleanToString(bool $var): string
     {
         return $var ? 'true' : 'false';
     }
 
-    /**
-     * @param mixed $object
-     * @param string $names
-     * @param mixed $value
-     */
-    public static function setValueRecursively($object, $names, $value)
+    public static function setValueRecursively(mixed $object, string $names, mixed $value): void
     {
         $fields = explode('->', $names);
         $destinationField = array_pop($fields);
@@ -92,14 +82,7 @@ class Objects
         }
     }
 
-    /**
-     * @param mixed $object
-     * @param string $names
-     * @param null|mixed $default
-     * @param bool $accessPrivate
-     * @return mixed|null
-     */
-    public static function getValueRecursively($object, $names, $default = null, $accessPrivate = false)
+    public static function getValueRecursively(mixed $object, string $names, mixed $default = null, bool $accessPrivate = false): mixed
     {
         $fields = Arrays::filter(explode('->', $names), Functions::notBlank());
         foreach ($fields as $field) {
@@ -111,14 +94,7 @@ class Objects
         return $object;
     }
 
-    /**
-     * @param mixed $object
-     * @param string $field
-     * @param mixed $default
-     * @param bool $accessPrivate
-     * @return mixed|null
-     */
-    public static function getValueOrCallMethod($object, $field, $default, $accessPrivate = false)
+    public static function getValueOrCallMethod(mixed $object, string $field, mixed $default, bool $accessPrivate = false): mixed
     {
         $value = self::getValue($object, $field, null, $accessPrivate);
         if ($value !== null) {
@@ -127,14 +103,7 @@ class Objects
         return self::callMethod($object, $field, $default);
     }
 
-    /**
-     * @param mixed $object
-     * @param string $field
-     * @param null|mixed $default
-     * @param bool $accessPrivate
-     * @return mixed|null
-     */
-    public static function getValue($object, $field, $default = null, $accessPrivate = false)
+    public static function getValue(mixed $object, string $field, mixed $default = null, bool $accessPrivate = false): mixed
     {
         if (is_array($object)) {
             return Arrays::getValue($object, $field, $default);
@@ -153,16 +122,10 @@ class Objects
         return $default;
     }
 
-    /**
-     * @param mixed $object
-     * @param string $methodName
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function callMethod($object, $methodName, $default)
+    public static function callMethod(mixed $object, string $methodName, mixed $default): mixed
     {
         $name = rtrim($methodName, '()');
-        if (method_exists((object) $object, $name)) {
+        if (method_exists((object)$object, $name)) {
             $result = $object->$name();
             return $result === null ? $default : $result;
         }
@@ -186,32 +149,28 @@ class Objects
      * <code>
      * true
      * </code>
-     * @param $a
-     * @param $b
-     * @return bool
      */
-    public static function equal($a, $b)
+    public static function equal(mixed $a, mixed $b): bool
     {
         if ($a === $b) {
             return true;
         }
-        return self::_convertToComparable($a) == self::_convertToComparable($b);
+        return self::convertToComparable($a) == self::convertToComparable($b);
     }
 
-    public static function _convertToComparable($value)
+    public static function convertToComparable(mixed $value): mixed
     {
         if ($value === null) {
             return "____ouzo_null_marker_so_that_null_!=_''";
         }
-        $type = gettype($value);
-        if ($type == 'boolean') {
-            $value = $value ? 'true' : 'false';
-        } elseif ($type == 'array') {
+        if (is_bool($value)) {
+            $value = $value === true ? 'true' : 'false';
+        } elseif (is_array($value)) {
             array_walk_recursive($value, function (&$value) {
-                $value = Objects::_convertToComparable($value);
+                $value = Objects::convertToComparable($value);
             });
-        } elseif ($type != 'object') {
-            $value = $type != 'object' ? (string)$value : $value;
+        } elseif (!is_object($value)) {
+            $value = (string)$value;
         }
         return $value;
     }

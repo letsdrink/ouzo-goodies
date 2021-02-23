@@ -23,13 +23,10 @@ class Path
      * <code>
      * /my/path/to/file.txt
      * </code>
-     *
-     * @param string ...
-     * @return mixed
      */
-    public static function join()
+    public static function join(string...$args): string
     {
-        $args = Arrays::filterNotBlank(func_get_args());
+        $args = Arrays::filterNotBlank($args);
         $path = preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
         $path = str_replace("\0", '', $path);
         return $path;
@@ -47,13 +44,10 @@ class Path
      * //Unix
      * /tmp/my/file.txt
      * </code>
-     *
-     * @param string ...
-     * @return mixed
      */
-    public static function joinWithTemp()
+    public static function joinWithTemp(string...$args)
     {
-        $args = array_merge([sys_get_temp_dir()], func_get_args());
+        $args = array_merge([sys_get_temp_dir()], $args);
         return call_user_func_array([Path::class, 'join'], $args);
     }
 
@@ -81,11 +75,8 @@ class Path
      * ../file.txt
      * /dir/file.txt
      * </code>
-     *
-     * @param string $path
-     * @return string
      */
-    public static function normalize($path)
+    public static function normalize(string $path): string
     {
         $parts = explode('/', trim($path, '/'));
         $result = [];
