@@ -8,6 +8,7 @@ namespace Ouzo\Utilities;
 
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionUnionType;
 
 /**
  * Class DynamicProxy
@@ -118,6 +119,14 @@ class DynamicProxy
     {
         if ($reflectionMethod->hasReturnType()) {
             $methodReturnType = $reflectionMethod->getReturnType();
+            if ($methodReturnType instanceof ReflectionUnionType) {
+                $type = implode('|', Arrays::map($methodReturnType->getTypes(), fn($type) => $type->getName()));
+                return [
+                    'type' => $type,
+                    'builtin' => false,
+                    'nullable' => $methodReturnType->allowsNull(),
+                ];
+            }
             return [
                 'type' => $methodReturnType->getName(),
                 'builtin' => $methodReturnType->isBuiltin(),

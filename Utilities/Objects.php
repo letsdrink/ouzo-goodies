@@ -162,7 +162,7 @@ class Objects
     public static function callMethod($object, $methodName, $default)
     {
         $name = rtrim($methodName, '()');
-        if (method_exists($object, $name)) {
+        if (method_exists((object) $object, $name)) {
             $result = $object->$name();
             return $result === null ? $default : $result;
         }
