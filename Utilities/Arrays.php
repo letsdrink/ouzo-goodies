@@ -1262,7 +1262,7 @@ class Arrays
         if (empty($arrays)) {
             return [];
         }
-        return call_user_func_array('array_merge', $arrays);
+        return array_merge(...$arrays);
     }
 
     /**

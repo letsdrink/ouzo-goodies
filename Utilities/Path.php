@@ -24,7 +24,7 @@ class Path
      * /my/path/to/file.txt
      * </code>
      */
-    public static function join(string...$args): string
+    public static function join(string ...$args): string
     {
         $args = Arrays::filterNotBlank($args);
         $path = preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
@@ -45,10 +45,9 @@ class Path
      * /tmp/my/file.txt
      * </code>
      */
-    public static function joinWithTemp(string...$args)
+    public static function joinWithTemp(string ...$args)
     {
-        $args = array_merge([sys_get_temp_dir()], $args);
-        return call_user_func_array([Path::class, 'join'], $args);
+        return Path::join(sys_get_temp_dir(), ...$args);
     }
 
     /**
