@@ -470,16 +470,32 @@ class Strings
      * ouzo ...
      * </code>
      *
+     * To whole word:
+     * <code>
+     * $result = Strings::abbreviate('ouzo is great', 6, true);
+     * </code>
+     * Result:
+     * <code>
+     * ouzo ...
+     * </code>
+     *
      * @param string $string
      * @param string $maxWidth
+     * @param bool $toWholeWord
      * @return string
      */
-    public static function abbreviate($string, $maxWidth)
+    public static function abbreviate($string, $maxWidth, $toWholeWord = false)
     {
-        if (mb_strlen($string) > $maxWidth) {
-            return mb_substr($string, 0, $maxWidth) . '...';
+        $fullLength = mb_strlen($string);
+        if ($fullLength <= $maxWidth) {
+            return $string;
         }
-        return $string;
+
+        if ($toWholeWord) {
+            $lastSpace = mb_strrpos($string, ' ', -($fullLength - $maxWidth));
+            $maxWidth = $lastSpace ? min($maxWidth, $lastSpace) : $maxWidth;
+        }
+        return trim(mb_substr($string, 0, $maxWidth)) . ' ...';
     }
 
     /**
