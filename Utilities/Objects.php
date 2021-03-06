@@ -48,13 +48,13 @@ class Objects
     {
         $elements = [];
         $isAssociative = array_keys($array) !== range(0, sizeof($array) - 1);
-        array_walk($array, function ($element, $key) use (&$elements, $isAssociative) {
+        foreach ($array as $key => $element) {
             if ($isAssociative) {
                 $elements[] = "<$key> => " . Objects::toString($element);
             } else {
                 $elements[] = Objects::toString($element);
             }
-        });
+        };
         return $elements;
     }
 
@@ -126,8 +126,7 @@ class Objects
     {
         $name = rtrim($methodName, '()');
         if (method_exists((object)$object, $name)) {
-            $result = $object->$name();
-            return $result === null ? $default : $result;
+            return $object->$name() ?? $default;
         }
         return $default;
     }
@@ -158,20 +157,23 @@ class Objects
         return self::convertToComparable($a) == self::convertToComparable($b);
     }
 
-    public static function convertToComparable(mixed $value): mixed
+    private static function convertToComparable(mixed $value): mixed
     {
         if ($value === null) {
             return "____ouzo_null_marker_so_that_null_!=_''";
         }
         if (is_bool($value)) {
-            $value = $value === true ? 'true' : 'false';
-        } elseif (is_array($value)) {
+            return $value === true ? 'true' : 'false';
+        }
+        if (is_array($value)) {
             array_walk_recursive($value, function (&$value) {
                 $value = Objects::convertToComparable($value);
             });
-        } elseif (!is_object($value)) {
-            $value = (string)$value;
+            return $value;
         }
-        return $value;
+        if (is_object($value)) {
+            return $value;
+        }
+        return (string)$value;
     }
 }
