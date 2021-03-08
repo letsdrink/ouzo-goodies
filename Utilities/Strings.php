@@ -492,10 +492,10 @@ class Strings
         }
 
         if ($toWholeWord) {
-            $lastSpace = mb_strrpos($string, ' ', -($fullLength - $maxWidth));
-            $maxWidth = $lastSpace ? min($maxWidth, $lastSpace) : $maxWidth;
+            $lastSpace = mb_strrpos($string, ' ', -($fullLength - $maxWidth) + 1);
+            $maxWidth = $lastSpace ? $lastSpace+1 : $maxWidth;
         }
-        return trim(mb_substr($string, 0, $maxWidth)) . ' ...';
+        return mb_substr($string, 0, $maxWidth) . '...';
     }
 
     /**
