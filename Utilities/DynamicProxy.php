@@ -8,6 +8,7 @@ namespace Ouzo\Utilities;
 
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionUnionType;
 
 /**
@@ -94,7 +95,7 @@ class DynamicProxy
         $parameters = [];
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $parameter = '';
-            if ($reflectionParameter->hasType()) {
+            if ($reflectionParameter->hasType() && $reflectionParameter->getType() instanceof ReflectionNamedType) {
                 $typeName = $reflectionParameter->getType()->getName();
                 $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : '';
                 $parameter .= "{$nullable}{$typeName} ";
