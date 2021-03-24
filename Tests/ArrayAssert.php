@@ -76,7 +76,7 @@ class ArrayAssert
         $elementsString = Objects::toString($elements);
 
         if (sizeof($elements) > sizeof($this->actual) || sizeof($this->actual) > $found) {
-            AssertAdapter::failWithDiff("Expected only $elementsString elements in actual {$this->actualString}",
+            AssertAdapter::failWithDiff("Expected only {$elementsString} elements in actual {$this->actualString}",
                 $elements,
                 $this->actual,
                 $elementsString,
@@ -85,7 +85,7 @@ class ArrayAssert
         }
 
         if (sizeof($elements) < sizeof($this->actual) || sizeof($this->actual) < $found) {
-            AssertAdapter::failWithDiff("There are more in expected $elementsString than in actual {$this->actualString}",
+            AssertAdapter::failWithDiff("There are more in expected {$elementsString} than in actual {$this->actualString}",
                 $elements,
                 $this->actual,
                 $elementsString,
@@ -119,7 +119,7 @@ class ArrayAssert
         }
         $elementsString = Objects::toString($elements);
         if (sizeof($elements) != $found || sizeof($this->actual) != $found) {
-            AssertAdapter::failWithDiff("Elements from expected $elementsString were not found in actual {$this->actualString} or have different order",
+            AssertAdapter::failWithDiff("Elements from expected {$elementsString} were not found in actual {$this->actualString} or have different order",
                 $elements,
                 $this->actual,
                 $elementsString,
@@ -133,7 +133,7 @@ class ArrayAssert
     {
         $this->isNotNull();
         $actualSize = sizeof($this->actual);
-        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size $expectedSize, but is $actualSize.\nActual: " . $this->actualString);
+        AssertAdapter::assertEquals($expectedSize, $actualSize, "Expected size {$expectedSize}, but is {$actualSize}.\nActual: {$this->actualString}");
         return $this;
     }
 
@@ -153,7 +153,7 @@ class ArrayAssert
     public function isNotEmpty(): ArrayAssert
     {
         $this->isNotNull();
-        AssertAdapter::assertNotEmpty($this->actual, "Object is empty");
+        AssertAdapter::assertNotEmpty($this->actual, 'Object is empty');
         return $this;
     }
 
@@ -171,7 +171,7 @@ class ArrayAssert
     {
         $contains = array_intersect_key($this->actual, $elements);
         $elementsString = Objects::toString($elements);
-        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs $elementsString in actual $this->actualString");
+        AssertAdapter::assertEquals($elements, $contains, "Cannot find key value pairs {$elementsString} in actual {$this->actualString}");
         return $this;
     }
 
@@ -205,7 +205,7 @@ class ArrayAssert
             }
             return $checkInArray;
         });
-        AssertAdapter::assertFalse($anyFound, "Found element $foundElement in array $this->actualString");
+        AssertAdapter::assertFalse($anyFound, "Found element {$foundElement} in array {$this->actualString}");
         return $this;
     }
 
