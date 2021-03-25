@@ -6,18 +6,16 @@
 
 namespace Ouzo\Utilities\Loop;
 
+use Closure;
+
 class LoopBuilder
 {
-    /** @var int */
-    private $iterations;
-    /** @var int */
-    private $delay = 1;
-    /** @var callable */
-    private $functionForEach;
-    /** @var callable */
-    private $functionForEveryNth;
-    /** @var int */
-    private $n;
+    private int $iterations;
+
+    private int $delay = 1;
+    private ?Closure $functionForEach = null;
+    private ?Closure $functionForEveryNth = null;
+    private ?int $n = null;
 
     public function __construct(int $iterations)
     {
@@ -30,13 +28,13 @@ class LoopBuilder
         return $this;
     }
 
-    public function forEach(callable $function): LoopBuilder
+    public function forEach(Closure $function): LoopBuilder
     {
         $this->functionForEach = $function;
         return $this;
     }
 
-    public function forEveryNth(int $n, callable $function): LoopBuilder
+    public function forEveryNth(int $n, Closure $function): LoopBuilder
     {
         $this->functionForEveryNth = $function;
         $this->n = $n;
