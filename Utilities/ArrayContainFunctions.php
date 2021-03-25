@@ -13,16 +13,11 @@ class ArrayContainFunctions
         return Arrays::any($array, Functions::equals($element));
     }
 
-    public static function containsAll(array $array, array $elements): bool
+    public static function containsAll(array $array, mixed $elements): bool
     {
         if (empty($elements) || !is_array($elements)) {
             return false;
         }
-        foreach ($elements as $element) {
-            if (!Arrays::contains($array, $element)) {
-                return false;
-            }
-        }
-        return true;
+        return !Arrays::any($elements, fn($element) => !Arrays::contains($array, $element));
     }
 }

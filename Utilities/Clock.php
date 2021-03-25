@@ -9,23 +9,14 @@ namespace Ouzo\Utilities;
 use DateTime;
 use DateTimeZone;
 
-/**
- * Class Clock
- * @package Ouzo\Utilities
- */
 class Clock
 {
-    /** @var bool */
-    public static $freeze = false;
+    public static bool $freeze = false;
+    public static Clock|DateTime $freezeDate;
 
-    /** @var DateTime|Clock */
-    public static $freezeDate;
+    public DateTime $dateTime;
 
-    /** @var DateTime */
-    public $dateTime;
-
-    /** @var DateTimeZone */
-    private $dateTimeZone;
+    private DateTimeZone $dateTimeZone;
 
     public function __construct(DateTime $dateTime)
     {
@@ -33,12 +24,8 @@ class Clock
         $this->dateTimeZone = $dateTime->getTimezone();
     }
 
-    /**
-     * Freezes time to a specific point or current time if no time is given.
-     *
-     * @param null $date
-     */
-    public static function freeze($date = null)
+    /** Freezes time to a specific point or current time if no time is given. */
+    public static function freeze(string $date = null)
     {
         self::$freeze = false;
         self::$freezeDate = $date ? new DateTime($date) : self::now();
@@ -57,20 +44,14 @@ class Clock
      * <code>
      * 2011-01-02
      * </code>
-     *
-     * @param string $format
-     * @return string
      */
-    public static function nowAsString($format = null)
+    public static function nowAsString(string $format = null): string
     {
         return self::now()->format($format);
     }
 
-    /**
-     * Obtains a Clock set to the current time.
-     * @return Clock
-     */
-    public static function now()
+    /** Obtains a Clock set to the current time. */
+    public static function now(): Clock
     {
         $date = new DateTime();
         if (self::$freeze) {
@@ -80,64 +61,57 @@ class Clock
         return new Clock($date);
     }
 
-    /**
-     * Obtains a Clock set to to a specific point.
-     * @param string $date
-     * @return Clock
-     */
-    public static function at($date)
+    /** Obtains a Clock set to to a specific point. */
+    public static function at(string $date): Clock
     {
         $dateTime = new DateTime($date);
         return new Clock($dateTime);
     }
 
-    /**
-     * Obtains a Clock set to to a specific point using Unix timestamp.
-     * @param int $timestamp
-     * @return Clock
-     */
-    public static function fromTimestamp($timestamp)
+    /** Obtains a Clock set to to a specific point using Unix timestamp. */
+    public static function fromTimestamp(int $timestamp): Clock
     {
         $dateTime = new DateTime();
         $dateTime->setTimestamp($timestamp);
         return new Clock($dateTime);
     }
 
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
         return $this->dateTime->getTimestamp();
     }
 
-    public function format($format = null)
+    public function format(string $format = null): string
     {
         $format = $format ?: 'Y-m-d H:i:s';
         return $this->dateTime->format($format);
     }
 
-    /**
-     * Converts this object to a DateTime
-     *
-     * @return DateTime
-     */
-    public function toDateTime()
+    /** Converts this object to a DateTime */
+    public function toDateTime(): DateTime
     {
         return $this->dateTime;
     }
 
-    private function modify($interval)
+    private function modify(string $interval): Clock
     {
         $dateTime = clone $this->dateTime;
         return new Clock($dateTime->modify($interval));
     }
 
-    private function modifyWithDstChangeSupport($interval)
+    private function modifyWithDstChangeSupport(string $interval): Clock
     {
         $dateTime = clone $this->dateTime;
         $dateTimeZone = new DateTimeZone('GMT');
-        return new Clock($dateTime->setTimezone($dateTimeZone)->modify($interval)->setTimezone($this->dateTimeZone));
+        return new Clock(
+            $dateTime
+                ->setTimezone($dateTimeZone)
+                ->modify($interval)
+                ->setTimezone($this->dateTimeZone)
+        );
     }
 
-    private function modifyMonths($interval)
+    private function modifyMonths(string $interval): Clock
     {
         $dateTime = clone $this->dateTime;
         $currentDay = $dateTime->format('j');
@@ -149,101 +123,94 @@ class Clock
         return new Clock($dateTime);
     }
 
-    public function minusDays($days)
+    public function minusDays(int $days): Clock
     {
         return $this->modify("-$days days");
     }
 
-    public function minusHours($hours)
+    public function minusHours(int $hours): Clock
     {
-        return $this->modifyWithDstChangeSupport("-$hours hours");
+        return $this->modifyWithDstChangeSupport("-{$hours} hours");
     }
 
-    public function minusMinutes($minutes)
+    public function minusMinutes(int $minutes): Clock
     {
-        return $this->modifyWithDstChangeSupport("-$minutes minutes");
+        return $this->modifyWithDstChangeSupport("-{$minutes} minutes");
     }
 
-    public function minusMonths($months)
+    public function minusMonths(int $months): Clock
     {
-        return $this->modifyMonths("-$months months");
+        return $this->modifyMonths("-{$months} months");
     }
 
-    public function minusSeconds($seconds)
+    public function minusSeconds(int $seconds): Clock
     {
-        return $this->modifyWithDstChangeSupport("-$seconds seconds");
+        return $this->modifyWithDstChangeSupport("-{$seconds} seconds");
     }
 
-    public function minusYears($years)
+    public function minusYears(int $years): Clock
     {
-        return $this->modify("-$years years");
+        return $this->modify("-{$years} years");
     }
 
-    public function plusDays($days)
+    public function plusDays(int $days): Clock
     {
-        return $this->modify("+$days days");
+        return $this->modify("+{$days} days");
     }
 
-    public function plusHours($hours)
+    public function plusHours(int $hours): Clock
     {
-        return $this->modifyWithDstChangeSupport("+$hours hours");
+        return $this->modifyWithDstChangeSupport("+{$hours} hours");
     }
 
-    public function plusMinutes($minutes)
+    public function plusMinutes(int $minutes): Clock
     {
-        return $this->modifyWithDstChangeSupport("+$minutes minutes");
+        return $this->modifyWithDstChangeSupport("+{$minutes} minutes");
     }
 
-    public function plusMonths($months)
+    public function plusMonths(int $months): Clock
     {
-        return $this->modifyMonths("+$months months");
+        return $this->modifyMonths("+{$months} months");
     }
 
-    public function plusSeconds($seconds)
+    public function plusSeconds(int $seconds): Clock
     {
-        return $this->modifyWithDstChangeSupport("+$seconds seconds");
+        return $this->modifyWithDstChangeSupport("+{$seconds} seconds");
     }
 
-    public function plusYears($years)
+    public function plusYears(int $years): Clock
     {
-        return $this->modify("+$years years");
+        return $this->modify("+{$years} years");
     }
 
-    public function isAfter(Clock $other)
+    public function isAfter(Clock $other): bool
     {
         return $this->getTimestamp() > $other->getTimestamp();
     }
 
-    public function isBefore(Clock $other)
+    public function isBefore(Clock $other): bool
     {
         return $this->getTimestamp() < $other->getTimestamp();
     }
 
-    public function isAfterOrEqualTo(Clock $other)
+    public function isAfterOrEqualTo(Clock $other): bool
     {
         return $this->getTimestamp() >= $other->getTimestamp();
     }
 
-    public function isBeforeOrEqualTo(Clock $other)
+    public function isBeforeOrEqualTo(Clock $other): bool
     {
         return $this->getTimestamp() <= $other->getTimestamp();
     }
 
-    /**
-     * @param string|DateTimeZone $timezone
-     * @return Clock
-     */
-    public function withTimezone($timezone)
+    public function withTimezone(DateTimeZone|string $timezone): Clock
     {
         $dateTime = clone $this->dateTime;
         $dateTime->setTimezone(is_string($timezone) ? new DateTimeZone($timezone) : $timezone);
         return new Clock($dateTime);
     }
 
-    /**
-     * @return DateTimeZone
-     */
-    private function getTimezone()
+    private function getTimezone(): DateTimeZone
     {
         return $this->dateTimeZone;
     }
