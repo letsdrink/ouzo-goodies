@@ -6,17 +6,11 @@
 
 namespace Ouzo\Utilities;
 
-/**
- * Class Strings
- * @package Ouzo\Utilities
- */
 class Strings
 {
     const EMPTY_STRING = '';
 
     /**
-     * Changes underscored string to the camel case.
-     *
      * Example:
      * <code>
      * $string = 'lannisters_always_pay_their_debts';
@@ -26,18 +20,16 @@ class Strings
      * <code>
      * LannistersAlwaysPayTheirDebts
      * </code>
-     *
-     * @param string $string
-     * @return string
      */
-    public static function underscoreToCamelCase($string)
+    public static function underscoreToCamelCase(?string $string): ?string
     {
-        return str_replace('_', '', ucwords($string, '_'));
+        if (is_null($string)) {
+            return null;
+        }
+        return str_replace('_', self::EMPTY_STRING, ucwords($string, '_'));
     }
 
     /**
-     * Changes camel case string to underscored.
-     *
      * Example:
      * <code>
      * $string = 'LannistersAlwaysPayTheirDebts';
@@ -47,18 +39,16 @@ class Strings
      * <code>
      * lannisters_always_pay_their_debts
      * </code>
-     *
-     * @param string $string
-     * @return string
      */
-    public static function camelCaseToUnderscore($string)
+    public static function camelCaseToUnderscore(?string $string): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
         return mb_strtolower(preg_replace('/(?<!^|_)\p{Lu}/', '_$0', $string));
     }
 
     /**
-     * Returns a new string without the given prefix.
-     *
      * Example:
      * <code>
      * $string = 'prefixRest';
@@ -68,13 +58,15 @@ class Strings
      * <code>
      * Rest
      * </code>
-     *
-     * @param string $string
-     * @param string $prefix
-     * @return string
      */
-    public static function removePrefix($string, $prefix)
+    public static function removePrefix(?string $string, ?string $prefix): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
+        if (is_null($prefix)) {
+            return $string;
+        }
         if (self::startsWith($string, $prefix)) {
             return substr($string, mb_strlen($prefix));
         }
@@ -82,8 +74,6 @@ class Strings
     }
 
     /**
-     * Removes prefixes defined in array from string.
-     *
      * Example:
      * <code>
      * $string = 'prefixRest';
@@ -93,21 +83,18 @@ class Strings
      * <code>
      * Rest
      * </code>
-     *
-     * @param string $string
-     * @param array $prefixes
-     * @return mixed
      */
-    public static function removePrefixes($string, array $prefixes)
+    public static function removePrefixes(?string $string, ?array $prefixes): ?string
     {
+        if (is_null($prefixes)) {
+            return $string;
+        }
         return array_reduce($prefixes, function ($string, $prefix) {
             return Strings::removePrefix($string, $prefix);
         }, $string);
     }
 
     /**
-     * Returns a new string without the given suffix.
-     *
      * Example:
      * <code>
      * $string = 'JohnSnow';
@@ -117,13 +104,12 @@ class Strings
      * <code>
      * John
      * </code>
-     *
-     * @param string $string
-     * @param string $suffix
-     * @return string
      */
-    public static function removeSuffix($string, $suffix)
+    public static function removeSuffix(?string $string, ?string $suffix): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
         if (self::endsWith($string, $suffix)) {
             return mb_substr($string, 0, -mb_strlen($suffix));
         }
@@ -131,8 +117,6 @@ class Strings
     }
 
     /**
-     * Method checks if string starts with $prefix.
-     *
      * Example:
      * <code>
      * $string = 'prefixRest';
@@ -142,21 +126,13 @@ class Strings
      * <code>
      * true
      * </code>
-     *
-     * @param string $string
-     * @param string $prefix
-     * @return bool
      */
-    public static function startsWith($string, $prefix)
+    public static function startsWith(?string $string, ?string $prefix): bool
     {
-        $string = is_int($string) ? "$string" : $string;
-        $prefix = is_int($prefix) ? "$prefix" : $prefix;
         return is_string($string) && is_string($prefix) && mb_substr($string, 0, mb_strlen($prefix)) === $prefix;
     }
 
     /**
-     * Method checks if string ends with $suffix.
-     *
      * Example:
      * <code>
      * $string = 'StringSuffix';
@@ -166,22 +142,14 @@ class Strings
      * <code>
      * true
      * </code>
-     *
-     * @param string $string
-     * @param string $suffix
-     * @return bool
      */
-    public static function endsWith($string, $suffix)
+    public static function endsWith(?string $string, ?string $suffix): bool
     {
-        $string = is_int($string) ? "$string" : $string;
-        $suffix = is_int($suffix) ? "$suffix" : $suffix;
         $suffixLength = mb_strlen($suffix);
         return is_string($string) && is_string($suffix) && mb_substr($string, -$suffixLength, $suffixLength) === $suffix;
     }
 
     /**
-     * Determines whether two strings contain the same data, ignoring the case of the letters in the strings.
-     *
      * Example:
      * <code>
      * $equal = Strings::equalsIgnoreCase('ABC123', 'abc123');
@@ -190,19 +158,16 @@ class Strings
      * <code>
      * true
      * </code>
-     *
-     * @param string $string1
-     * @param string $string2
-     * @return bool
      */
-    public static function equalsIgnoreCase($string1, $string2)
+    public static function equalsIgnoreCase(?string $string1, ?string $string2): bool
     {
-        return mb_strtolower($string1) == mb_strtolower($string2);
+        if ((is_null($string1) && !is_null($string2)) || (!is_null($string1) && is_null($string2))) {
+            return false;
+        }
+        return mb_strtolower($string1) === mb_strtolower($string2);
     }
 
     /**
-     * Removes all occurrences of a substring from string.
-     *
      * Example:
      * <code>
      * $string = 'winter is coming???!!!';
@@ -212,24 +177,16 @@ class Strings
      * <code>
      * winter is coming!!!
      * </code>
-     *
-     * @param string $string
-     * @param string $toRemove
-     * @return mixed
      */
-    public static function remove($string, $toRemove)
+    public static function remove(?string $string, ?string $toRemove): ?string
     {
-        $string = is_int($string) ? "$string" : $string;
-        $toRemove = is_int($toRemove) ? "$toRemove" : $toRemove;
-        if (is_null($string) || is_null($toRemove)) {
-            return $string;
+        if (is_null($string)) {
+            return null;
         }
-        return str_replace($toRemove, '', $string);
+        return str_replace($toRemove, self::EMPTY_STRING, $string);
     }
 
     /**
-     * Adds suffix to the string.
-     *
      * Example:
      * <code>
      * $string = 'Daenerys';
@@ -239,12 +196,8 @@ class Strings
      * <code>
      * Daenerys Targaryen
      * </code>
-     *
-     * @param string $string
-     * @param string $suffix
-     * @return string
      */
-    public static function appendSuffix($string, $suffix = '')
+    public static function appendSuffix(?string $string, ?string $suffix = ''): ?string
     {
         if (is_null($string)) {
             return null;
@@ -253,8 +206,6 @@ class Strings
     }
 
     /**
-     * Adds prefix to the string.
-     *
      * Example:
      * <code>
      * $string = 'Targaryen';
@@ -264,12 +215,8 @@ class Strings
      * <code>
      * Daenerys Targaryen
      * </code>
-     *
-     * @param string $string
-     * @param string $prefix
-     * @return string
      */
-    public static function appendPrefix($string, $prefix = '')
+    public static function appendPrefix(?string $string, ?string $prefix = ''): ?string
     {
         if (is_null($string)) {
             return null;
@@ -278,8 +225,6 @@ class Strings
     }
 
     /**
-     * Adds suffix to the string, if string does not end with the suffix already.
-     *
      * Example:
      * <code>
      * $string = 'Daenerys Targaryen';
@@ -289,12 +234,8 @@ class Strings
      * <code>
      * Daenerys Targaryen
      * </code>
-     *
-     * @param string $string
-     * @param string $suffix
-     * @return string
      */
-    public static function appendIfMissing($string, $suffix)
+    public static function appendIfMissing(?string $string, ?string $suffix): ?string
     {
         if (Strings::endsWith($string, $suffix)) {
             return $string;
@@ -303,8 +244,6 @@ class Strings
     }
 
     /**
-     * Adds prefix to the string, if string does not start with the prefix already.
-     *
      * Example:
      * <code>
      * $string = 'Daenerys Targaryen';
@@ -314,12 +253,8 @@ class Strings
      * <code>
      * Daenerys Targaryen
      * </code>
-     *
-     * @param string $string
-     * @param string $prefix
-     * @return string
      */
-    public static function prependIfMissing($string, $prefix)
+    public static function prependIfMissing(?string $string, ?string $prefix): ?string
     {
         if (Strings::startsWith($string, $prefix)) {
             return $string;
@@ -328,8 +263,6 @@ class Strings
     }
 
     /**
-     * Converts a word into the format for an Ouzo table name. Converts 'ModelName' to 'model_names'.
-     *
      * Example:
      * <code>
      * $class = "BigFoot";
@@ -339,12 +272,12 @@ class Strings
      * <code>
      * BigFeet
      * </code>
-     *
-     * @param string $class
-     * @return string
      */
-    public static function tableize($class)
+    public static function tableize(?string $class): ?string
     {
+        if (is_null($class)) {
+            return null;
+        }
         $underscored = Strings::camelCaseToUnderscore($class);
         $parts = explode('_', $underscored);
         $suffix = Inflector::pluralize(array_pop($parts));
@@ -353,8 +286,6 @@ class Strings
     }
 
     /**
-     * Changes new lines to &lt;br&gt; and converts special characters to HTML entities.
-     *
      * Example:
      * <code>
      * $string = "My name is <strong>Reek</strong> \nit rhymes with leek";
@@ -364,42 +295,34 @@ class Strings
      * <code>
      * My name is &lt;strong&gt;Reek&lt;/strong&gt; <br />it rhymes with leek
      * </code>
-     *
-     * @param string $string
-     * @return string
      */
-    public static function escapeNewLines($string)
+    public static function escapeNewLines(?string $string): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
         $string = htmlspecialchars($string);
         return nl2br($string);
     }
 
-    /**
-     * Alias for html_entity_decode() with UTF-8 and defined flag ENT_COMPAT.
-     *
-     * @param string $text
-     * @return string
-     */
-    public static function htmlEntityDecode($text)
+    public static function htmlEntityDecode(?string $text): ?string
     {
+        if (is_null($text)) {
+            return null;
+        }
         return html_entity_decode($text, ENT_COMPAT, 'UTF-8');
     }
 
-    /**
-     * Alias for htmlspecialchars() with UTF-8 and flags ENT_COMPAT and ENT_SUBSTITUTE (ENT_IGNORE for php <= 5.3).
-     *
-     * @param string $text
-     * @return string
-     */
-    public static function htmlEntities($text)
+    public static function htmlEntities(?string $text): ?string
     {
+        if (is_null($text)) {
+            return null;
+        }
         $flag = defined('ENT_SUBSTITUTE') ? ENT_SUBSTITUTE : ENT_IGNORE;
         return htmlspecialchars($text, ENT_COMPAT | $flag, 'UTF-8');
     }
 
     /**
-     * Method checks if string representations of two objects are equal.
-     *
      * Example:
      * <code>
      * $result = Strings::equal('0123', 123);
@@ -408,19 +331,13 @@ class Strings
      * <code>
      * false
      * </code>
-     *
-     * @param mixed $object1
-     * @param mixed $object2
-     * @return bool
      */
-    public static function equal($object1, $object2)
+    public static function equal(mixed $object1, mixed $object2): bool
     {
         return (string)$object1 === (string)$object2;
     }
 
     /**
-     * Method checks if string is blank.
-     *
      * Example:
      * <code>
      * $result = Strings::isBlank('0');
@@ -429,18 +346,13 @@ class Strings
      * <code>
      * false
      * </code>
-     *
-     * @param string $string
-     * @return bool
      */
-    public static function isBlank($string)
+    public static function isBlank(?string $string): bool
     {
         return mb_strlen(trim($string)) == 0;
     }
 
     /**
-     * Method checks if string is not blank.
-     *
      * Example:
      * <code>
      * $result = Strings::isNotBlank('0');
@@ -449,18 +361,13 @@ class Strings
      * <code>
      * true
      * </code>
-     *
-     * @param string $string
-     * @return bool
      */
-    public static function isNotBlank($string)
+    public static function isNotBlank(?string $string): bool
     {
         return !Strings::isBlank($string);
     }
 
     /**
-     * Abbreviate - abbreviates a string using ellipsis.
-     *
      * Example:
      * <code>
      * $result = Strings::abbreviate('ouzo is great', 5);
@@ -469,12 +376,8 @@ class Strings
      * <code>
      * ouzo ...
      * </code>
-     *
-     * @param string $string
-     * @param string $maxWidth
-     * @return string
      */
-    public static function abbreviate($string, $maxWidth)
+    public static function abbreviate(?string $string, ?string $maxWidth): string
     {
         if (mb_strlen($string) > $maxWidth) {
             return mb_substr($string, 0, $maxWidth) . '...';
@@ -483,8 +386,6 @@ class Strings
     }
 
     /**
-     * Removes control characters from both ends of this string returning null if the string is empty ("") after the trim or if it is null.
-     *
      * Example:
      * <code>
      * $result = Strings::trimToNull('  ');
@@ -495,9 +396,9 @@ class Strings
      * </code>
      *
      * @param string $string
-     * @return string
+     * @return string|null
      */
-    public static function trimToNull($string)
+    public static function trimToNull(?string $string): ?string
     {
         $string = trim($string);
         if (mb_strlen($string) == 0) {
@@ -507,8 +408,6 @@ class Strings
     }
 
     /**
-     * Replace all occurrences of placeholder in string with values from associative array.
-     *
      * Example:
      * <code>
      * $sprintfString = "This is %{what}! %{what}? This is %{place}!";
@@ -521,12 +420,8 @@ class Strings
      * <code>
      * 'This is madness! madness? This is Sparta!'
      * </code>
-     *
-     * @param string $string
-     * @param array $params
-     * @return string
      */
-    public static function sprintAssoc($string, $params)
+    public static function sprintAssoc(string|array $string, array $params): array|string
     {
         foreach ($params as $key => $value) {
             $string = preg_replace("/%{($key)}/", $value, $string);
@@ -550,13 +445,8 @@ class Strings
      * <code>
      * 'This is madness! madness? This is Sparta!'
      * </code>
-     *
-     * @param string $string
-     * @param array $params
-     * @param string $default
-     * @return string
      */
-    public static function sprintAssocDefault($string, $params, $default = '')
+    public static function sprintAssocDefault(string $string, array $params, string $default = ''): string
     {
         foreach ($params as $key => $value) {
             $string = preg_replace("/%{($key)}/", $value, $string);
@@ -565,51 +455,23 @@ class Strings
         return $string;
     }
 
-    /**
-     * Checks if string contains the substring.
-     *
-     * @param string $string
-     * @param string $substring
-     * @return bool
-     */
-    public static function contains($string, $substring)
+    public static function contains(string $string, string $substring): bool
     {
         return mb_strpos($string, $substring) !== false;
     }
 
-    /**
-     * Checks if string contains the substring, ignoring the case of the letters in the strings.
-     *
-     * @param string $string
-     * @param string $substring
-     * @return bool
-     */
-    public static function containsIgnoreCase($string, $substring)
+    public static function containsIgnoreCase(string $string, string $substring): bool
     {
         return self::contains(mb_strtolower($string), mb_strtolower($substring));
     }
 
-    /**
-     * Gets the substring before the first occurrence of a separator. The separator is not returned.
-     *
-     * @param string $string
-     * @param string $separator
-     * @return string
-     */
-    public static function substringBefore($string, $separator)
+    public static function substringBefore(?string $string, string $separator): ?string
     {
         $pos = mb_strpos($string, $separator);
         return $pos !== false ? mb_substr($string, 0, $pos) : $string;
     }
 
-    /**
-     * Gets the substring after the first occurrence of a separator. The separator is not returned.
-     *
-     * @param string $string
-     * @param string $separator
-     * @return string
-     */
-    public static function substringAfter($string, $separator)
+    public static function substringAfter(string $string, string $separator): string
     {
         $pos = mb_strpos($string, $separator);
         if ($pos === false) {
@@ -618,14 +480,7 @@ class Strings
         return mb_substr($string, $pos + 1, mb_strlen($string));
     }
 
-    /**
-     * @param string $subject
-     * @param string $search
-     * @param string $replace
-     * @param int $nth
-     * @return string
-     */
-    public static function replaceNth($subject, $search, $replace, $nth)
+    public static function replaceNth(string $subject, string $search, string $replace, int $nth): string
     {
         $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
         if (false !== $found && $found > $nth) {
@@ -634,22 +489,7 @@ class Strings
         return $subject;
     }
 
-    /**
-     * Removes accent from letters in string.
-     *
-     * Example:
-     * <code>
-     * $string = "śżźćółŹĘÀÁÂ";
-     * </code>
-     * Result:
-     * <code>
-     * 'szzcolZEAAA'
-     * </code>
-     *
-     * @param string $string
-     * @return string
-     */
-    public static function removeAccent($string)
+    public static function removeAccent(string $string): string
     {
         if (false === preg_match('/[\x80-\xff]/', $string)) {
             return $string;
@@ -755,8 +595,6 @@ class Strings
     }
 
     /**
-     * Uppercase first letter (multi-byte safe).
-     *
      * Example:
      * <code>
      * $string = "łukasz";
@@ -765,11 +603,8 @@ class Strings
      * <code>
      * 'Łukasz'
      * </code>
-     *
-     * @param string $string
-     * @return string
      */
-    public static function uppercaseFirst($string)
+    public static function uppercaseFirst(?string $string): string
     {
         $first = mb_substr($string, 0, 1);
         return mb_strtoupper($first) . mb_substr($string, 1);
