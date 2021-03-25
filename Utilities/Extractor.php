@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use ArrayAccess;
@@ -19,19 +20,15 @@ class Extractor implements ArrayAccess
 {
     private array $operations = [];
 
-    public function __get($field)
+    public function __get($field): static
     {
-        $this->operations[] = function ($input) use ($field) {
-            return Objects::getValue($input, $field);
-        };
+        $this->operations[] = fn($input) => Objects::getValue($input, $field);
         return $this;
     }
 
-    public function __call($name, $arguments)
+    public function __call($name, $arguments): static
     {
-        $this->operations[] = function ($input) use ($name, $arguments) {
-            return call_user_func_array([$input, $name], $arguments);
-        };
+        $this->operations[] = fn($input) => call_user_func_array([$input, $name], $arguments);
         return $this;
     }
 
@@ -46,25 +43,23 @@ class Extractor implements ArrayAccess
         return $input;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): static
     {
-        $this->operations[] = function ($input) use ($offset) {
-            return isset($input[$offset]) ? $input[$offset] : null;
-        };
+        $this->operations[] = fn($input) => isset($input[$offset]) ? $input[$offset] : null;
         return $this;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         throw new BadMethodCallException();
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         throw new BadMethodCallException();
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         throw new BadMethodCallException();
     }
