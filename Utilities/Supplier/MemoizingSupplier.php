@@ -3,33 +3,21 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Supplier;
 
-/**
- * Class MemoizingSupplier
- * @package Ouzo\Utilities\Supplier
- */
+use Closure;
+
 class MemoizingSupplier implements Supplier
 {
-    /** @var bool */
-    private $invoked = false;
-    /** @var mixed */
-    private $cachedResult;
-    /** @var callable */
-    private $function;
+    private bool $invoked = false;
+    private mixed $cachedResult;
 
-    /**
-     * @param callable $function
-     */
-    public function __construct($function)
+    public function __construct(private Closure $function)
     {
-        $this->function = $function;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function get()
+    public function get(): mixed
     {
         if (!$this->invoked) {
             $function = $this->function;

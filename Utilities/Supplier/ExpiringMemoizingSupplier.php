@@ -3,43 +3,26 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Supplier;
 
+use Closure;
 use Ouzo\Utilities\Clock;
 
-/**
- * Class ExpiringMemoizingSupplier
- * @package Ouzo\Utilities\Supplier
- */
 class ExpiringMemoizingSupplier implements Supplier
 {
-    /** @var mixed */
-    private $cachedResult;
-    /** @var int */
-    private $lastCallTime;
-    /** @var callable */
-    private $function;
-    /** @var int */
-    private $expireTime;
+    private mixed $cachedResult = null;
+    private int $lastCallTime;
 
-    /**
-     * @param callable $function
-     * @param int $expireTime
-     */
-    public function __construct($function, $expireTime = 3600)
+    public function __construct(private Closure $function, private int $expireTime = 3600)
     {
-        $this->function = $function;
-        $this->expireTime = $expireTime;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function get()
+    public function get(): mixed
     {
         $function = $this->function;
         $now = Clock::now()->getTimestamp();
-        if ($this->cachedResult === null || $now - $this->lastCallTime > $this->expireTime) {
+        if (is_null($this->cachedResult) || $now - $this->lastCallTime > $this->expireTime) {
             $this->cachedResult = $function();
             $this->lastCallTime = $now;
         }
