@@ -11,88 +11,52 @@ use ReflectionClass;
 
 abstract class ToStringStyle
 {
-    /** @var bool */
-    private $useFieldNames = true;
-    /** @var bool */
-    private $useShortClassName = false;
-    /** @var bool */
-    private $useClassName = true;
-    /** @var string */
-    private $contentStart = '[';
-    /** @var string */
-    private $contentEnd = ']';
-    /** @var string */
-    private $fieldNameValueSeparator = '=';
-    /** @var bool */
-    private $fieldSeparatorAtStart = false;
-    /** @var string */
-    private $fieldSeparator = ',';
-    /** @var string */
-    private $arrayStart = '{';
-    /** @var string */
-    private $arraySeparator = ',';
-    /** @var string */
-    private $arrayEnd = '}';
-    /** @var string */
-    private $nullText = '<null>';
-    /** @var string */
-    private $booleanTrueText = 'true';
-    /** @var string */
-    private $booleanFalseText = 'false';
+    private bool $useFieldNames = true;
+    private bool $useShortClassName = false;
+    private bool $useClassName = true;
+    private string $contentStart = '[';
+    private string $contentEnd = ']';
+    private string $fieldNameValueSeparator = '=';
+    private bool $fieldSeparatorAtStart = false;
+    private string $fieldSeparator = ',';
+    private string $arrayStart = '{';
+    private string $arraySeparator = ',';
+    private string $arrayEnd = '}';
+    private string $nullText = '<null>';
+    private string $booleanTrueText = 'true';
+    private string $booleanFalseText = 'false';
 
-    /**
-     * @return ToStringStyle
-     */
-    public static function defaultStyle()
+    public static function defaultStyle(): ToStringStyle
     {
         return new DefaultToStringStyle();
     }
 
-    /**
-     * @return ToStringStyle
-     */
-    public static function noFieldNamesStyle()
+    public static function noFieldNamesStyle(): ToStringStyle
     {
         return new NoFieldNameToStringStyle();
     }
 
-    /**
-     * @return ToStringStyle
-     */
-    public static function shortPrefixStyle()
+    public static function shortPrefixStyle(): ToStringStyle
     {
         return new ShortPrefixToStringStyle();
     }
 
-    /**
-     * @return ToStringStyle
-     */
-    public static function simpleStyle()
+    public static function simpleStyle(): ToStringStyle
     {
         return new SimpleToStringStyle();
     }
 
-    /**
-     * @return ToStringStyle
-     */
-    public static function noClassNameStyle()
+    public static function noClassNameStyle(): ToStringStyle
     {
         return new NoClassNameToStringStyle();
     }
 
-    /**
-     * @return ToStringStyle
-     */
-    public static function multiLineStyle()
+    public static function multiLineStyle(): ToStringStyle
     {
         return new MultiLineToStringStyle();
     }
 
-    /**
-     * @param string $buffer
-     * @param ReflectionClass $object
-     */
-    public function appendStart(&$buffer, ReflectionClass $object)
+    public function appendStart(string &$buffer, ReflectionClass $object): void
     {
         $this->appendClassName($buffer, $object);
         $buffer .= $this->contentStart;
@@ -101,32 +65,20 @@ abstract class ToStringStyle
         }
     }
 
-    /**
-     * @param string $buffer
-     * @param string $field
-     * @param mixed $value
-     */
-    public function append(&$buffer, $field, $value)
+    public function append(string &$buffer, string $field, mixed $value): void
     {
         $this->appendFiledStart($buffer, $field);
         $this->appendValue($buffer, $value);
         $buffer .= $this->fieldSeparator;
     }
 
-    /**
-     * @param string $buffer
-     */
-    public function appendEnd(&$buffer)
+    public function appendEnd(string &$buffer): void
     {
         $buffer = rtrim($buffer, $this->fieldSeparator);
         $buffer .= $this->contentEnd;
     }
 
-    /**
-     * @param string $buffer
-     * @param ReflectionClass $object
-     */
-    private function appendClassName(&$buffer, ReflectionClass $object)
+    private function appendClassName(string &$buffer, ReflectionClass $object): void
     {
         if ($this->useClassName) {
             if ($this->useShortClassName) {
@@ -137,11 +89,7 @@ abstract class ToStringStyle
         }
     }
 
-    /**
-     * @param string $buffer
-     * @param string $field
-     */
-    private function appendFiledStart(&$buffer, $field)
+    private function appendFiledStart(string &$buffer, string $field): void
     {
         if ($this->useFieldNames) {
             $buffer .= $field;
@@ -149,11 +97,7 @@ abstract class ToStringStyle
         }
     }
 
-    /**
-     * @param string $buffer
-     * @param mixed $value
-     */
-    private function appendValue(&$buffer, $value)
+    private function appendValue(string &$buffer, mixed $value): void
     {
         switch (gettype($value)) {
             case 'boolean':
@@ -162,9 +106,7 @@ abstract class ToStringStyle
             case 'array':
                 $tmp = $this->arrayStart;
                 if (Arrays::isAssociative($value)) {
-                    $mapKeyToValue = Arrays::mapEntries($value, function ($k, $v) {
-                        return $k . '=' . $v;
-                    });
+                    $mapKeyToValue = Arrays::mapEntries($value, fn($k, $v) => "{$k}={$v}");
                     $tmp .= implode($this->arraySeparator, $mapKeyToValue);
                 } else {
                     $tmp .= implode($this->arraySeparator, $value);
@@ -186,74 +128,47 @@ abstract class ToStringStyle
         $buffer .= $value;
     }
 
-    /**
-     * @param bool $useFieldNames
-     */
-    protected function setUseFieldNames($useFieldNames)
+    protected function setUseFieldNames(bool $useFieldNames): void
     {
         $this->useFieldNames = $useFieldNames;
     }
 
-    /**
-     * @param bool $useShortClassName
-     */
-    protected function setUseShortClassName($useShortClassName)
+    protected function setUseShortClassName(bool $useShortClassName): void
     {
         $this->useShortClassName = $useShortClassName;
     }
 
-    /**
-     * @param bool $useClassName
-     */
-    protected function setUseClassName($useClassName)
+    protected function setUseClassName(bool $useClassName): void
     {
         $this->useClassName = $useClassName;
     }
 
-    /**
-     * @return string
-     */
-    protected function getContentStart()
+    protected function getContentStart(): string
     {
         return $this->contentStart;
     }
 
-    /**
-     * @param string $contentStart
-     */
-    protected function setContentStart($contentStart)
+    protected function setContentStart(string $contentStart): void
     {
         $this->contentStart = $contentStart;
     }
 
-    /**
-     * @return string
-     */
-    protected function getContentEnd()
+    protected function getContentEnd(): string
     {
         return $this->contentEnd;
     }
 
-    /**
-     * @param string $contentEnd
-     */
-    protected function setContentEnd($contentEnd)
+    protected function setContentEnd(string $contentEnd): void
     {
         $this->contentEnd = $contentEnd;
     }
 
-    /**
-     * @param string $fieldSeparator
-     */
-    protected function setFieldSeparator($fieldSeparator)
+    protected function setFieldSeparator(string $fieldSeparator): void
     {
         $this->fieldSeparator = $fieldSeparator;
     }
 
-    /**
-     * @param bool $fieldSeparatorAtStart
-     */
-    public function setFieldSeparatorAtStart($fieldSeparatorAtStart)
+    public function setFieldSeparatorAtStart(bool $fieldSeparatorAtStart): void
     {
         $this->fieldSeparatorAtStart = $fieldSeparatorAtStart;
     }
