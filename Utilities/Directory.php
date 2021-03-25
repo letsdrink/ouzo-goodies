@@ -3,19 +3,16 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-/**
- * Class Directory
- * @package Ouzo\Utilities
- */
 class Directory
 {
-    public static function size($path)
+    public static function size(string $path): int
     {
         $total = 0;
         $path = realpath($path);

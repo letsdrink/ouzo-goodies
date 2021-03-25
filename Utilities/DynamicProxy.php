@@ -12,10 +12,6 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionUnionType;
 
-/**
- * Class DynamicProxy
- * @package Ouzo\Utilities
- */
 class DynamicProxy
 {
     private static int $counter = 0;
@@ -28,9 +24,7 @@ class DynamicProxy
     {
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
         eval(self::getProxyClassDefinition($name, $className));
-        $object = null;
-        eval("\$object = new {$name}(\$methodHandler);");
-        return $object;
+        return new $name($methodHandler);
     }
 
     private static function getProxyClassDefinition(string $name, string $className): string
@@ -128,7 +122,9 @@ class DynamicProxy
     {
         if ($reflectionMethod->hasReturnType()) {
             $methodReturnType = $reflectionMethod->getReturnType();
+
             if ($methodReturnType instanceof ReflectionUnionType) {
+                /** @var ReflectionUnionType $methodReturnType */
                 $type = implode('|', Arrays::map($methodReturnType->getTypes(), fn($type) => $type->getName()));
                 return [
                     'type' => $type,
@@ -136,6 +132,8 @@ class DynamicProxy
                     'nullable' => $methodReturnType->allowsNull(),
                 ];
             }
+
+            /** @var ReflectionNamedType $methodReturnType */
             return [
                 'type' => $methodReturnType->getName(),
                 'builtin' => $methodReturnType->isBuiltin(),

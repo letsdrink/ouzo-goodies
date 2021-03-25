@@ -17,11 +17,11 @@ use BadMethodCallException;
  */
 class Extractor implements ArrayAccess
 {
-    private $_operations = [];
+    private array $operations = [];
 
     public function __get($field)
     {
-        $this->_operations[] = function ($input) use ($field) {
+        $this->operations[] = function ($input) use ($field) {
             return Objects::getValue($input, $field);
         };
         return $this;
@@ -29,7 +29,7 @@ class Extractor implements ArrayAccess
 
     public function __call($name, $arguments)
     {
-        $this->_operations[] = function ($input) use ($name, $arguments) {
+        $this->operations[] = function ($input) use ($name, $arguments) {
             return call_user_func_array([$input, $name], $arguments);
         };
         return $this;
@@ -37,7 +37,7 @@ class Extractor implements ArrayAccess
 
     public function __invoke($input)
     {
-        foreach ($this->_operations as $operation) {
+        foreach ($this->operations as $operation) {
             $input = $operation($input);
             if ($input === null) {
                 return null;
@@ -48,7 +48,7 @@ class Extractor implements ArrayAccess
 
     public function offsetGet($offset)
     {
-        $this->_operations[] = function ($input) use ($offset) {
+        $this->operations[] = function ($input) use ($offset) {
             return isset($input[$offset]) ? $input[$offset] : null;
         };
         return $this;

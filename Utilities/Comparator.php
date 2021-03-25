@@ -32,7 +32,7 @@ class Comparator
     }
 
     /** Returns comparator according to which order between element is reversed. */
-    public static function reverse(callable $comparator): Closure
+    public static function reverse(Closure $comparator): Closure
     {
         return Comparators::reversedComparator($comparator);
     }
