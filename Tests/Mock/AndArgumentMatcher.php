@@ -8,26 +8,19 @@ use Ouzo\Utilities\Functions;
 
 class AndArgumentMatcher implements ArgumentMatcher
 {
-    private $matchers;
+    private array $matchers;
 
-    /**
-     * AndArgumentMatcher constructor.
-     * @param ArgumentMatcher[] $matchers
-     */
     public function __construct(array $matchers)
     {
         $this->matchers = $matchers;
     }
 
-    public function matches($argument)
+    public function matches(mixed $argument): bool
     {
         return Arrays::all($this->matchers, Functions::extract()->matches($argument));
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return implode(' and ', $this->matchers);
     }

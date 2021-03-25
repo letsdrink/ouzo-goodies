@@ -51,7 +51,7 @@ class FluentFunction
         return $this;
     }
 
-    public function __invoke(object $object)
+    public function __invoke(mixed $object)
     {
         foreach ($this->functions as $function) {
             $object = Functions::call($function, $object);

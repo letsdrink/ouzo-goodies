@@ -75,7 +75,8 @@ class DynamicProxy
         } else {
             $type = $returnTypeInfo['type'];
 
-            $returnStatement = $returnTypeInfo['builtin'] ? "return ({$type})" : 'return';
+            $needCasting = $returnTypeInfo['builtin'] && $type !== 'mixed';
+            $returnStatement = $needCasting ? "return ({$type})" : 'return';
             if ($type != 'mixed' && $returnTypeInfo['nullable']) {
                 $nullable = '?';
                 $methodBody = "\$result = {$invoke} if (is_null(\$result)) { return \$result; } else { {$returnStatement} \$result; }";
