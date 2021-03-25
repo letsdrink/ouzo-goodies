@@ -12,60 +12,36 @@ use PHPUnit\Framework\Assert;
 
 class Verifier
 {
-    /** @var SimpleMock */
-    private $mock;
+    private SimpleMock $mock;
 
-    /**
-     * @param SimpleMock $mock
-     */
     public function __construct(SimpleMock $mock)
     {
         $this->mock = $mock;
     }
 
-    /**
-     * @return NotCalledVerifier
-     */
-    public function neverReceived()
+    public function neverReceived(): NotCalledVerifier
     {
         return new NotCalledVerifier($this->mock);
     }
 
-    /**
-     * @param int $times
-     * @return ReceivedTimesCallVerifier
-     */
-    public function receivedTimes($times)
+    public function receivedTimes(int $times): ReceivedTimesCallVerifier
     {
         return new ReceivedTimesCallVerifier($this->mock, $times);
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return $this
-     * @throws \Exception
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): Verifier
     {
         if ($this->wasCalled($name, $arguments)) {
             Assert::assertNotEmpty($this->wasCalled($name, $arguments));
-            return $this;
         } else {
             $calls = $this->actualCalls();
             $expected = MethodCall::newInstance($name, $arguments)->__toString();
             Assert::assertEquals($expected, $calls, "Expected method was not called");
-//            $this->fail("Expected method was not called", $expected, $calls);
         }
+        return $this;
     }
 
-    /**
-     * @param string $description
-     * @param mixed $expected
-     * @param mixed $actual
-     * @return void
-     */
-    protected function fail($description, $expected, $actual)
+    protected function fail(string $description, mixed $expected, mixed $actual): void
     {
         AssertAdapter::failWithDiff($description,
             $expected,
@@ -75,10 +51,7 @@ class Verifier
         );
     }
 
-    /**
-     * @return string
-     */
-    protected function actualCalls()
+    protected function actualCalls(): string
     {
         if (empty($this->mock->calledMethods)) {
             return "no interactions";
@@ -86,22 +59,12 @@ class Verifier
         return MethodCall::arrayToString($this->mock->calledMethods);
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return MethodCall
-     */
-    protected function wasCalled($name, $arguments)
+    protected function wasCalled(string $name, array $arguments): ?MethodCall
     {
         return Arrays::find($this->mock->calledMethods, new MethodCallMatcher($name, $arguments));
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return int
-     */
-    protected function numberOfActualCalls($name, $arguments)
+    protected function numberOfActualCalls(string $name, array $arguments): int
     {
         return count(Arrays::filter($this->mock->calledMethods, new MethodCallMatcher($name, $arguments)));
     }

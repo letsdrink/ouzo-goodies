@@ -6,6 +6,7 @@
 
 namespace Ouzo\Utilities;
 
+use Ouzo\Tests\Mock\MockInterface;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -17,14 +18,13 @@ use ReflectionUnionType;
  */
 class DynamicProxy
 {
-    /** @var int */
-    private static $counter = 0;
+    private static int $counter = 0;
 
     /**
      * Creates a proxy for the given class.
      * Returned object dispatches method invocations to $methodHandler.
      */
-    public static function newInstance(string $className, ?object $methodHandler): ?object
+    public static function newInstance(string $className, ?object $methodHandler): MockInterface
     {
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
         eval(self::getProxyClassDefinition($name, $className));
@@ -36,9 +36,16 @@ class DynamicProxy
     private static function getProxyClassDefinition(string $name, string $className): string
     {
         $reflectionClass = new ReflectionClass($className);
-        $relation = $reflectionClass->isInterface() ? 'implements' : 'extends';
-
-        $code = "class {$name} {$relation} {$className} {";
+        $extendsClasses = [];
+        $implementsInterfaces = [MockInterface::class];
+        if ($reflectionClass->isInterface()) {
+            $implementsInterfaces[] = $className;
+        } else {
+            $extendsClasses[] = $className;
+        }
+        $extends = self::generateRelation('extends', $extendsClasses);
+        $implements = self::generateRelation('implements', $implementsInterfaces);
+        $code = "class {$name} {$extends} {$implements} {";
         $code .= "public \$methodHandler;\n";
         $code .= "function __construct(\$methodHandler) { \$this->methodHandler = \$methodHandler; }\n";
         foreach (self::getClassMethods($reflectionClass) as $method) {
@@ -139,11 +146,16 @@ class DynamicProxy
         return null;
     }
 
-    /**
-     * Extracts method handler from proxy object.
-     */
-    public static function extractMethodHandler(object $proxy): object
+    public static function extractMethodHandler(MockInterface $proxy): object
     {
         return $proxy->methodHandler;
+    }
+
+    private static function generateRelation(string $relation, array $classes): string
+    {
+        if ($classes) {
+            return $relation . ' ' . implode(', ', $classes);
+        }
+        return '';
     }
 }

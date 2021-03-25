@@ -25,10 +25,10 @@ class Assert
      *  Assert::thatArray(array('id' => 123, 'name' => 'john'))->containsKeyAndValue(array('id' => 123));
      * </code>
      *
-     * @param array $actual
+     * @param array|null $actual
      * @return ArrayAssert
      */
-    public static function thatArray(array $actual)
+    public static function thatArray(?array $actual): ArrayAssert
     {
         return ArrayAssert::that($actual);
     }
@@ -41,10 +41,10 @@ class Assert
      *  Assert::thatModel(new User(['name' => 'bob']))->hasSameAttributesAs(new User(['name' => 'bob']));
      * </code>
      *
-     * @param Model $actual
+     * @param Model|null $actual
      * @return ModelAssert
      */
-    public static function thatModel(Model $actual)
+    public static function thatModel(?Model $actual): ModelAssert
     {
         return ModelAssert::that($actual);
     }
@@ -60,7 +60,7 @@ class Assert
      *
      * @return ArrayAssert
      */
-    public static function thatSession()
+    public static function thatSession(): ArrayAssert
     {
         return ArrayAssert::that(isset($_SESSION) ? $_SESSION : []);
     }
@@ -73,10 +73,10 @@ class Assert
      *  Assert::thatString("Frodo")->startsWith("Fro")->endsWith("do")->contains("rod")->doesNotContain("fro")->hasSize(5)->matches('/Fro\w+/');
      * </code>
      *
-     * @param string $string
+     * @param ?string $string
      * @return StringAssert
      */
-    public static function thatString($string)
+    public static function thatString(?string $string): StringAssert
     {
         return StringAssert::that($string);
     }
@@ -89,10 +89,10 @@ class Assert
      *  Assert::thatBool(isCool())->isTrue();
      * </code>
      *
-     * @param string $string
+     * @param ?bool $string
      * @return BooleanAssert
      */
-    public static function thatBool($string)
+    public static function thatBool(?bool $string): BooleanAssert
     {
         return BooleanAssert::that($string);
     }
@@ -108,7 +108,7 @@ class Assert
      * @param mixed $subject
      * @return GeneralAssert
      */
-    public static function that($subject)
+    public static function that(mixed $subject): GeneralAssert
     {
         return GeneralAssert::that($subject);
     }

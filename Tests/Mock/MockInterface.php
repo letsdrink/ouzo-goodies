@@ -6,10 +6,7 @@
 
 namespace Ouzo\Tests\Mock;
 
-class AnyArgumentList
+interface MockInterface
 {
-    public function __toString(): string
-    {
-        return "any arguments";
-    }
+
 }

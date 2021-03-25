@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Closure;
@@ -12,61 +13,37 @@ use Ouzo\Utilities\Joiner;
 
 class MethodCall
 {
-    /** @var string */
-    public $name;
-    /** @var array */
-    public $arguments;
+    public string $name;
+    public array $arguments;
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     */
-    public function __construct($name, $arguments)
+    public function __construct(string $name, array $arguments)
     {
         $this->name = $name;
         $this->arguments = $arguments;
     }
 
-    /**
-     * @return string
-     */
-    public function toString()
+    public function toString(): string
     {
         return $this->name . '(' . Joiner::on(', ')->join(Arrays::map($this->arguments, Functions::toString())) . ')';
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->toString();
     }
 
-    /**
-     * @param MethodCall[] $calls
-     * @return string
-     */
-    public static function arrayToString($calls)
+    /** @param MethodCall[] $calls */
+    public static function arrayToString(array $calls): string
     {
         return Joiner::on(', ')->join(Arrays::map($calls, Functions::toString()));
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return MethodCall
-     */
-    public static function newInstance($name, $arguments)
+    public static function newInstance(string $name, array $arguments): MethodCall
     {
         return new MethodCall($name, $arguments);
     }
 
-    /**
-     * @param string $name
-     * @return Closure
-     */
-    public static function hasName($name)
+    public static function hasName(string $name): Closure
     {
         return function ($callStub) use ($name) {
             return $callStub->name == $name;

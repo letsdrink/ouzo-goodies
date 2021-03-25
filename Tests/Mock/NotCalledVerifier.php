@@ -10,21 +10,15 @@ use PHPUnit\Framework\Assert;
 
 class NotCalledVerifier extends Verifier
 {
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return $this
-     * @throws \Exception
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): NotCalledVerifier
     {
         if (!$this->wasCalled($name, $arguments)) {
             Assert::assertTrue(!$this->wasCalled($name, $arguments));
-            return $this;
         } else {
             $calls = $this->actualCalls();
             $expected = MethodCall::newInstance($name, $arguments)->toString() . ' is never called';
             Assert::assertEquals($expected, $calls, "Unwanted method was called");
         }
+        return $this;
     }
 }

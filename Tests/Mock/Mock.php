@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Closure;
@@ -11,20 +12,12 @@ use Ouzo\Utilities\DynamicProxy;
 
 class Mock
 {
-    /**
-     * @param null|string $className
-     * @return SimpleMock
-     */
-    public static function create($className = null)
+    public static function create(string $className = null): MockInterface
     {
         return self::mock($className);
     }
 
-    /**
-     * @param null|string $className
-     * @return null|SimpleMock
-     */
-    public static function mock($className = null)
+    public static function mock(string $className = null): MockInterface
     {
         $mock = new SimpleMock();
         if (!$className) {
@@ -33,48 +26,28 @@ class Mock
         return DynamicProxy::newInstance($className, $mock);
     }
 
-    /**
-     * @param Mock|SimpleMock $mock
-     * @return WhenBuilder
-     */
-    public static function when($mock)
+    public static function when(MockInterface $mock): WhenBuilder
     {
         return new WhenBuilder(self::extractMock($mock));
     }
 
-    /**
-     * @param Mock|SimpleMock $mock
-     * @return Verifier
-     */
-    public static function verify($mock)
+    public static function verify(MockInterface $mock): Verifier
     {
         return new Verifier(self::extractMock($mock));
     }
 
-    /**
-     * @param Mock|SimpleMock $mock
-     * @return void
-     * @throws \Exception
-     */
-    public static function verifyZeroInteractions($mock)
+    public static function verifyZeroInteractions(MockInterface $mock): void
     {
         ZeroInteractionsVerifier::verify(self::extractMock($mock));
     }
 
-    /**
-     * @param Closure $callback
-     */
-    public static function verifyInOrder($callback)
+    public static function verifyInOrder(Closure $callback): void
     {
         $inOrderVerifier = new InOrderVerifier();
         $callback($inOrderVerifier);
     }
 
-    /**
-     * @param SimpleMock|Mock $mock
-     * @return mixed
-     */
-    public static function extractMock($mock)
+    public static function extractMock(MockInterface $mock): MockInterface
     {
         if (is_null($mock)) {
             throw new InvalidArgumentException("Instance of class Mock or SimpleMock expected, null given");
@@ -86,34 +59,22 @@ class Mock
         return DynamicProxy::extractMethodHandler($mock);
     }
 
-    /**
-     * @return AnyArgument
-     */
-    public static function any()
+    public static function any(): AnyArgument
     {
         return new AnyArgument();
     }
 
-    /**
-     * @return AnyArgumentList
-     */
-    public static function anyArgList()
+    public static function anyArgList(): AnyArgumentList
     {
         return new AnyArgumentList();
     }
 
-    /**
-     * @return FluentArgumentMatcher
-     */
-    public static function argThat()
+    public static function argThat(): FluentArgumentMatcher
     {
         return new FluentArgumentMatcher();
     }
 
-    /**
-     * @return ArgumentMatcher
-     */
-    public static function all()
+    public static function all(): ArgumentMatcher
     {
         return new AndArgumentMatcher(func_get_args());
     }

@@ -3,41 +3,28 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Closure;
 
 class CallStub
 {
-    /** @var MethodCall */
-    public $methodCall;
-    /** @var Closure */
-    public $callback;
+    public MethodCall $methodCall;
+    public Closure $callback;
 
-    /**
-     * @param MethodCall $methodCall
-     * @param Closure $callback
-     */
-    public function __construct(MethodCall $methodCall, $callback)
+    public function __construct(MethodCall $methodCall, Closure $callback)
     {
         $this->methodCall = $methodCall;
         $this->callback = $callback;
     }
 
-    /**
-     * @param string $methodCall
-     * @return mixed
-     */
-    public function evaluate($methodCall)
+    public function evaluate(MethodCall $methodCall): mixed
     {
         return call_user_func($this->callback, $methodCall);
     }
 
-    /**
-     * @param MethodCall $methodCall
-     * @return bool
-     */
-    public function matches(MethodCall $methodCall)
+    public function matches(MethodCall $methodCall): bool
     {
         $matcher = new MethodCallMatcher($this->methodCall->name, $this->methodCall->arguments);
         return $matcher->matches($methodCall);

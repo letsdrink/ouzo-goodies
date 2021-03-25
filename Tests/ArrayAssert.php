@@ -14,12 +14,12 @@ class ArrayAssert
 {
     private string $actualString;
 
-    private function __construct(private array $actual)
+    private function __construct(private ?array $actual)
     {
         $this->actualString = Objects::toString($actual);
     }
 
-    public static function that(array $actual): ArrayAssert
+    public static function that(?array $actual): ArrayAssert
     {
         return new ArrayAssert($actual);
     }
@@ -67,7 +67,7 @@ class ArrayAssert
         return $this;
     }
 
-    public function containsOnly(...$elements): ArrayAssert
+    public function containsOnly(mixed ...$elements): ArrayAssert
     {
         $this->isNotNull();
 
@@ -106,7 +106,7 @@ class ArrayAssert
         return $nonExistingElements;
     }
 
-    public function containsExactly(...$elements): ArrayAssert
+    public function containsExactly(mixed ...$elements): ArrayAssert
     {
         $this->isNotNull();
 
@@ -175,7 +175,7 @@ class ArrayAssert
         return $this;
     }
 
-    public function containsSequence(...$elements): ArrayAssert
+    public function containsSequence(mixed ...$elements): ArrayAssert
     {
         $contains = $this->doesContainSequence($elements);
         AssertAdapter::assertTrue($contains, "Sequence doesn't match array");
@@ -194,7 +194,7 @@ class ArrayAssert
         return false;
     }
 
-    public function excludes(...$elements): ArrayAssert
+    public function excludes(mixed ...$elements): ArrayAssert
     {
         $currentArray = $this->actual;
         $foundElement = '';

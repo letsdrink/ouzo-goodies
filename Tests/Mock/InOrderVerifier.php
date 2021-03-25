@@ -8,20 +8,13 @@ namespace Ouzo\Tests\Mock;
 
 use Ouzo\Tests\AssertAdapter;
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\ExpectationFailedException;
 
 class InOrderVerifier
 {
-    /** @var array */
-    private $scope = [];
-    /** @var null|MethodCall */
-    private $current = null;
+    private array $scope = [];
+    private ?MethodCall $current = null;
 
-    /**
-     * @param Mock|SimpleMock $mock
-     * @return $this
-     */
-    public function verify($mock)
+    public function verify(Mock|SimpleMock $mock): InOrderVerifier
     {
         if (!$this->scope) {
             $extractMock = Mock::extractMock($mock);
@@ -30,31 +23,20 @@ class InOrderVerifier
         return $this;
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return $this
-     * @throws \Exception
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): InOrderVerifier
     {
         $wasCalledInOrder = $this->wasCalledInOrder($name, $arguments);
         if ($wasCalledInOrder) {
             Assert::assertTrue($wasCalledInOrder);
-            return $this;
         } else {
             $expected = MethodCall::newInstance($name, $arguments)->toString();
             $actual = $this->actualCalls();
             Assert::assertEquals($expected, $actual, 'Method was not called in order');
         }
+        return $this;
     }
 
-    /**
-     * @param string $name
-     * @param mixed $arguments
-     * @return bool
-     */
-    private function wasCalledInOrder($name, $arguments)
+    private function wasCalledInOrder(string $name, mixed $arguments): bool
     {
         $this->current = array_shift($this->scope);
         if (!$this->current) {
@@ -64,21 +46,12 @@ class InOrderVerifier
         return $methodCallMatcher->matches($this->current);
     }
 
-    /**
-     * @return string
-     */
-    private function actualCalls()
+    private function actualCalls(): string
     {
-        return $this->current ? $this->current->toString() : 'no interactions';
+        return $this->current?->toString() ?? 'no interactions';
     }
 
-    /**
-     * @param string $description
-     * @param string $expected
-     * @param string $actual
-     * @throws ExpectationFailedException
-     */
-    private function fail($description, $expected, $actual)
+    private function fail(string $description, string $expected, string $actual): void
     {
         AssertAdapter::failWithDiff($description,
             $expected,

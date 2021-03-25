@@ -28,31 +28,20 @@ use Throwable;
  */
 class CatchException
 {
-    /** @var Throwable|null */
-    public static $exception;
+    public static ?Throwable $exception;
 
-    /**
-     * @param object $object
-     * @return CatchExceptionObject
-     */
-    public static function when($object)
+    public static function when(object $object): CatchExceptionObject
     {
         self::$exception = null;
         return new CatchExceptionObject($object);
     }
 
-    /**
-     * @return CatchExceptionAssert
-     */
-    public static function assertThat()
+    public static function assertThat(): CatchExceptionAssert
     {
         return new CatchExceptionAssert(self::$exception);
     }
 
-    /**
-     * @return Throwable
-     */
-    public static function get()
+    public static function get(): ?Throwable
     {
         return self::$exception;
     }
@@ -79,11 +68,11 @@ class CatchException
      *  }
      * }
      * </code>
-     * @param $className
+     * @param string $className
      * @param array $params
-     * @return object
+     * @return object|null
      */
-    public static function inConstructor($className, array $params)
+    public static function inConstructor(string $className, array $params): ?object
     {
         try {
             $class = new ReflectionClass($className);
@@ -91,5 +80,6 @@ class CatchException
         } catch (Exception $e) {
             self::$exception = $e;
         }
+        return null;
     }
 }

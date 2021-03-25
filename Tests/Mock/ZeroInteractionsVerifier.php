@@ -10,12 +10,7 @@ use PHPUnit\Framework\Assert;
 
 class ZeroInteractionsVerifier
 {
-    /**
-     * @param SimpleMock $mock
-     * @return void
-     * @throws \Exception
-     */
-    public static function verify($mock)
+    public static function verify(SimpleMock|Mock $mock): void
     {
         if (empty($mock->calledMethods)) {
             Assert::assertTrue(true);
