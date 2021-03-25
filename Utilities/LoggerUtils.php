@@ -8,12 +8,7 @@ namespace Ouzo\Utilities;
 
 class LoggerUtils
 {
-    /**
-     * @param string $name
-     * @param int|null $length
-     * @return string
-     */
-    public static function shortenClassName($name, $length)
+    public static function shortenClassName(string $name, ?int $length): string
     {
         if ($length === null || $length < 0) {
             return $name;

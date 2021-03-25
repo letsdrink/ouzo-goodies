@@ -7,8 +7,8 @@ namespace Ouzo\Utilities;
 
 class JsonEncodeException extends \Exception
 {
-    public function __construct($lastErrorMessage = "", $lastErrorCode = 0)
+    public function __construct(string $lastErrorMessage = '', int $lastErrorCode = 0)
     {
-        parent::__construct('JSON encode error: ' . $lastErrorMessage, $lastErrorCode);
+        parent::__construct("JSON encode error: {$lastErrorMessage}", $lastErrorCode);
     }
 }

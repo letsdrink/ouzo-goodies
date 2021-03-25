@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use Exception;
@@ -13,42 +14,39 @@ use InvalidArgumentException;
  * @method mixed get
  * @method mixed or
  * @method mixed orNull
- * @method mixed map($closure)
+ * @method mixed map(callable $closure)
  * @method mixed flatten
  */
 class Optional
 {
-    private $object;
-
-    private function __construct($object)
+    private function __construct(private mixed $object)
     {
-        $this->object = $object;
     }
 
-    public static function of($object)
+    public static function of(mixed $object): Optional
     {
-        if ($object === null) {
+        if (is_null($object)) {
             throw new InvalidArgumentException('Object cannot be null. Use fromNullable if you want to pass null.');
         }
         return new self($object);
     }
 
-    private static function absent()
+    private static function absent(): Optional
     {
         return new self(null);
     }
 
-    public static function fromNullable($object)
+    public static function fromNullable(mixed $object): Optional
     {
         return new self($object);
     }
 
-    private function _isPresent()
+    private function _isPresent(): bool
     {
         return $this->object !== null;
     }
 
-    private function _get()
+    private function _get(): mixed
     {
         if ($this->isPresent()) {
             return $this->object;
@@ -56,7 +54,7 @@ class Optional
         throw new Exception('Optional value is null');
     }
 
-    private function _or($alternativeValue)
+    private function _or(mixed $alternativeValue): mixed
     {
         if ($this->isPresent()) {
             return $this->object;
@@ -64,12 +62,12 @@ class Optional
         return $alternativeValue;
     }
 
-    private function _orNull()
+    private function _orNull(): mixed
     {
         return $this->_or(null);
     }
 
-    private function _map($closure)
+    private function _map(callable $closure): Optional
     {
         if ($this->isPresent()) {
             return Optional::fromNullable(Functions::call($closure, $this->object));
@@ -77,7 +75,7 @@ class Optional
         return Optional::absent();
     }
 
-    private function _flatten()
+    private function _flatten(): Optional
     {
         $object = $this->object;
         while ($object instanceof Optional) {
@@ -86,7 +84,7 @@ class Optional
         return Optional::fromNullable($object);
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, mixed $arguments): mixed
     {
         if (!in_array($name, ['isPresent', 'get', 'or', 'orNull', 'map', 'flatten'])) {
             if (!method_exists($this->object, $name)) {
@@ -97,7 +95,7 @@ class Optional
         return call_user_func_array([$this, '_' . $name], $arguments);
     }
 
-    public function __get($field)
+    public function __get(mixed $field): Optional
     {
         if (!$this->isPresent() || !property_exists($this->object, $field)) {
             return Optional::absent();

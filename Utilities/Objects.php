@@ -8,30 +8,19 @@ namespace Ouzo\Utilities;
 
 use ReflectionObject;
 
-/**
- * Class Objects
- * @package Ouzo\Utilities
- */
 class Objects
 {
-    /**
-     * Returns a string representation of the given object.
-     */
+    /** Returns a string representation of the given object. */
     public static function toString(mixed $var): string
     {
-        switch (gettype($var)) {
-            case 'boolean':
-                return self::booleanToString($var);
-            case 'NULL':
-                return "null";
-            case 'string':
-                return "\"$var\"";
-            case 'object':
-                return self::objectToString($var);
-            case 'array':
-                return self::arrayToString($var);
-        }
-        return "$var";
+        return match (gettype($var)) {
+            'boolean' => self::booleanToString($var),
+            'NULL' => "null",
+            'string' => "\"{$var}\"",
+            'object' => self::objectToString($var),
+            'array' => self::arrayToString($var),
+            default => "{$var}"
+        };
     }
 
     private static function objectToString(object $object): string
@@ -64,9 +53,7 @@ class Objects
         return '[' . implode(', ', $elements) . ']';
     }
 
-    /**
-     * Convert boolean to string 'true' or 'false'.
-     */
+    /** Convert boolean to string 'true' or 'false'. */
     public static function booleanToString(bool $var): string
     {
         return $var ? 'true' : 'false';
@@ -159,7 +146,7 @@ class Objects
 
     private static function convertToComparable(mixed $value): mixed
     {
-        if ($value === null) {
+        if (is_null($value)) {
             return "____ouzo_null_marker_so_that_null_!=_''";
         }
         if (is_bool($value)) {

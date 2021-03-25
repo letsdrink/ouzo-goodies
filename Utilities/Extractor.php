@@ -20,19 +20,19 @@ class Extractor implements ArrayAccess
 {
     private array $operations = [];
 
-    public function __get($field): static
+    public function __get(string $field): static
     {
         $this->operations[] = fn($input) => Objects::getValue($input, $field);
         return $this;
     }
 
-    public function __call($name, $arguments): static
+    public function __call(string $name, mixed $arguments): static
     {
         $this->operations[] = fn($input) => call_user_func_array([$input, $name], $arguments);
         return $this;
     }
 
-    public function __invoke($input)
+    public function __invoke(mixed $input): mixed
     {
         foreach ($this->operations as $operation) {
             $input = $operation($input);
@@ -43,23 +43,23 @@ class Extractor implements ArrayAccess
         return $input;
     }
 
-    public function offsetGet($offset): static
+    public function offsetGet(mixed $offset): static
     {
         $this->operations[] = fn($input) => isset($input[$offset]) ? $input[$offset] : null;
         return $this;
     }
 
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         throw new BadMethodCallException();
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException();
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         throw new BadMethodCallException();
     }
