@@ -3,11 +3,10 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
-use Ouzo\Utilities\Comparator\CompoundComparator;
-use Ouzo\Utilities\Comparator\EvaluatingComparator;
-use Ouzo\Utilities\Comparator\ReversedComparator;
+use Ouzo\Utilities\Comparator\Comparators;
 
 /**
  * Class Comparator
@@ -24,7 +23,7 @@ class Comparator
      */
     public static function compound()
     {
-        return new CompoundComparator(func_get_args());
+        return Comparators::compoundComparator(func_get_args());
     }
 
     /**
@@ -38,10 +37,8 @@ class Comparator
     public static function compareBy()
     {
         $expressions = func_get_args();
-        $comparators = Arrays::map($expressions, function ($expression) {
-            return new EvaluatingComparator(Functions::extractExpression($expression));
-        });
-        return sizeof($comparators) == 1 ? $comparators[0] : new CompoundComparator($comparators);
+        $comparators = Arrays::map($expressions, fn($expression) => Comparators::evaluatingComparator(Functions::extractExpression($expression)));
+        return sizeof($comparators) == 1 ? $comparators[0] : Comparators::compoundComparator($comparators);
     }
 
     /**
@@ -52,7 +49,7 @@ class Comparator
      */
     public static function reverse($comparator)
     {
-        return new ReversedComparator($comparator);
+        return Comparators::reversedComparator($comparator);
     }
 
     /**
@@ -62,11 +59,6 @@ class Comparator
      */
     public static function natural()
     {
-        return function ($a, $b) {
-            if ($a == $b) {
-                return 0;
-            }
-            return ($a < $b) ? -1 : 1;
-        };
+        return fn($a, $b) => $a <=> $b;
     }
 }
