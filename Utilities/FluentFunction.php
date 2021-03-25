@@ -51,7 +51,7 @@ class FluentFunction
         return $this;
     }
 
-    public function __invoke(mixed $object)
+    public function __invoke(mixed $object): mixed
     {
         foreach ($this->functions as $function) {
             $object = Functions::call($function, $object);
@@ -61,9 +61,7 @@ class FluentFunction
 
     public function negate(): static
     {
-        $this->functions[] = function ($object) {
-            return !$object;
-        };
+        $this->functions[] = fn($object) => !$object;
         return $this;
     }
 }

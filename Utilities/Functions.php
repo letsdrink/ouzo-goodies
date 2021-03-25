@@ -6,184 +6,139 @@
 
 namespace Ouzo\Utilities;
 
+use Closure;
 use Exception;
+use Ouzo\Model;
 
 class Functions
 {
-    public static function extractId()
+    public static function extractId(): Closure
     {
-        return function ($object) {
-            /** @var \Ouzo\Model $object */
-            return $object->getId();
-        };
+        return fn(Model $model) => $model->getId();
     }
 
-    public static function extractField($name, $accessPrivate = false)
+    public static function extractField(string $name, bool $accessPrivate = false): Closure
     {
-        return function ($object) use ($name, $accessPrivate) {
-            return Objects::getValue($object, $name, null, $accessPrivate);
-        };
+        return fn($object) => Objects::getValue($object, $name, null, $accessPrivate);
     }
 
-    public static function extractFieldRecursively($names, $accessPrivate = false)
+    public static function extractFieldRecursively(string $names, bool $accessPrivate = false): Closure
     {
-        return function ($object) use ($names, $accessPrivate) {
-            return Objects::getValueRecursively($object, $names, null, $accessPrivate);
-        };
+        return fn($object) => Objects::getValueRecursively($object, $names, null, $accessPrivate);
     }
 
-    public static function extractExpression($selector, $accessPrivate = false)
+    public static function extractExpression(string|Extractor $selector, bool $accessPrivate = false): Closure|Extractor
     {
         if (!is_string($selector)) {
             return $selector;
         }
-        if (strpos($selector, '()') !== false || strpos($selector, '->') !== false) {
+        if (str_contains($selector, '()') || str_contains($selector, '->')) {
             return Functions::extractFieldRecursively($selector, $accessPrivate);
         }
         return Functions::extractField($selector, $accessPrivate);
     }
 
-    public static function identity()
+    public static function identity(): Closure
     {
-        return function ($object) {
-            return $object;
-        };
+        return fn($object) => $object;
     }
 
-    public static function constant($value)
+    public static function constant(mixed $value): Closure
     {
-        return function () use ($value) {
-            return $value;
-        };
+        return fn() => $value;
     }
 
-    public static function random($min = 0, $max = null)
+    public static function random(int $min = 0, ?int $max = null): Closure
     {
-        return function () use ($min, $max) {
-            return mt_rand($min, $max);
-        };
+        return fn() => mt_rand($min, $max);
     }
 
-    public static function throwException(Exception $exception)
+    public static function throwException(Exception $exception): Closure
     {
-        return function () use ($exception) {
-            throw $exception;
-        };
+        return fn() => throw $exception;
     }
 
-    public static function trim()
+    public static function trim(): Closure
     {
-        return function ($string) {
-            return trim($string);
-        };
+        return fn($string) => trim($string);
     }
 
-    public static function not($predicate)
+    public static function not(callable $predicate): Closure
     {
-        return function ($object) use ($predicate) {
-            return !$predicate($object);
-        };
+        return fn($object) => !$predicate($object);
     }
 
-    public static function isArray()
+    public static function isArray(): Closure
     {
-        return function ($object) {
-            return is_array($object);
-        };
+        return fn($object) => is_array($object);
     }
 
-    public static function isInstanceOf($type)
+    public static function isInstanceOf(string $type): Closure
     {
-        return function ($object) use ($type) {
-            return $object instanceof $type;
-        };
+        return fn($object) => $object instanceof $type;
     }
 
-    public static function prepend($prefix)
+    public static function prepend(string $prefix): Closure
     {
-        return function ($string) use ($prefix) {
-            return $prefix . $string;
-        };
+        return fn($string) => "{$prefix}{$string}";
     }
 
-    public static function append($suffix)
+    public static function append(string $suffix): Closure
     {
-        return function ($string) use ($suffix) {
-            return $string . $suffix;
-        };
+        return fn($string) => "{$string}{$suffix}";
     }
 
-    public static function notEmpty()
+    public static function notEmpty(): Closure
     {
-        return function ($object) {
-            return !empty($object);
-        };
+        return fn($object) => !empty($object);
     }
 
-    public static function isEmpty()
+    public static function isEmpty(): Closure
     {
-        return function ($object) {
-            return empty($object);
-        };
+        return fn($object) => empty($object);
     }
 
-    public static function notBlank()
+    public static function notBlank(): Closure
     {
-        return function ($string) {
-            return Strings::isNotBlank($string);
-        };
+        return fn($string) => Strings::isNotBlank($string);
     }
 
-    public static function isBlank()
+    public static function isBlank(): Closure
     {
-        return function ($string) {
-            return Strings::isBlank($string);
-        };
+        return fn($string) => Strings::isBlank($string);
     }
 
-    public static function notNull()
+    public static function notNull(): Closure
     {
-        return function ($value) {
-            return !is_null($value);
-        };
+        return fn($value) => !is_null($value);
     }
 
-    public static function removePrefix($prefix)
+    public static function removePrefix(string $prefix): Closure
     {
-        return function ($string) use ($prefix) {
-            return Strings::removePrefix($string, $prefix);
-        };
+        return fn($string) => Strings::removePrefix($string, $prefix);
     }
 
-    public static function startsWith($prefix)
+    public static function startsWith(string $prefix): Closure
     {
-        return function ($string) use ($prefix) {
-            return Strings::startsWith($string, $prefix);
-        };
+        return fn($string) => Strings::startsWith($string, $prefix);
     }
 
-    public static function endsWith($suffix)
+    public static function endsWith(string $suffix): Closure
     {
-        return function ($string) use ($suffix) {
-            return Strings::endsWith($string, $suffix);
-        };
+        return fn($string) => Strings::endsWith($string, $suffix);
     }
 
-    public static function containsSubstring($substring)
+    public static function containsSubstring(string $substring): Closure
     {
-        return function ($string) use ($substring) {
-            return Strings::contains($string, $substring);
-        };
+        return fn($string) => Strings::contains($string, $substring);
     }
 
-    public static function formatDateTime($format = Date::DEFAULT_TIME_FORMAT)
+    public static function formatDateTime(?string $format = Date::DEFAULT_TIME_FORMAT): Closure
     {
-        return function ($date) use ($format) {
-            return Date::formatDateTime($date, $format);
-        };
+        return fn($date) => Date::formatDateTime($date, $format);
     }
 
-    public static function call($function, $argument = null)
+    public static function call(callable $function, mixed $argument = null)
     {
         return call_user_func($function, $argument);
     }
@@ -191,87 +146,60 @@ class Functions
     /**
      * Returns the composition of two functions.
      * composition is defined as the function h such that h(a) == A(B(a)) for each a.
-     * @param $functionA
-     * @param $functionB
-     * @return callable
      */
-    public static function compose($functionA, $functionB)
+    public static function compose(callable $functionA, callable $functionB): Closure
     {
-        return function ($input) use ($functionA, $functionB) {
-            return Functions::call($functionA, Functions::call($functionB, $input));
-        };
+        return fn($input) => Functions::call($functionA, Functions::call($functionB, $input));
     }
 
-    public static function toString()
+    public static function toString(): Closure
     {
-        return function ($object) {
-            return Objects::toString($object);
-        };
+        return fn($object) => Objects::toString($object);
     }
 
-    /**
-     * $type is just a hint for dynamicReturnType plugin
-     * @param null $type
-     * @return NonCallableExtractor
-     */
-    public static function extract($type = null)
+    /** $type is just a hint for dynamicReturnType plugin */
+    public static function extract(mixed $type = null): NonCallableExtractor
     {
         return new NonCallableExtractor();
     }
 
-    public static function surroundWith($character)
+    public static function surroundWith(string $character): Closure
     {
-        return function ($string) use ($character) {
-            return $character . $string . $character;
-        };
+        return fn($string) => "{$character}{$string}{$character}";
     }
 
-    public static function equals($object)
+    public static function equals(mixed $object): Closure
     {
-        return function ($value) use ($object) {
-            return Objects::equal($value, $object);
-        };
+        return fn($value) => Objects::equal($value, $object);
     }
 
-    public static function notEquals($object)
+    public static function notEquals(mixed $object): Closure
     {
-        return function ($value) use ($object) {
-            return !Objects::equal($value, $object);
-        };
+        return fn($value) => !Objects::equal($value, $object);
     }
 
-    public static function containsAll($element)
+    public static function containsAll(mixed $element): Closure
     {
-        return function ($array) use ($element) {
-            return Arrays::containsAll($array, $element);
-        };
+        return fn($array) => Arrays::containsAll($array, $element);
     }
 
-    public static function contains($element)
+    public static function contains(mixed $element): Closure
     {
-        return function ($array) use ($element) {
-            return Arrays::contains($array, $element);
-        };
+        return fn($array) => Arrays::contains($array, $element);
     }
 
-    public static function inArray($array)
+    public static function inArray(array $array): Closure
     {
-        return function ($value) use ($array) {
-            return in_array($value, $array);
-        };
+        return fn($value) => in_array($value, $array);
     }
 
-    public static function notInArray($array)
+    public static function notInArray(array $array): Closure
     {
-        return function ($value) use ($array) {
-            return !in_array($value, $array);
-        };
+        return fn($value) => !in_array($value, $array);
     }
 
-    public static function equalsIgnoreCase($string)
+    public static function equalsIgnoreCase(?string $string): Closure
     {
-        return function ($value) use ($string) {
-            return Strings::equalsIgnoreCase($value, $string);
-        };
+        return fn($value) => Strings::equalsIgnoreCase($value, $string);
     }
 }

@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 /**
@@ -13,10 +14,8 @@ class Inflector
 {
     /**
      * Plural inflector rules.
-     *
-     * @var array
      */
-    private static $plural = [
+    private static array $plural = [
         'rules' => [
             '/(s)tatus$/i' => '\1\2tatuses',
             '/(quiz)$/i' => '\1zes',
@@ -83,11 +82,8 @@ class Inflector
 
     /**
      * Singular inflector rules.
-     *
-     * @var array
-     * @noinspection SpellCheckingInspection
      */
-    private static $singular = [
+    private static array $singular = [
         'rules' => [
             '/(s)tatuses$/i' => '\1\2tatus',
             '/^(.*)(menu)s$/i' => '\1\2',
@@ -136,10 +132,8 @@ class Inflector
 
     /**
      * Words that should not be inflected.
-     *
-     * @var array
      */
-    private static $uninflected = [
+    private static array $uninflected = [
         'Amoyese', 'bison', 'Borghese', 'bream', 'breeches', 'britches', 'buffalo', 'cantus',
         'carp', 'chassis', 'clippers', 'cod', 'coitus', 'Congoese', 'contretemps', 'corps',
         'debris', 'diabetes', 'djinn', 'eland', 'elk', 'equipment', 'Faroese', 'flounder',
@@ -154,34 +148,24 @@ class Inflector
         'wildebeest', 'Yengeese'
     ];
 
-    /**
-     * Method cache array.
-     *
-     * @var array
-     */
-    private static $cache = [];
+    /** Method cache array. */
+    private static array $cache = [];
 
-    /**
-     * The initial state of Inflector so reset() works.
-     *
-     * @var array
-     */
-    private static $initialState = [];
+    /** The initial state of Inflector so reset() works. */
+    private static array $initialState = [];
 
     /**
      * Clears Inflectors inflected value caches, and resets the inflection
      * rules to the initial values.
-     *
-     * @return void
      */
-    public static function reset()
+    public static function reset(): void
     {
         if (empty(self::$initialState)) {
             self::$initialState = get_class_vars(Inflector::class);
             return;
         }
         foreach (self::$initialState as $key => $val) {
-            if ($key != 'initialState') {
+            if ($key !== 'initialState') {
                 self::${$key} = $val;
             }
         }
@@ -206,10 +190,8 @@ class Inflector
      * @param array $rules An array of rules to be added.
      * @param boolean $reset If true, will unset default inflections for all
      *                       new rules that are being defined in $rules.
-     *
-     * @return void
      */
-    public static function rules($type, $rules, $reset = false)
+    public static function rules(string $type, array $rules, bool $reset = false): void
     {
         foreach ($rules as $rule => $pattern) {
             if (is_array($pattern)) {
@@ -236,14 +218,8 @@ class Inflector
         self::${$type}['rules'] = $rules + self::${$type}['rules'];
     }
 
-    /**
-     * Returns a word in plural form.
-     *
-     * @param string $word The word in singular form.
-     *
-     * @return string The word in plural form.
-     */
-    public static function pluralize($word)
+    /** Returns a word in plural form. */
+    public static function pluralize(string $word): string
     {
         if (isset(self::$cache['pluralize'][$word])) {
             return self::$cache['pluralize'][$word];
@@ -280,14 +256,8 @@ class Inflector
         }
     }
 
-    /**
-     * Returns a word in singular form.
-     *
-     * @param string $word The word in plural form.
-     *
-     * @return string The word in singular form.
-     */
-    public static function singularize($word)
+    /** Returns a word in singular form. */
+    public static function singularize(string $word): string
     {
         if (isset(self::$cache['singularize'][$word])) {
             return self::$cache['singularize'][$word];
