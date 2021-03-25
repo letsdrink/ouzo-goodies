@@ -3,6 +3,7 @@
  * Copyright (c) Ouzo contributors, http://ouzoframework.org
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
 use Closure;
@@ -17,23 +18,15 @@ use Iterator;
  */
 class FilteringIterator extends FilterIterator
 {
-    /** @var Closure */
-    private $predicate;
+    private Closure $predicate;
 
-    /**
-     * @param Iterator $iterator
-     * @param Closure $predicate
-     */
-    public function __construct(Iterator $iterator, $predicate)
+    public function __construct(Iterator $iterator, callable $predicate)
     {
         parent::__construct($iterator);
-        $this->predicate = $predicate;
+        $this->predicate = Closure::fromCallable($predicate);
     }
 
-    /**
-     * @return mixed
-     */
-    public function accept()
+    public function accept(): mixed
     {
         $predicate = $this->predicate;
         return $predicate($this->current());
