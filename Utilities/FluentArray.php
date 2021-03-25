@@ -3,177 +3,170 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
-namespace Ouzo\Utilities;
 
-use Exception;
+namespace Ouzo\Utilities;
 
 class FluentArray
 {
-    private $_array;
-
-    public function __construct($_array)
+    public function __construct(private array $array)
     {
-        $this->_array = $_array;
     }
 
-    public static function from($_array)
+    public static function from(array $array): FluentArray
     {
-        return new self($_array);
+        return new self($array);
     }
 
-    public function each($function)
+    public function each(callable $function): void
     {
-        Arrays::each($this->_array, $function);
+        Arrays::each($this->array, $function);
     }
 
-    public function map($function)
+    public function map(callable $function): static
     {
-        $this->_array = Arrays::map($this->_array, $function);
+        $this->array = Arrays::map($this->array, $function);
         return $this;
     }
 
-    public function mapKeys($function)
+    public function mapKeys(callable $function): static
     {
-        $this->_array = Arrays::mapKeys($this->_array, $function);
+        $this->array = Arrays::mapKeys($this->array, $function);
         return $this;
     }
 
-    public function mapEntries($function)
+    public function mapEntries(callable $function): static
     {
-        $this->_array = Arrays::mapEntries($this->_array, $function);
+        $this->array = Arrays::mapEntries($this->array, $function);
         return $this;
     }
 
-    public function filter($function)
+    public function filter(callable $function): static
     {
-        $this->_array = Arrays::filter($this->_array, $function);
+        $this->array = Arrays::filter($this->array, $function);
         return $this;
     }
 
-    public function filterNotBlank()
+    public function filterNotBlank(): static
     {
-        $this->_array = Arrays::filterNotBlank($this->_array);
+        $this->array = Arrays::filterNotBlank($this->array);
         return $this;
     }
 
-    public function filterByKeys($function)
+    public function filterByKeys(callable $function): static
     {
-        $this->_array = Arrays::filterByKeys($this->_array, $function);
+        $this->array = Arrays::filterByKeys($this->array, $function);
         return $this;
     }
 
-    public function filterByAllowedKeys($allowedKeys)
+    public function filterByAllowedKeys(array $allowedKeys): static
     {
-        $this->_array = Arrays::filterByAllowedKeys($this->_array, $allowedKeys);
+        $this->array = Arrays::filterByAllowedKeys($this->array, $allowedKeys);
         return $this;
     }
 
-    public function unique()
+    public function unique(): static
     {
-        $this->_array = array_unique($this->_array);
+        $this->array = array_unique($this->array);
         return $this;
     }
 
-    /**
-     * @param $selector
-     * @throws Exception
-     * @return FluentArray
-     */
-    public function uniqueBy($selector)
+    public function uniqueBy(string|Extractor $selector): static
     {
-        return $this->toMap(Functions::extractExpression($selector))->values();
+        return $this
+            ->toMap(Functions::extractExpression($selector))
+            ->values();
     }
 
-    public function groupBy($selector)
+    public function groupBy(string|Extractor $selector): static
     {
-        $this->_array = Arrays::groupBy($this->_array, $selector);
+        $this->array = Arrays::groupBy($this->array, $selector);
         return $this;
     }
 
-    public function sort($comparator)
+    public function sort(callable $comparator): static
     {
-        $this->_array = Arrays::sort($this->_array, $comparator);
+        $this->array = Arrays::sort($this->array, $comparator);
         return $this;
     }
 
-    public function flip()
+    public function flip(): static
     {
-        $this->_array = array_flip($this->_array);
+        $this->array = array_flip($this->array);
         return $this;
     }
 
-    public function keys()
+    public function keys(): static
     {
-        $this->_array = array_keys($this->_array);
+        $this->array = array_keys($this->array);
         return $this;
     }
 
-    public function values()
+    public function values(): static
     {
-        $this->_array = array_values($this->_array);
+        $this->array = array_values($this->array);
         return $this;
     }
 
-    public function flatten()
+    public function flatten(): static
     {
-        $this->_array = Arrays::flatten($this->_array);
+        $this->array = Arrays::flatten($this->array);
         return $this;
     }
 
-    public function intersect(array $array)
+    public function intersect(array $array): static
     {
-        $this->_array = array_intersect($this->_array, $array);
+        $this->array = array_intersect($this->array, $array);
         return $this;
     }
 
-    public function reverse()
+    public function reverse(): static
     {
-        $this->_array = array_reverse($this->_array);
+        $this->array = array_reverse($this->array);
         return $this;
     }
 
-    public function toMap($keyFunction, $valueFunction = null)
+    public function toMap(callable $keyFunction, callable $valueFunction = null): static
     {
-        $this->_array = Arrays::toMap($this->_array, $keyFunction, $valueFunction);
+        $this->array = Arrays::toMap($this->array, $keyFunction, $valueFunction);
         return $this;
     }
 
-    public function toArray()
+    public function toArray(): array
     {
-        return $this->_array;
+        return $this->array;
     }
 
-    public function firstOr($default)
+    public function firstOr(mixed $default): mixed
     {
-        return Arrays::firstOrNull($this->_array) ?: $default;
+        return Arrays::firstOrNull($this->array) ?: $default;
     }
 
-    public function toJson()
+    public function toJson(): string
     {
-        return Json::encode($this->_array);
+        return Json::encode($this->array);
     }
 
-    public function limit($number)
+    public function limit(int $number): static
     {
-        $this->_array = array_slice($this->_array, 0, $number);
+        $this->array = array_slice($this->array, 0, $number);
         return $this;
     }
 
-    public function skip($number)
+    public function skip(int $number): static
     {
-        $this->_array = array_slice($this->_array, $number);
+        $this->array = array_slice($this->array, $number);
         return $this;
     }
 
-    public function getDuplicates()
+    public function getDuplicates(): static
     {
-        $this->_array = Arrays::getDuplicates($this->_array);
+        $this->array = Arrays::getDuplicates($this->array);
         return $this;
     }
 
-    public function getDuplicatesAssoc()
+    public function getDuplicatesAssoc(): static
     {
-        $this->_array = Arrays::getDuplicatesAssoc($this->_array);
+        $this->array = Arrays::getDuplicatesAssoc($this->array);
         return $this;
     }
 }
