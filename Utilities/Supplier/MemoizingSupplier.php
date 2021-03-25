@@ -12,9 +12,11 @@ class MemoizingSupplier implements Supplier
 {
     private bool $invoked = false;
     private mixed $cachedResult;
+    private Closure $function;
 
-    public function __construct(private Closure $function)
+    public function __construct(callable $function)
     {
+        $this->function = Closure::fromCallable($function);
     }
 
     public function get(): mixed

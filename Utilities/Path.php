@@ -6,10 +6,6 @@
 
 namespace Ouzo\Utilities;
 
-/**
- * Class Path
- * @package Ouzo\Utilities
- */
 class Path
 {
     /**
@@ -45,7 +41,7 @@ class Path
      * /tmp/my/file.txt
      * </code>
      */
-    public static function joinWithTemp(string ...$args)
+    public static function joinWithTemp(string ...$args): string
     {
         return Path::join(sys_get_temp_dir(), ...$args);
     }

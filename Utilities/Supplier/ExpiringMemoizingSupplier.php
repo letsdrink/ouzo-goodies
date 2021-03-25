@@ -13,9 +13,11 @@ class ExpiringMemoizingSupplier implements Supplier
 {
     private mixed $cachedResult = null;
     private int $lastCallTime;
+    private Closure $function;
 
-    public function __construct(private Closure $function, private int $expireTime = 3600)
+    public function __construct(callable $function, private int $expireTime = 3600)
     {
+        $this->function = Closure::fromCallable($function);
     }
 
     public function get(): mixed

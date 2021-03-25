@@ -3,27 +3,16 @@
  * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
-/**
- * Class RecursiveStrSubstitutor
- * @package Ouzo\Utilities
- */
 class RecursiveStrSubstitutor
 {
-    private $_maxNestLevel;
-    private $_substitutor;
+    private StrSubstitutor $substitutor;
 
-    /**
-     * Creates recursive substitutor
-     * @param array $values
-     * @param null|string $default
-     * @param int $maxNestLevel
-     */
-    public function __construct($values = [], $default = null, $maxNestLevel = 10)
+    public function __construct(array $values = [], ?string $default = null, private int $maxNestLevel = 10)
     {
-        $this->_maxNestLevel = $maxNestLevel;
-        $this->_substitutor = new StrSubstitutor($values, $default);
+        $this->substitutor = new StrSubstitutor($values, $default);
     }
 
     /**
@@ -38,18 +27,15 @@ class RecursiveStrSubstitutor
      * <code>
      * Connect with website.foo
      * </code>
-     *
-     * @param string $string
-     * @return mixed
      */
-    public function replace($string)
+    public function replace(string $string): string
     {
         $nestLevel = 1;
         do {
             $originalString = $string;
             $nestLevel++;
-            $string = $this->_substitutor->replace($string);
-        } while (($originalString != $string) && ($nestLevel <= $this->_maxNestLevel));
+            $string = $this->substitutor->replace($string);
+        } while (($originalString != $string) && ($nestLevel <= $this->maxNestLevel));
         return $string;
     }
 }
