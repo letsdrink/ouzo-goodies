@@ -377,8 +377,11 @@ class Strings
      * ouzo ...
      * </code>
      */
-    public static function abbreviate(?string $string, ?string $maxWidth): string
+    public static function abbreviate(?string $string, ?string $maxWidth): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
         if (mb_strlen($string) > $maxWidth) {
             return mb_substr($string, 0, $maxWidth) . '...';
         }
@@ -421,8 +424,14 @@ class Strings
      * 'This is madness! madness? This is Sparta!'
      * </code>
      */
-    public static function sprintAssoc(string|array $string, array $params): array|string
+    public static function sprintAssoc(string|array|null $string, ?array $params): array|string|null
     {
+        if (is_null($string)) {
+            return null;
+        }
+        if (is_null($params)) {
+            return $string;
+        }
         foreach ($params as $key => $value) {
             $string = preg_replace("/%{($key)}/", $value, $string);
         }
@@ -430,9 +439,6 @@ class Strings
     }
 
     /**
-     * Replace all occurrences of placeholder in string with values from associative array.
-     * When no value for placeholder is found in array, a default empty value is used if not otherwise specified.
-     *
      * Example:
      * <code>
      * $sprintfString = "This is %{what}! %{what}? This is %{place}!";
@@ -446,33 +452,52 @@ class Strings
      * 'This is madness! madness? This is Sparta!'
      * </code>
      */
-    public static function sprintAssocDefault(string $string, array $params, string $default = ''): string
+    public static function sprintAssocDefault(?string $string, ?array $params, ?string $default = ''): ?string
     {
-        foreach ($params as $key => $value) {
-            $string = preg_replace("/%{($key)}/", $value, $string);
+        if (is_null($string)) {
+            return null;
         }
-        $string = preg_replace("/%{\w*}/", $default, $string);
+        if (!is_null($params)) {
+            foreach ($params as $key => $value) {
+                $string = preg_replace("/%{($key)}/", $value, $string);
+            }
+        }
+        if (!is_null($default)) {
+            $string = preg_replace("/%{\w*}/", $default, $string);
+        }
         return $string;
     }
 
-    public static function contains(string $string, string $substring): bool
+    public static function contains(?string $string, ?string $substring): bool
     {
+        if (is_null($string) || is_null($substring)) {
+            return false;
+        }
         return mb_strpos($string, $substring) !== false;
     }
 
-    public static function containsIgnoreCase(string $string, string $substring): bool
+    public static function containsIgnoreCase(?string $string, ?string $substring): bool
     {
+        if (is_null($string) || is_null($substring)) {
+            return false;
+        }
         return self::contains(mb_strtolower($string), mb_strtolower($substring));
     }
 
-    public static function substringBefore(?string $string, string $separator): ?string
+    public static function substringBefore(?string $string, ?string $separator): ?string
     {
+        if (is_null($separator)) {
+            return $string;
+        }
         $pos = mb_strpos($string, $separator);
         return $pos !== false ? mb_substr($string, 0, $pos) : $string;
     }
 
-    public static function substringAfter(string $string, string $separator): string
+    public static function substringAfter(?string $string, ?string $separator): ?string
     {
+        if (is_null($separator)) {
+            return $string;
+        }
         $pos = mb_strpos($string, $separator);
         if ($pos === false) {
             return $string;
@@ -480,17 +505,23 @@ class Strings
         return mb_substr($string, $pos + 1, mb_strlen($string));
     }
 
-    public static function replaceNth(string $subject, string $search, string $replace, int $nth): string
+    public static function replaceNth(?string $subject, ?string $search, ?string $replace, int $nth): ?string
     {
+        if(is_null($search)) {
+            return $subject;
+        }
         $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
-        if (false !== $found && $found > $nth) {
+        if (false !== $found && $found > $nth && !is_null($replace)) {
             return substr_replace($subject, $replace, $matches[0][$nth][1], mb_strlen($search));
         }
         return $subject;
     }
 
-    public static function removeAccent(string $string): string
+    public static function removeAccent(?string $string): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
         if (false === preg_match('/[\x80-\xff]/', $string)) {
             return $string;
         }
@@ -604,8 +635,12 @@ class Strings
      * 'Łukasz'
      * </code>
      */
-    public static function uppercaseFirst(?string $string): string
+    public static function uppercaseFirst(?string $string): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
+
         $first = mb_substr($string, 0, 1);
         return mb_strtoupper($first) . mb_substr($string, 1);
     }
