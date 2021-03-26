@@ -127,7 +127,10 @@ class Strings
      */
     public static function startsWith(?string $string, ?string $prefix): bool
     {
-        return is_string($string) && is_string($prefix) && mb_substr($string, 0, mb_strlen($prefix)) === $prefix;
+        if (is_null($prefix)) {
+            return false;
+        }
+        return str_starts_with($string, $prefix);
     }
 
     /**
@@ -143,8 +146,10 @@ class Strings
      */
     public static function endsWith(?string $string, ?string $suffix): bool
     {
-        $suffixLength = mb_strlen($suffix);
-        return is_string($string) && is_string($suffix) && mb_substr($string, -$suffixLength, $suffixLength) === $suffix;
+        if (is_null($suffix)) {
+            return false;
+        }
+        return str_ends_with($string, $suffix);
     }
 
     /**
@@ -299,8 +304,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-        $string = htmlspecialchars($string);
-        return nl2br($string);
+        return nl2br(htmlspecialchars($string));
     }
 
     public static function htmlEntityDecode(?string $text): ?string
@@ -471,7 +475,7 @@ class Strings
         if (is_null($string) || is_null($substring)) {
             return false;
         }
-        return mb_strpos($string, $substring) !== false;
+        return str_contains($string, $substring);
     }
 
     public static function containsIgnoreCase(?string $string, ?string $substring): bool
@@ -520,6 +524,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
+
         if (false === preg_match('/[\x80-\xff]/', $string)) {
             return $string;
         }
@@ -638,7 +643,6 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-
         $first = mb_substr($string, 0, 1);
         return mb_strtoupper($first) . mb_substr($string, 1);
     }
