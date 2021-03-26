@@ -89,9 +89,7 @@ class Strings
         if (is_null($prefixes)) {
             return $string;
         }
-        return array_reduce($prefixes, function ($string, $prefix) {
-            return Strings::removePrefix($string, $prefix);
-        }, $string);
+        return array_reduce($prefixes, fn($string, $prefix) => Strings::removePrefix($string, $prefix), $string);
     }
 
     /**
@@ -202,7 +200,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-        return $string . $suffix;
+        return "{$string}{$suffix}";
     }
 
     /**
@@ -221,7 +219,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-        return $prefix . $string;
+        return "{$prefix}{$string}";
     }
 
     /**
@@ -507,7 +505,7 @@ class Strings
 
     public static function replaceNth(?string $subject, ?string $search, ?string $replace, int $nth): ?string
     {
-        if(is_null($search)) {
+        if (is_null($search)) {
             return $subject;
         }
         $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);
