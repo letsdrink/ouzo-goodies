@@ -6,13 +6,8 @@
 
 namespace Ouzo\Utilities;
 
-use Exception;
 use InvalidArgumentException;
 
-/**
- * Class Arrays
- * @package Ouzo\Utilities
- */
 class Arrays
 {
     const TREAT_NULL_AS_VALUE = 1;
@@ -32,12 +27,8 @@ class Arrays
      * <code>
      * true
      * </code>
-     *
-     * @param array $elements
-     * @param callable $predicate
-     * @return bool
      */
-    public static function all(array $elements, $predicate)
+    public static function all(array $elements, callable $predicate): bool
     {
         foreach ($elements as $element) {
             if (!Functions::call($predicate, $element)) {
@@ -62,11 +53,8 @@ class Arrays
      * one
      * two
      * </code>
-     *
-     * @param array $elements
-     * @param callable $function
      */
-    public static function each(array $elements, $function)
+    public static function each(array $elements, callable $function): void
     {
         array_map($function, $elements);
     }
@@ -91,13 +79,8 @@ class Arrays
      *      [20] => 3
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $keyFunction
-     * @param callable|null $valueFunction
-     * @return array
      */
-    public static function toMap(array $elements, $keyFunction, $valueFunction = null)
+    public static function toMap(array $elements, callable $keyFunction, callable $valueFunction = null): array
     {
         if ($valueFunction == null) {
             $valueFunction = Functions::identity();
@@ -141,11 +124,8 @@ class Arrays
      *      [5] => brie
      * )
      * </code>
-     *
-     * @param array $array
-     * @return array
      */
-    public static function flatten(array $array)
+    public static function flatten(array $array): array
     {
         $return = [];
         array_walk_recursive($array, function ($a) use (&$return) {
@@ -171,12 +151,8 @@ class Arrays
      * <code>
      * k3
      * </code>
-     *
-     * @param array $elements
-     * @param string $value
-     * @return bool|int|string
      */
-    public static function findKeyByValue(array $elements, $value)
+    public static function findKeyByValue(array $elements, string $value): bool|int|string
     {
         if ($value === 0) {
             $value = '0';
@@ -203,12 +179,8 @@ class Arrays
      * <code>
      * true
      * </code>
-     *
-     * @param array $elements
-     * @param callable $predicate
-     * @return bool
      */
-    public static function any(array $elements, $predicate)
+    public static function any(array $elements, callable $predicate): bool
     {
         foreach ($elements as $element) {
             if (Functions::call($predicate, $element)) {
@@ -228,12 +200,8 @@ class Arrays
      * </code>
      * Result:
      * <code>one</code>
-     *
-     * @param array $elements
-     * @return mixed
-     * @throws InvalidArgumentException
      */
-    public static function first(array $elements)
+    public static function first(array $elements): mixed
     {
         if (empty($elements)) {
             throw new InvalidArgumentException('empty array');
@@ -251,12 +219,8 @@ class Arrays
      * </code>
      * Result:
      * <code>c</code>
-     *
-     * @param array $elements
-     * @return mixed
-     * @throws InvalidArgumentException
      */
-    public static function last(array $elements)
+    public static function last(array $elements): mixed
     {
         if (empty($elements)) {
             throw new InvalidArgumentException('empty array');
@@ -274,11 +238,8 @@ class Arrays
      * </code>
      * Result:
      * <code>null</code>
-     *
-     * @param array $elements
-     * @return mixed|null
      */
-    public static function firstOrNull(array $elements)
+    public static function firstOrNull(array $elements): mixed
     {
         return empty($elements) ? null : self::first($elements);
     }
@@ -301,13 +262,8 @@ class Arrays
      * </code>
      * Result:
      * <code>--not found--</code>
-     *
-     * @param array $elements
-     * @param string|int $key
-     * @param mixed|null $default
-     * @return mixed|null
      */
-    public static function getValue(array $elements, $key, $default = null)
+    public static function getValue(array $elements, string|int|null $key, mixed $default = null): mixed
     {
         return isset($elements[$key]) ? $elements[$key] : $default;
     }
@@ -328,12 +284,8 @@ class Arrays
      *      [b] => 2
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param array $allowedKeys
-     * @return array
      */
-    public static function filterByAllowedKeys(array $elements, array $allowedKeys)
+    public static function filterByAllowedKeys(array $elements, array $allowedKeys): array
     {
         return array_intersect_key($elements, array_flip($allowedKeys));
     }
@@ -356,12 +308,8 @@ class Arrays
      *      [b2] => 2
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $predicate
-     * @return array
      */
-    public static function filterByKeys(array $elements, $predicate)
+    public static function filterByKeys(array $elements, callable $predicate): array
     {
         return array_filter($elements, $predicate, ARRAY_FILTER_USE_KEY);
     }
@@ -413,13 +361,8 @@ class Arrays
      *      )
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $keyFunction
-     * @param string|null $orderField
-     * @return array
      */
-    public static function groupBy(array $elements, $keyFunction, $orderField = null)
+    public static function groupBy(array $elements, callable $keyFunction, string $orderField = null): array
     {
         $map = [];
         if (!empty($orderField)) {
@@ -478,11 +421,9 @@ class Arrays
      * @param string $orderField
      * @return array
      */
-    public static function orderBy(array $elements, $orderField)
+    public static function orderBy(array $elements, string $orderField): array
     {
-        usort($elements, function ($a, $b) use ($orderField) {
-            return $a->$orderField < $b->$orderField ? -1 : 1;
-        });
+        usort($elements, fn($a, $b) => $a->$orderField <=> $b->$orderField);
         return $elements;
     }
 
@@ -510,12 +451,8 @@ class Arrays
      *      [new_k3] => v3
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $function
-     * @return array
      */
-    public static function mapKeys(array $elements, $function)
+    public static function mapKeys(array $elements, callable $function): array
     {
         $newArray = [];
         foreach ($elements as $oldKey => $value) {
@@ -545,12 +482,8 @@ class Arrays
      *      [2] => new_k3
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $function
-     * @return array
      */
-    public static function map(array $elements, $function)
+    public static function map(array $elements, callable $function): array
     {
         return array_map($function, $elements);
     }
@@ -573,23 +506,16 @@ class Arrays
      *      [3] => 4
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $function
-     * @return array
      */
-    public static function filter(array $elements, $function)
+    public static function filter(array $elements, callable $function): array
     {
         return array_filter($elements, $function);
     }
 
     /**
      * This method filter array will remove all values that are blank.
-     *
-     * @param array $elements
-     * @return array
      */
-    public static function filterNotBlank(array $elements)
+    public static function filterNotBlank(array $elements): array
     {
         return array_filter($elements);
     }
@@ -608,11 +534,8 @@ class Arrays
      *      [0] => test
      * )
      * </code>
-     *
-     * @param mixed $element
-     * @return array
      */
-    public static function toArray($element)
+    public static function toArray(mixed $element): array
     {
         if (is_null($element)) {
             return [];
@@ -629,11 +552,8 @@ class Arrays
      * $rand = Arrays::randElement($array);
      * </code>
      * Result: <i>rand element from array</i>
-     *
-     * @param array $elements
-     * @return null
      */
-    public static function randElement(array $elements)
+    public static function randElement(array $elements): mixed
     {
         return $elements ? $elements[array_rand($elements)] : null;
     }
@@ -656,12 +576,8 @@ class Arrays
      *      [surname] => smith
      * )
      * </code>
-     *
-     * @param array $keys
-     * @param array $values
-     * @return array
      */
-    public static function combine(array $keys, array $values)
+    public static function combine(array $keys, array $values): array
     {
         if (empty($keys) || empty($values)) {
             return [];
@@ -679,24 +595,16 @@ class Arrays
      * </code>
      * Result:
      * <code>true</code>
-     *
-     * @param array $elements
-     * @param string|int $key
-     * @return bool
      */
-    public static function keyExists(array $elements, $key)
+    public static function keyExists(array $elements, string|int $key): bool
     {
         return array_key_exists($key, $elements);
     }
 
     /**
      * Method to reduce an array elements to a string value.
-     *
-     * @param array $elements
-     * @param callable $function
-     * @return mixed
      */
-    public static function reduce(array $elements, $function)
+    public static function reduce(array $elements, callable $function): mixed
     {
         return array_reduce($elements, $function);
     }
@@ -704,12 +612,8 @@ class Arrays
     /**
      * Finds first element in array that is matched by function.
      * Returns null if element was not found.
-     *
-     * @param array $elements
-     * @param callable $function
-     * @return mixed
      */
-    public static function find(array $elements, $function)
+    public static function find(array $elements, callable $function): mixed
     {
         foreach ($elements as $element) {
             if ($function($element)) {
@@ -721,12 +625,8 @@ class Arrays
 
     /**
      * Computes the intersection of arrays.
-     *
-     * @param array $array1
-     * @param array $array2
-     * @return array
      */
-    public static function intersect(array $array1, array $array2)
+    public static function intersect(array $array1, array $array2): array
     {
         return array_intersect($array1, $array2);
     }
@@ -752,12 +652,8 @@ class Arrays
      *          )
      * )
      * </code>
-     *
-     * @param array $array
-     * @param array $keys
-     * @param $value
      */
-    public static function setNestedValue(array &$array, array $keys, $value)
+    public static function setNestedValue(array &$array, array $keys, mixed $value): void
     {
         $current = &$array;
         foreach ($keys as $key) {
@@ -806,13 +702,8 @@ class Arrays
      *              }
      * )
      * </code>
-     *
-     * @param array $array
-     * @param $comparator
-     * @return array sorted according to the comparator
-     * @throws InvalidArgumentException
      */
-    public static function sort(array $array, $comparator)
+    public static function sort(array $array, callable $comparator): array
     {
         usort($array, $comparator);
         return $array;
@@ -830,12 +721,8 @@ class Arrays
      * <code>
      * value
      * </code>
-     *
-     * @param array $array
-     * @param array $keys
-     * @return array|mixed|null
      */
-    public static function getNestedValue(array $array, array $keys)
+    public static function getNestedValue(array $array, array $keys): mixed
     {
         foreach ($keys as $key) {
             $array = self::getValue(self::toArray($array), $key);
@@ -850,12 +737,8 @@ class Arrays
         return $array;
     }
 
-    /**
-     * @deprecated
-     * @param array $array
-     * @param array $keys
-     */
-    public static function removeNestedValue(array &$array, array $keys)
+    /** @deprecated */
+    public static function removeNestedValue(array &$array, array $keys): void
     {
         trigger_error('Use Arrays::removeNestedKey instead', E_USER_DEPRECATED);
         self::removeNestedKey($array, $keys);
@@ -878,12 +761,8 @@ class Arrays
      *          )
      * )
      * </code>
-     *
-     * @param array $array
-     * @param array $keys
-     * @param bool $removeEmptyParents
      */
-    public static function removeNestedKey(array &$array, array $keys, $removeEmptyParents = false)
+    public static function removeNestedKey(array &$array, array $keys, bool $removeEmptyParents = false): void
     {
         $key = array_shift($keys);
         if (count($keys) == 0) {
@@ -922,13 +801,8 @@ class Arrays
      * <code>
      * true
      * </code>
-     *
-     * @param array $array
-     * @param array $keys
-     * @param null $flags
-     * @return bool
      */
-    public static function hasNestedKey(array $array, array $keys, $flags = null)
+    public static function hasNestedKey(array $array, array $keys, int $flags = null): bool
     {
         foreach ($keys as $key) {
             if (!is_array($array) || !array_key_exists($key, $array) || (!($flags & self::TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {
@@ -974,23 +848,20 @@ class Arrays
      *      [other.first.second.third] => some value
      * )
      * </code>
-     *
-     * @param array $array
-     * @return array
      */
-    public static function flattenKeysRecursively(array $array)
+    public static function flattenKeysRecursively(array $array): array
     {
         $result = [];
-        self::_flattenKeyRecursively($array, $result, '');
+        self::recursiveFlattenKey($array, $result, '');
         return $result;
     }
 
-    private static function _flattenKeyRecursively($array, &$result, $parentKey)
+    private static function recursiveFlattenKey(array $array, array &$result, string $parentKey): void
     {
         foreach ($array as $key => $value) {
             $itemKey = ($parentKey ? $parentKey . '.' : '') . $key;
             if (is_array($value)) {
-                self::_flattenKeyRecursively($value, $result, $itemKey);
+                self::recursiveFlattenKey($value, $result, $itemKey);
             } else {
                 $result[$itemKey] = $value;
             }
@@ -1011,12 +882,8 @@ class Arrays
      * <code>
      * 2
      * </code>
-     *
-     * @param array $elements
-     * @param callable $predicate
-     * @return int
      */
-    public static function count(array $elements, $predicate)
+    public static function count(array $elements, callable $predicate): int
     {
         $count = 0;
         foreach ($elements as $element) {
@@ -1047,12 +914,8 @@ class Arrays
      *      [c] => c_3
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param callable $function
-     * @return array
      */
-    public static function mapEntries(array $elements, $function)
+    public static function mapEntries(array $elements, callable $function): array
     {
         $keys = array_keys($elements);
         $values = array_values($elements);
@@ -1080,13 +943,8 @@ class Arrays
      *      [0] => $b
      * )
      * </code>
-     *
-     * @param array $elements
-     * @param $selector
-     * @return array
-     * @throws Exception
      */
-    public static function uniqueBy(array $elements, $selector)
+    public static function uniqueBy(array $elements, string|Extractor $selector): array
     {
         return array_values(self::toMap($elements, Functions::extractExpression($selector)));
     }
@@ -1112,12 +970,8 @@ class Arrays
      *  [0] => f
      * )
      * </code>
-     *
-     * @param array $array1
-     * @param array $array2
-     * @return array
      */
-    public static function recursiveDiff(array $array1, array $array2)
+    public static function recursiveDiff(array $array1, array $array2): array
     {
         $result = [];
         foreach ($array1 as $key => $value) {
@@ -1148,12 +1002,8 @@ class Arrays
      * <code>
      * true
      * </code>
-     *
-     * @param array $array
-     * @param mixed $element expected value
-     * @return bool
      */
-    public static function contains(array $array, $element)
+    public static function contains(array $array, mixed $element): bool
     {
         return ArrayContainFunctions::contains($array, $element);
     }
@@ -1169,12 +1019,8 @@ class Arrays
      * <code>
      * true
      * </code>
-     *
-     * @param array $array
-     * @param mixed $element expected value
-     * @return bool
      */
-    public static function containsAll(array $array, $element)
+    public static function containsAll(array $array, mixed $element): bool
     {
         return ArrayContainFunctions::containsAll($array, $element);
     }
@@ -1194,11 +1040,8 @@ class Arrays
      *      [2] => b
      * )
      * </code>
-     *
-     * @param array $array
-     * @return array
      */
-    public static function shuffle(array $array)
+    public static function shuffle(array $array): array
     {
         if (empty($array)) {
             return $array;
@@ -1230,10 +1073,8 @@ class Arrays
      * <code>
      * TRUE
      * </code>
-     * @param array $array
-     * @return bool
      */
-    public static function isAssociative(array $array)
+    public static function isAssociative(array $array): bool
     {
         return count(array_filter(array_keys($array), 'is_string')) > 0;
     }
@@ -1254,10 +1095,8 @@ class Arrays
      *      [3] => 4
      * )
      * </code>
-     * @param array $arrays
-     * @return array
      */
-    public static function concat(array $arrays)
+    public static function concat(array $arrays): array
     {
         if (empty($arrays)) {
             return [];
@@ -1280,10 +1119,8 @@ class Arrays
      *      [2] => 'd'
      * )
      * </code>
-     * @param array $array
-     * @return array
      */
-    public static function getDuplicates(array $array)
+    public static function getDuplicates(array $array): array
     {
         return array_values(self::getDuplicatesAssoc($array));
     }
@@ -1303,10 +1140,8 @@ class Arrays
      *      [6] => 'c'
      * )
      * </code>
-     * @param array $array
-     * @return array
      */
-    public static function getDuplicatesAssoc(array $array)
+    public static function getDuplicatesAssoc(array $array): array
     {
         return array_unique(array_intersect($array, array_diff_assoc($array, array_unique($array))));
     }
