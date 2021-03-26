@@ -1,36 +1,27 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
 class ReindexingIterator extends ForwardingIterator
 {
-    /** @var int */
-    private $index;
+    private int $index;
 
-    /**
-     * @inheritdoc
-     */
-    public function key()
+    public function key(): int
     {
         return $this->index;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function next()
+    public function next(): void
     {
         parent::next();
         $this->index++;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rewind()
+    public function rewind(): void
     {
         parent::rewind();
         $this->index = 0;

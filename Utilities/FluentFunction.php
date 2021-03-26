@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -43,27 +43,25 @@ namespace Ouzo\Utilities;
  */
 class FluentFunction
 {
-    private $_functions = [];
+    private array $functions = [];
 
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): static
     {
-        $this->_functions[] = call_user_func_array([Functions::class, $name], $arguments);
+        $this->functions[] = call_user_func_array([Functions::class, $name], $arguments);
         return $this;
     }
 
-    public function __invoke($object)
+    public function __invoke(mixed $object): mixed
     {
-        foreach ($this->_functions as $function) {
+        foreach ($this->functions as $function) {
             $object = Functions::call($function, $object);
         }
         return $object;
     }
 
-    public function negate()
+    public function negate(): static
     {
-        $this->_functions[] = function ($object) {
-            return !$object;
-        };
+        $this->functions[] = fn($object) => !$object;
         return $this;
     }
 }

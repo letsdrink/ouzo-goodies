@@ -4,9 +4,14 @@
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
-namespace Ouzo\Tests\Mock;
 
-interface ArgumentMatcher
+namespace Ouzo\Utilities\Chain;
+
+
+class EndChain implements Chain
 {
-    public function matches(mixed $argument): mixed;
+    public function proceed(mixed $param): Chain
+    {
+        return new EndChain();
+    }
 }

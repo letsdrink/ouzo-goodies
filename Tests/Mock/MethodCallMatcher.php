@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Arrays;
@@ -10,26 +11,16 @@ use Ouzo\Utilities\Objects;
 
 class MethodCallMatcher
 {
-    /** @var string */
-    private $name;
-    /** @var string */
-    private $arguments;
+    private string $name;
+    private array $arguments;
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     */
-    public function __construct($name, $arguments)
+    public function __construct(string $name, array $arguments)
     {
         $this->name = $name;
         $this->arguments = $arguments;
     }
 
-    /**
-     * @param MethodCall $methodCall
-     * @return bool
-     */
-    public function matches(MethodCall $methodCall)
+    public function matches(MethodCall $methodCall): bool
     {
         if ($methodCall->name != $this->name) {
             return false;
@@ -51,21 +42,12 @@ class MethodCallMatcher
         return true;
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     * @return bool
-     */
-    public function argMatches($expected, $actual)
+    public function argMatches(mixed $expected, mixed $actual): bool
     {
         return ($expected instanceof ArgumentMatcher && $expected->matches($actual)) || Objects::equal($expected, $actual);
     }
 
-    /**
-     * @param MethodCall $methodCall
-     * @return bool
-     */
-    public function __invoke(MethodCall $methodCall)
+    public function __invoke(MethodCall $methodCall): bool
     {
         return $this->matches($methodCall);
     }

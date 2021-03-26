@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 /**
@@ -19,147 +20,91 @@ namespace Ouzo\Tests;
  */
 class StringAssert
 {
-    /** @var string */
-    private $actual;
+    private ?string $actual;
 
-    /**
-     * @param string $actual
-     */
-    private function __construct($actual)
+    private function __construct(?string $actual)
     {
         $this->actual = $actual;
     }
 
-    /**
-     * @param string $actual
-     * @return StringAssert
-     */
-    public static function that($actual)
+    public static function that(?string $actual): StringAssert
     {
         return new StringAssert($actual);
     }
 
-    /**
-     * @param string $substring
-     * @return $this
-     */
-    public function contains($substring)
+    public function contains(string $substring): StringAssert
     {
         AssertAdapter::assertContains($substring, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $substring
-     * @return $this
-     */
-    public function doesNotContain($substring)
+    public function doesNotContain(string $substring): StringAssert
     {
         AssertAdapter::assertNotContains($substring, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $prefix
-     * @return $this
-     */
-    public function startsWith($prefix)
+    public function startsWith(string $prefix): StringAssert
     {
         AssertAdapter::assertStringStartsWith($prefix, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $postfix
-     * @return $this
-     */
-    public function endsWith($postfix)
+    public function endsWith(string $postfix): StringAssert
     {
         AssertAdapter::assertStringEndsWith($postfix, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $string
-     * @return $this
-     */
-    public function isEqualToIgnoringCase($string)
+    public function isEqualToIgnoringCase(?string $string): StringAssert
     {
         AssertAdapter::assertEqualsIgnoringCase($string, $this->actual, 'Failed asserting that two strings are equal ignoring case.');
         return $this;
     }
 
-    /**
-     * @param string $string
-     * @return $this
-     */
-    public function isEqualTo($string)
+    public function isEqualTo(?string $string): StringAssert
     {
         AssertAdapter::assertEquals($string, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $string
-     * @return $this
-     */
-    public function isNotEqualTo($string)
+    public function isNotEqualTo(?string $string): StringAssert
     {
         AssertAdapter::assertNotEquals($string, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $regex
-     * @return $this
-     */
-    public function matches($regex)
+    public function matches(string $regex): StringAssert
     {
         AssertAdapter::assertRegExp($regex, $this->actual);
         return $this;
     }
 
-    /**
-     * @param int $length
-     * @return $this
-     */
-    public function hasSize($length)
+    public function hasSize(int $length): StringAssert
     {
         AssertAdapter::assertEquals($length, mb_strlen($this->actual));
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isNull()
+    public function isNull(): StringAssert
     {
         AssertAdapter::assertNull($this->actual);
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isNotNull()
+    public function isNotNull(): StringAssert
     {
         AssertAdapter::assertNotNull($this->actual);
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isEmpty()
+    public function isEmpty(): StringAssert
     {
         AssertAdapter::assertEmpty($this->actual);
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isNotEmpty()
+    public function isNotEmpty(): StringAssert
     {
         AssertAdapter::assertNotEmpty($this->actual);
         return $this;

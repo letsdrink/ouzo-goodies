@@ -1,44 +1,31 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 class BooleanAssert
 {
-    /** @var mixed */
-    private $actual;
+    private mixed $actual;
 
-    /**
-     * @param mixed $actual
-     */
-    private function __construct($actual)
+    private function __construct(mixed $actual)
     {
         $this->actual = $actual;
     }
 
-    /**
-     * @param mixed $actual
-     * @return BooleanAssert
-     */
-    public static function that($actual)
+    public static function that(mixed $actual): BooleanAssert
     {
         return new BooleanAssert($actual);
     }
 
-    /**
-     * @return void
-     */
-    public function isTrue()
+    public function isTrue(): void
     {
         AssertAdapter::assertTrue($this->actual);
     }
 
-    /**
-     * @return void
-     */
-    public function isFalse()
+    public function isFalse(): void
     {
         AssertAdapter::assertFalse($this->actual);
     }

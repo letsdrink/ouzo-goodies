@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -12,41 +12,26 @@ class BatchingIterator implements Iterator
 {
     const OPTION_PRESERVER_KEYS = 0x2;
 
-    /** @var Iterator $iterator */
-    private $iterator;
-    /** @var int */
-    private $chunkSize;
-    /** @var array $currentChunk */
-    private $currentChunk;
-    /** @var int */
-    private $position = 0;
-    /** @var bool */
-    private $preserveKeys;
+    private Iterator $iterator;
+    private int $chunkSize;
+    private array $currentChunk;
+    private int $position = 0;
+    private bool $preserveKeys;
 
-    /**
-     * @param Iterator $iterator
-     * @param int $chunkSize
-     */
-    public function __construct(Iterator $iterator, $chunkSize, $options = 0)
+    public function __construct(Iterator $iterator, int $chunkSize, int $options = 0)
     {
         $this->iterator = $iterator;
         $this->chunkSize = $chunkSize;
         $this->preserveKeys = $options && self::OPTION_PRESERVER_KEYS;
     }
 
-    /**
-     * @return void
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
         $this->iterator->rewind();
     }
 
-    /**
-     * @return bool
-     */
-    public function valid()
+    public function valid(): bool
     {
         if (!isset($this->currentChunk)) {
             $this->fetchChunk();
@@ -54,35 +39,23 @@ class BatchingIterator implements Iterator
         return !empty($this->currentChunk);
     }
 
-    /**
-     * @return int
-     */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
 
-    /**
-     * @return array
-     */
-    public function current()
+    public function current(): array
     {
         return $this->currentChunk;
     }
 
-    /**
-     * @return void
-     */
-    public function next()
+    public function next(): void
     {
         $this->position++;
         $this->fetchChunk();
     }
 
-    /**
-     * @return void
-     */
-    private function fetchChunk()
+    private function fetchChunk(): void
     {
         $this->currentChunk = [];
         for ($i = 0; $i < $this->chunkSize && $this->iterator->valid(); $i++, $this->iterator->next()) {

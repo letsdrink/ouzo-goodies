@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 class StreamStub
@@ -66,10 +67,10 @@ class StreamStub
     public static function unregister()
     {
         stream_wrapper_unregister(self::$streamName);
-        self::_reset();
+        self::reset();
     }
 
-    private static function _reset()
+    private static function reset()
     {
         static::$body = '';
         static::$position = 0;

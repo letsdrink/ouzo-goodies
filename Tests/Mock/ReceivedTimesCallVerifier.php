@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -10,35 +10,24 @@ use PHPUnit\Framework\Assert;
 
 class ReceivedTimesCallVerifier extends Verifier
 {
-    /** @var int */
-    private $times;
+    private int $times;
 
-    /**
-     * @param SimpleMock $mock
-     * @param int $times
-     */
-    public function __construct(SimpleMock $mock, $times)
+    public function __construct(SimpleMock $mock, int $times)
     {
         parent::__construct($mock);
         $this->times = $times;
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return $this
-     * @throws \Exception
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): ReceivedTimesCallVerifier
     {
         if ($this->numberOfActualCalls($name, $arguments) === $this->times) {
             Assert::assertEquals($this->times, $this->numberOfActualCalls($name, $arguments));
-            return $this;
         } else {
             $calls = $this->actualCalls();
             $expected = MethodCall::newInstance($name, $arguments)
                     ->toString() . ' is called ' . $this->times . ' times';
             Assert::assertEquals($expected, $calls, "Called method incorrect times");
         }
+        return $this;
     }
 }

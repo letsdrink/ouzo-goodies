@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use ArrayAccess;
@@ -17,27 +18,23 @@ use BadMethodCallException;
  */
 class Extractor implements ArrayAccess
 {
-    private $_operations = [];
+    private array $operations = [];
 
-    public function __get($field)
+    public function __get(string $field): static
     {
-        $this->_operations[] = function ($input) use ($field) {
-            return Objects::getValue($input, $field);
-        };
+        $this->operations[] = fn($input) => Objects::getValue($input, $field);
         return $this;
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, mixed $arguments): static
     {
-        $this->_operations[] = function ($input) use ($name, $arguments) {
-            return call_user_func_array([$input, $name], $arguments);
-        };
+        $this->operations[] = fn($input) => call_user_func_array([$input, $name], $arguments);
         return $this;
     }
 
-    public function __invoke($input)
+    public function __invoke(mixed $input): mixed
     {
-        foreach ($this->_operations as $operation) {
+        foreach ($this->operations as $operation) {
             $input = $operation($input);
             if ($input === null) {
                 return null;
@@ -46,25 +43,23 @@ class Extractor implements ArrayAccess
         return $input;
     }
 
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): static
     {
-        $this->_operations[] = function ($input) use ($offset) {
-            return isset($input[$offset]) ? $input[$offset] : null;
-        };
+        $this->operations[] = fn($input) => isset($input[$offset]) ? $input[$offset] : null;
         return $this;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         throw new BadMethodCallException();
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException();
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         throw new BadMethodCallException();
     }

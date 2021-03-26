@@ -1,38 +1,24 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use DateTime;
 
-/**
- * This class is intended to format date in a "time ago" manner.
- * @package Ouzo\Utilities
- */
 class TimeAgo
 {
-    /** @var string */
-    private $date;
-    /** @var string */
-    private $key;
-    /** @var array */
-    private $params = [];
+    private string $key;
+    private array $params = [];
 
-    /**
-     * @param string $date
-     */
-    public function __construct($date)
+    public function __construct(private string $date)
     {
-        $this->date = $date;
         $this->prepare();
     }
 
-    /**
-     * @return void
-     */
-    private function prepare()
+    private function prepare(): void
     {
         $date = new DateTime($this->date);
         if ($this->showJustNow()) {
@@ -62,70 +48,46 @@ class TimeAgo
         $this->key = $date->format('Y-m-d');
     }
 
-    /**
-     * @return bool
-     */
-    private function showJustNow()
+    private function showJustNow(): bool
     {
         return $this->getDateDiff() <= 60;
     }
 
-    /**
-     * @return int|null
-     */
-    private function showMinutesAgo()
+    private function showMinutesAgo(): ?int
     {
         $difference = $this->getDateDiff();
         return ($difference > 60 && $difference < 3600) ? floor($difference / 60) : null;
     }
 
-    /**
-     * @return bool
-     */
-    private function showTodayAt()
+    private function showTodayAt(): bool
     {
         $difference = $this->getDateDiff();
         return $this->isSameDay() && $difference >= 3600 && $difference < 86400;
     }
 
-    /**
-     * @return int
-     */
-    private function getDateDiff()
+    private function getDateDiff(): int
     {
         return $this->nowAsTimestamp() - $this->dateAsTimestamp();
     }
 
-    /**
-     * @return int
-     */
-    private function nowAsTimestamp()
+    private function nowAsTimestamp(): int
     {
         return Clock::now()->getTimestamp();
     }
 
-    /**
-     * @return int
-     */
-    private function dateAsTimestamp()
+    private function dateAsTimestamp(): int
     {
         return strtotime($this->date);
     }
 
-    /**
-     * @return bool
-     */
-    private function isSameDay()
+    private function isSameDay(): bool
     {
         $now = $this->nowAsTimestamp();
         $date = $this->dateAsTimestamp();
         return date('Y-m-d', $now) == date('Y-m-d', $date);
     }
 
-    /**
-     * @return bool
-     */
-    private function showYesterdayAt()
+    private function showYesterdayAt(): bool
     {
         $now = $this->nowAsTimestamp();
         $date = $this->dateAsTimestamp();
@@ -135,39 +97,24 @@ class TimeAgo
         return false;
     }
 
-    /**
-     * @return bool
-     */
-    private function showThisYear()
+    private function showThisYear(): bool
     {
         $now = $this->nowAsTimestamp();
         $date = $this->dateAsTimestamp();
         return date('Y', $now) == date('Y', $date);
     }
 
-    /**
-     * Creates TimeAgo object for passed date.
-     *
-     * @param string $date
-     * @return TimeAgo
-     */
-    public static function create($date)
+    public static function create(string $date): TimeAgo
     {
         return new self($date);
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return array
-     */
-    public function getParams()
+    public function getParams(): array
     {
         return $this->params;
     }

@@ -1,19 +1,16 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
 use ReflectionFunction;
 
-/**
- * Class Cache
- * @package Ouzo\Utilities
- */
 class Cache
 {
-    private static $_cache = [];
+    private static array $cache = [];
 
     /**
      * Caches the given closure using filename:line as a key.
@@ -25,11 +22,8 @@ class Cache
      *    return Country:all();
      * })
      * </code>
-     *
-     * @param callable $function
-     * @return mixed|null
      */
-    public static function memoize($function)
+    public static function memoize(callable $function): mixed
     {
         $reflectionFunction = new ReflectionFunction($function);
         $key = "{$reflectionFunction->getFileName()}:{$reflectionFunction->getEndLine()}";
@@ -47,57 +41,35 @@ class Cache
      *    return Country:all();
      * })
      * </code>
-     *
-     * @param string $key
-     * @param callable|null $function
-     * @return mixed|null
      */
-    public static function get($key, $function = null)
+    public static function get(string $key, ?callable $function = null): mixed
     {
         if (!self::contains($key) && $function) {
             self::put($key, call_user_func($function));
         }
-        return Arrays::getValue(self::$_cache, $key);
+        return Arrays::getValue(self::$cache, $key);
     }
 
-    /**
-     * @param string $key
-     * @param callable $object
-     * @return mixed
-     */
-    public static function put($key, $object)
+    public static function put(string $key, mixed $object): mixed
     {
-        return self::$_cache[$key] = $object;
+        return self::$cache[$key] = $object;
     }
 
-    /**
-     * Checks if cache contains an object for the given key.
-     *
-     * @param string $key
-     * @return bool
-     */
-    public static function contains($key)
+    /** Checks if cache contains an object for the given key. */
+    public static function contains(string $key): bool
     {
-        return array_key_exists($key, self::$_cache);
+        return array_key_exists($key, self::$cache);
     }
 
-    /**
-     * Returns number of stored objects.
-     *
-     * @return int
-     */
-    public static function size()
+    /** Returns number of stored objects. */
+    public static function size(): int
     {
-        return count(self::$_cache);
+        return count(self::$cache);
     }
 
-    /**
-     * Clears all items stored in cache.
-     *
-     * @return void
-     */
-    public static function clear()
+    /** Clears all items stored in cache. */
+    public static function clear(): void
     {
-        self::$_cache = [];
+        self::$cache = [];
     }
 }

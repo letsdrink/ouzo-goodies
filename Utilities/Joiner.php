@@ -1,92 +1,70 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
-/**
- * Class Joiner
- * @package Ouzo\Utilities
- */
+use Closure;
+
 class Joiner
 {
-    private $_separator;
-    private $_skipNulls;
-    private $_function;
-    private $_valuesFunction;
+    private bool $skipNulls = false;
+    private ?Closure $function = null;
+    private ?Closure $valuesFunction = null;
 
-    public function __construct($separator)
+    public function __construct(private string $separator)
     {
-        $this->_separator = $separator;
     }
 
-    /**
-     * Returns a Joiner object that uses the given separator.
-     *
-     * @param string $separator
-     * @return Joiner
-     */
-    public static function on($separator)
+    /** Returns a Joiner object that uses the given separator. */
+    public static function on(string $separator): Joiner
     {
         return new Joiner($separator);
     }
 
-    /**
-     * Returns a string containing array elements joined using the previously configured separator.
-     *
-     * @param array $array
-     * @return string
-     */
-    public function join(array $array)
+    /** Returns a string containing array elements joined using the previously configured separator. */
+    public function join(array $array): string
     {
-        $function = $this->_function;
-        $valuesFunction = $this->_valuesFunction;
+        $function = $this->function;
+        $valuesFunction = $this->valuesFunction;
         $result = '';
         foreach ($array as $key => $value) {
-            if (!$this->_skipNulls || ($this->_skipNulls && $value)) {
+            if (!$this->skipNulls || ($this->skipNulls && $value)) {
                 $result .= (
                     $function ? $function($key, $value) :
                         ($valuesFunction ? $valuesFunction($value) : $value)
-                    ) . $this->_separator;
+                    ) . $this->separator;
             }
         }
-        return rtrim($result, $this->_separator);
+        return rtrim($result, $this->separator);
     }
 
-    /**
-     * Returns a Joiner that skips null elements.
-     * @return Joiner
-     */
-    public function skipNulls()
+    /** Returns a Joiner that skips null elements. */
+    public function skipNulls(): static
     {
-        $this->_skipNulls = true;
+        $this->skipNulls = true;
         return $this;
     }
 
     /**
      * Returns a Joiner that transforms array elements before joining.
      * $function is called with two parameters: key and value.
-     *
-     * @param callable $function
-     * @return Joiner
      */
-    public function map($function)
+    public function map(callable $function): static
     {
-        $this->_function = $function;
+        $this->function = Closure::fromCallable($function);
         return $this;
     }
 
     /**
      * Returns a Joiner that transforms array values before joining.
      * $function is called with one parameter: value.
-     *
-     * @param callable $function
-     * @return Joiner
      */
-    public function mapValues($function)
+    public function mapValues(callable $function): static
     {
-        $this->_valuesFunction = $function;
+        $this->valuesFunction = Closure::fromCallable($function);
         return $this;
     }
 }

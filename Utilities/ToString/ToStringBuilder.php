@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -10,44 +10,29 @@ use ReflectionClass;
 
 class ToStringBuilder
 {
-    /** @var object */
-    private $object;
-    /** @var ToStringStyle */
-    private $style;
-    /** @var string */
-    private $buffer = '';
+    private ToStringStyle $toStringStyle;
 
-    /**
-     * @param object $object
-     * @param ToStringStyle|null $object
-     */
-    public function __construct($object, ToStringStyle $style = null)
+    private string $buffer = '';
+
+    public function __construct(
+        private object $object,
+        ToStringStyle $style = null
+    )
     {
-        $this->object = $object;
-        $this->style = $style ?: ToStringStyle::defaultStyle();
+        $this->toStringStyle = $style ?: ToStringStyle::defaultStyle();
 
-        $this->style->appendStart($this->buffer, new ReflectionClass($object));
+        $this->toStringStyle->appendStart($this->buffer, new ReflectionClass($object));
     }
 
-    /**
-     * @param string $string
-     * @param mixed $value
-     * @return $this
-     */
-    public function append($string, $value)
+    public function append(string $string, mixed $value): static
     {
-        $this->style->append($this->buffer, $string, $value);
-
+        $this->toStringStyle->append($this->buffer, $string, $value);
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function toString()
+    public function toString(): string
     {
-        $this->style->appendEnd($this->buffer);
-
+        $this->toStringStyle->appendEnd($this->buffer);
         return $this->buffer;
     }
 }

@@ -1,15 +1,14 @@
 <?php
+/*
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
+ * This file is made available under the MIT License (view the LICENSE file for more information).
+ */
 
 namespace Ouzo\Utilities;
 
 class LoggerUtils
 {
-    /**
-     * @param string $name
-     * @param int|null $length
-     * @return string
-     */
-    public static function shortenClassName($name, $length)
+    public static function shortenClassName(string $name, ?int $length): string
     {
         if ($length === null || $length < 0) {
             return $name;

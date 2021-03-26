@@ -6,7 +6,7 @@
 
 namespace Ouzo\Tests\Mock;
 
-interface ArgumentMatcher
+interface MockInterface
 {
-    public function matches(mixed $argument): mixed;
+
 }

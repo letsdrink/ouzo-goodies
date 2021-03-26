@@ -1,43 +1,30 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Functions;
 
 class WhenBuilder
 {
-    /** @var SimpleMock */
-    private $mock;
-    /** @var MethodCall */
-    private $methodCall;
+    private MockInterface $mock;
+    private MethodCall $methodCall;
 
-    /**
-     * @param SimpleMock $mock
-     */
-    public function __construct(SimpleMock $mock)
+    public function __construct(MockInterface $mock)
     {
         $this->mock = $mock;
     }
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return $this
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): WhenBuilder
     {
         $this->methodCall = new MethodCall($name, $arguments);
         return $this;
     }
 
-    /**
-     * @param array $results
-     * @return $this
-     */
-    public function thenReturn(...$results)
+    public function thenReturn(...$results): WhenBuilder
     {
         foreach ($results as $result) {
             $this->mock->stubbedCalls[] = new CallStub($this->methodCall, Functions::constant($result));
@@ -45,11 +32,7 @@ class WhenBuilder
         return $this;
     }
 
-    /**
-     * @param mixed ...
-     * @return $this
-     */
-    public function thenThrow($exception)
+    public function thenThrow(...$exceptions): WhenBuilder
     {
         foreach (func_get_args() as $exception) {
             $this->mock->stubbedCalls[] = new CallStub($this->methodCall, Functions::throwException($exception));
@@ -57,11 +40,7 @@ class WhenBuilder
         return $this;
     }
 
-    /**
-     * @param array $callbacks
-     * @return $this
-     */
-    public function thenAnswer(...$callbacks)
+    public function thenAnswer(...$callbacks): WhenBuilder
     {
         foreach ($callbacks as $callback) {
             $this->mock->stubbedCalls[] = new CallStub($this->methodCall, $callback);

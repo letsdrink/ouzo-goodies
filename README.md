@@ -4,7 +4,7 @@ Ouzo Goodies
 What is it
 ----------
 
-Utility classes, test assertions and mocking framework extracted from [Ouzo framework](http://ouzoframework.org). We are compatible with PHP 7.2 and later.
+Utility classes, test assertions and mocking framework extracted from [Ouzo framework](https://github.com/letsdrink/ouzo). We are compatible with PHP 7.2 and later.
 
 [![Build Status](https://travis-ci.org/letsdrink/ouzo.png?branch=master)](https://travis-ci.org/letsdrink/ouzo)
 [![Coverage Status](https://coveralls.io/repos/letsdrink/ouzo/badge.svg)](https://coveralls.io/r/letsdrink/ouzo)

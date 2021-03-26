@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -12,210 +12,92 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 
 class AssertAdapter
 {
-    /**
-     * @param mixed $condition
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertTrue($condition, $message = '')
+    public static function assertTrue(mixed $condition, string $message = ''): void
     {
         PHPUnit_Assert::assertTrue($condition, $message);
     }
 
-    /**
-     * @param mixed $condition
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertFalse($condition, $message = '')
+    public static function assertFalse(mixed $condition, string $message = ''): void
     {
         PHPUnit_Assert::assertFalse($condition, $message);
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertEquals($expected, $actual, $message = '')
+    public static function assertEquals(mixed $expected, mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertEquals($expected, $actual, $message);
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertEqualsIgnoringCase($expected, $actual, $message = '')
+    public static function assertEqualsIgnoringCase(mixed $expected, mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertEqualsIgnoringCase($expected, $actual, $message);
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertNotEquals($expected, $actual, $message = '')
+    public static function assertNotEquals(mixed $expected, mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertNotEquals($expected, $actual, $message);
     }
 
-    /**
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertNull($actual, $message = '')
+    public static function assertNull(mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertNull($actual, $message);
     }
 
-    /**
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertNotNull($actual, $message = '')
+    public static function assertNotNull(mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertNotNull($actual, $message);
     }
 
-    /**
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertEmpty($actual, $message = '')
+    public static function assertEmpty(mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertEmpty($actual, $message);
     }
 
-    /**
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertNotEmpty($actual, $message = '')
+    public static function assertNotEmpty(mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertNotEmpty($actual, $message);
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertSame($expected, $actual, $message = '')
+    public static function assertSame(mixed $expected, mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertSame($expected, $actual, $message);
     }
 
-    /**
-     * @param mixed $expected
-     * @param mixed $actual
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertInstanceOf($expected, $actual, $message = '')
+    public static function assertInstanceOf(mixed $expected, mixed $actual, string $message = ''): void
     {
         PHPUnit_Assert::assertInstanceOf($expected, $actual, $message);
     }
 
-    /**
-     * @param mixed $needle
-     * @param mixed $haystack
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertContains($needle, $haystack, $message = '')
+    public static function assertContains(mixed $needle, mixed $haystack, string $message = ''): void
     {
         PHPUnit_Assert::assertStringContainsString($needle, $haystack, $message);
     }
 
-    /**
-     * @param mixed $needle
-     * @param mixed $haystack
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertNotContains($needle, $haystack, $message = '')
+    public static function assertNotContains(mixed $needle, mixed $haystack, string $message = ''): void
     {
         PHPUnit_Assert::assertStringNotContainsString($needle, $haystack, $message);
     }
 
-    /**
-     * @param string $prefix
-     * @param string $string
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertStringStartsWith($prefix, $string, $message = '')
+    public static function assertStringStartsWith(string $prefix, string $string, string $message = ''): void
     {
         PHPUnit_Assert::assertStringStartsWith($prefix, $string, $message);
     }
 
-    /**
-     * @param string $prefix
-     * @param string $string
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertStringEndsWith($prefix, $string, $message = '')
+    public static function assertStringEndsWith(string $prefix, string $string, string $message = ''): void
     {
         PHPUnit_Assert::assertStringEndsWith($prefix, $string, $message);
     }
 
-    /**
-     * @param string $pattern
-     * @param string $string
-     * @param string $message
-     * @return void
-     * @throws \Exception
-     */
-    public static function assertRegExp($pattern, $string, $message = '')
+    public static function assertRegExp(string $pattern, string $string, string $message = ''): void
     {
         PHPUnit_Assert::assertMatchesRegularExpression($pattern, $string, $message);
     }
 
-    /**
-     * @param string $message
-     * @return void
-     */
-    public static function fail($message = '')
+    public static function fail(string $message = ''): void
     {
         PHPUnit_Assert::fail($message);
     }
-
-    /**
-     * @param string $description
-     * @param mixed $expected
-     * @param mixed $actual
-     * @param string $expectedAsString
-     * @param string $actualAsString
-     * @return void
-     */
-    public static function failWithDiff($description, $expected, $actual, $expectedAsString, $actualAsString)
+    
+    public static function failWithDiff(string $description, mixed $expected, mixed $actual, string $expectedAsString, string $actualAsString): void
     {
         if (class_exists(ExpectationFailedException::class)) {
             throw new ExpectationFailedException(

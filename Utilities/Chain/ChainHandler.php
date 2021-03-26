@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -8,28 +8,16 @@ namespace Ouzo\Utilities\Chain;
 
 class ChainHandler implements Chain
 {
-    /** @var Chain */
-    private $next;
-    /** @var Interceptor */
-    private $interceptor;
-
-    /**
-     * @param Chain $next
-     * @param Interceptor $interceptor
-     */
-    public function __construct(Chain $next, Interceptor $interceptor)
+    public function __construct(private Chain $next, private Interceptor $interceptor)
     {
-        $this->next = $next;
-        $this->interceptor = $interceptor;
     }
 
-    /** @inheritdoc */
-    public function proceed($param)
+    public function proceed(mixed $param): mixed
     {
         return $this->interceptor->handle($param, $this->next);
     }
 
-    public function __invoke($param)
+    public function __invoke(mixed $param): mixed
     {
         return $this->proceed($param);
     }

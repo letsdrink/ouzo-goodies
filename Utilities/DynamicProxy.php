@@ -1,43 +1,45 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Utilities;
 
+use Ouzo\Tests\Mock\MockInterface;
 use ReflectionClass;
 use ReflectionMethod;
+use ReflectionNamedType;
 use ReflectionUnionType;
 
-/**
- * Class DynamicProxy
- * @package Ouzo\Utilities
- */
 class DynamicProxy
 {
-    /** @var int */
-    private static $counter = 0;
+    private static int $counter = 0;
 
     /**
      * Creates a proxy for the given class.
      * Returned object dispatches method invocations to $methodHandler.
      */
-    public static function newInstance(string $className, ?object $methodHandler): ?object
+    public static function newInstance(string $className, ?object $methodHandler): MockInterface
     {
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
         eval(self::getProxyClassDefinition($name, $className));
-        $object = null;
-        eval("\$object = new {$name}(\$methodHandler);");
-        return $object;
+        return new $name($methodHandler);
     }
 
     private static function getProxyClassDefinition(string $name, string $className): string
     {
         $reflectionClass = new ReflectionClass($className);
-        $relation = $reflectionClass->isInterface() ? 'implements' : 'extends';
-
-        $code = "class {$name} {$relation} {$className} {";
+        $extendsClasses = [];
+        $implementsInterfaces = [MockInterface::class];
+        if ($reflectionClass->isInterface()) {
+            $implementsInterfaces[] = $className;
+        } else {
+            $extendsClasses[] = $className;
+        }
+        $extends = self::generateRelation('extends', $extendsClasses);
+        $implements = self::generateRelation('implements', $implementsInterfaces);
+        $code = "class {$name} {$extends} {$implements} {";
         $code .= "public \$methodHandler;\n";
         $code .= "function __construct(\$methodHandler) { \$this->methodHandler = \$methodHandler; }\n";
         foreach (self::getClassMethods($reflectionClass) as $method) {
@@ -74,7 +76,8 @@ class DynamicProxy
         } else {
             $type = $returnTypeInfo['type'];
 
-            $returnStatement = $returnTypeInfo['builtin'] ? "return ({$type})" : 'return';
+            $needCasting = $returnTypeInfo['builtin'] && $type !== 'mixed';
+            $returnStatement = $needCasting ? "return ({$type})" : 'return';
             if ($type != 'mixed' && $returnTypeInfo['nullable']) {
                 $nullable = '?';
                 $methodBody = "\$result = {$invoke} if (is_null(\$result)) { return \$result; } else { {$returnStatement} \$result; }";
@@ -94,7 +97,7 @@ class DynamicProxy
         $parameters = [];
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $parameter = '';
-            if ($reflectionParameter->hasType()) {
+            if ($reflectionParameter->hasType() && $reflectionParameter->getType() instanceof ReflectionNamedType) {
                 $typeName = $reflectionParameter->getType()->getName();
                 $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : '';
                 $parameter .= "{$nullable}{$typeName} ";
@@ -119,7 +122,9 @@ class DynamicProxy
     {
         if ($reflectionMethod->hasReturnType()) {
             $methodReturnType = $reflectionMethod->getReturnType();
+
             if ($methodReturnType instanceof ReflectionUnionType) {
+                /** @var ReflectionUnionType $methodReturnType */
                 $type = implode('|', Arrays::map($methodReturnType->getTypes(), fn($type) => $type->getName()));
                 return [
                     'type' => $type,
@@ -127,6 +132,8 @@ class DynamicProxy
                     'nullable' => $methodReturnType->allowsNull(),
                 ];
             }
+
+            /** @var ReflectionNamedType $methodReturnType */
             return [
                 'type' => $methodReturnType->getName(),
                 'builtin' => $methodReturnType->isBuiltin(),
@@ -137,11 +144,16 @@ class DynamicProxy
         return null;
     }
 
-    /**
-     * Extracts method handler from proxy object.
-     */
-    public static function extractMethodHandler(object $proxy): object
+    public static function extractMethodHandler(MockInterface $proxy): object
     {
         return $proxy->methodHandler;
+    }
+
+    private static function generateRelation(string $relation, array $classes): string
+    {
+        if ($classes) {
+            return $relation . ' ' . implode(', ', $classes);
+        }
+        return '';
     }
 }

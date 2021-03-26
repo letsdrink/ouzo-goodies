@@ -1,65 +1,44 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests;
 
 class GeneralAssert
 {
-    /** @var mixed */
-    private $actual;
+    private mixed $actual;
 
-    /**
-     * @param mixed $actual
-     */
-    private function __construct($actual)
+    private function __construct(mixed $actual)
     {
         $this->actual = $actual;
     }
 
-    /**
-     * @param mixed $actual
-     * @return GeneralAssert
-     */
-    public static function that($actual)
+    public static function that(mixed $actual): GeneralAssert
     {
         return new GeneralAssert($actual);
     }
 
-    /**
-     * @param mixed $object
-     * @return $this
-     */
-    public function isEqualTo($object)
+    public function isEqualTo(mixed $object): GeneralAssert
     {
         AssertAdapter::assertEquals($object, $this->actual);
         return $this;
     }
 
-    /**
-     * @param string $className
-     * @return $this
-     */
-    public function isInstanceOf($className)
+    public function isInstanceOf(string $className): GeneralAssert
     {
         AssertAdapter::assertInstanceOf($className, $this->actual);
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    public function isNull()
+    public function isNull(): GeneralAssert
     {
         AssertAdapter::assertNull($this->actual);
         return $this;
     }
-
-    /**
-     * @return $this
-     */
-    public function isNotNull()
+    
+    public function isNotNull(): GeneralAssert
     {
         AssertAdapter::assertNotNull($this->actual);
         return $this;

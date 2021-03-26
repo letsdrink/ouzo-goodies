@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
@@ -12,43 +12,30 @@ use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
 
-/**
- * Class Files
- * @package Ouzo\Utilities
- */
 class Files
 {
-    /**
-     * Loads a file using require or require_once if the $loadOnce flag is set to true.
-     *
-     * @param string $path
-     * @param bool $loadOnce
-     * @return bool
-     */
-    public static function loadIfExists($path, $loadOnce = true)
+    /** Loads a file using require or require_once if the $loadOnce flag is set to true. */
+    public static function loadIfExists(string $path, bool $loadOnce = true): bool
     {
         if (self::exists($path)) {
-            self::_require($path, $loadOnce);
+            self::require($path, $loadOnce);
             return true;
         }
         return false;
     }
 
     /**
-     * Loads a file using require or require_once if the $loadOnce flag is set to true, if the file does not exist, throws FileNotFoundException.
-     *
-     * @param string $path
-     * @param bool $loadOnce
-     * @throws FileNotFoundException
+     * Loads a file using require or require_once if the $loadOnce flag is set to true.
+     * If the file does not exist it throws FileNotFoundException.
      */
-    public static function load($path, $loadOnce = true)
+    public static function load(string $path, bool $loadOnce = true): void
     {
         if (!self::loadIfExists($path, $loadOnce)) {
-            throw new FileNotFoundException('Cannot load file: ' . $path);
+            throw new FileNotFoundException("Cannot load file: {$path}");
         }
     }
 
-    private static function _require($path, $loadOnce)
+    private static function require(string $path, bool $loadOnce): void
     {
         if ($loadOnce) {
             /** @noinspection PhpIncludeInspection */
@@ -59,14 +46,8 @@ class Files
         }
     }
 
-    /**
-     * Deletes file, throws FileNotFoundException if the file does not exist.
-     *
-     * @param string $path
-     * @return bool
-     * @throws FileNotFoundException
-     */
-    public static function delete($path)
+    /** Deletes file, throws FileNotFoundException if the file does not exist. */
+    public static function delete(string $path): bool
     {
         if (!self::exists($path)) {
             throw new FileNotFoundException('Cannot find file: ' . $path);
@@ -74,12 +55,8 @@ class Files
         return unlink($path);
     }
 
-    /**
-     * Deletes file if exists, otherwise return false if the file does not exist.
-     * @param $path
-     * @return bool
-     */
-    public static function deleteIfExists($path)
+    /** Deletes file if exists, otherwise return false if the file does not exist. */
+    public static function deleteIfExists(string $path): bool
     {
         if (self::exists($path)) {
             return self::delete($path);
@@ -88,17 +65,13 @@ class Files
     }
 
     /**
-     * Moves file from the source to the destination, throws FileNotFoundException if the source directory does not exist.
-     *
-     * @param string $sourcePath
-     * @param string $destinationPath
-     * @return bool
-     * @throws FileNotFoundException
+     * Moves file from the source to the destination.
+     * Throws FileNotFoundException if the source directory does not exist.
      */
-    public static function move($sourcePath, $destinationPath)
+    public static function move(string $sourcePath, string $destinationPath): bool
     {
         if (!self::exists($sourcePath)) {
-            throw new FileNotFoundException('Cannot find source file: ' . $sourcePath);
+            throw new FileNotFoundException("Cannot find source file: {$sourcePath}");
         }
         return rename($sourcePath, $destinationPath);
     }
@@ -114,11 +87,8 @@ class Files
      * <code>
      * 143 KB
      * </code>
-     *
-     * @param int $size
-     * @return string
      */
-    public static function convertUnitFileSize($size)
+    public static function convertUnitFileSize(string $size): string
     {
         $units = [" B", " KB", " MB", " GB"];
         $calculatedSize = $size;
@@ -127,39 +97,23 @@ class Files
             $calculatedSize = round($size / pow(1024, ($i = (int)floor(log($size, 1024)))), 2);
             $unit = $units[$i];
         }
-        return $calculatedSize . $unit;
+        return "{$calculatedSize}{$unit}";
     }
 
-    /**
-     * Returns a size of the given file.
-     *
-     * @param string $path
-     * @return int
-     */
-    public static function size($path)
+    /** Returns a size of the given file. */
+    public static function size(string $path): int
     {
         return (int)self::exists($path) ? filesize($path) : 0;
     }
 
-    /**
-     * Checks if the given file exists.
-     *
-     * @param string $path
-     * @return bool
-     */
-    public static function exists($path)
+    /** Checks if the given file exists. */
+    public static function exists(string $path): bool
     {
         return file_exists($path);
     }
 
-    /**
-     * Returns all files from the given directory that have the given extension.
-     *
-     * @param string $dir
-     * @param string $extension
-     * @return array
-     */
-    public static function getFilesRecursivelyWithSpecifiedExtension($dir, $extension)
+    /** Returns all files from the given directory that have the given extension. */
+    public static function getFilesRecursivelyWithSpecifiedExtension(string $dir, string $extension): array
     {
         $directory = new RecursiveDirectoryIterator($dir);
         $iterator = new RecursiveIteratorIterator($directory);
@@ -167,14 +121,8 @@ class Files
         return array_keys(iterator_to_array($filter));
     }
 
-    /**
-     * Copies content from $inputFile to $outputFile.
-     *
-     * @param string $inputFile
-     * @param string $outputFile
-     * @param int $bufferSize
-     */
-    public static function copyContent($inputFile, $outputFile, $bufferSize = 1024)
+    /** Copies content from $inputFile to $outputFile. */
+    public static function copyContent(string $inputFile, string $outputFile, int $bufferSize = 1024): void
     {
         $input = fopen($inputFile, 'r');
         $output = fopen($outputFile, "w");
@@ -185,30 +133,23 @@ class Files
         fclose($output);
     }
 
-    /**
-     * Returns mime type for the given file path.
-     *
-     * @param string $path
-     * @return string
-     */
-    public static function mimeType($path)
+    /** Returns mime type for the given file path. */
+    public static function mimeType(string $path): string
     {
         $fileInfo = new finfo(FILEINFO_MIME_TYPE);
         return $fileInfo->file($path);
     }
 
     /**
-     * Returns class name if file contains class or false if not, throws FileNotFoundException when file does not exist
-     *
-     * @param string $filePath - path to file
-     * @return bool|string - false if file doesn't contain class or class name if file contains class
-     * @throws FileNotFoundException - error thrown when file does not exist
+     * Returns class name if file contains class or false if not.
+     * Throws FileNotFoundException when file does not exist
      */
-    public static function checkWhetherFileContainsClass($filePath)
+    public static function checkWhetherFileContainsClass(string $filePath): bool|string
     {
         if (!self::exists($filePath)) {
-            throw new FileNotFoundException('Cannot find source file: ' . $filePath);
+            throw new FileNotFoundException("Cannot find source file: {$filePath}");
         }
+
         $fp = fopen($filePath, 'r');
         $class = false;
         $buffer = '';
@@ -218,7 +159,9 @@ class Files
             $buffer .= fread($fp, 512);
             $tokens = token_get_all($buffer);
 
-            if (strpos($buffer, '{') === false) continue;
+            if (!str_contains($buffer, '{')) {
+                continue;
+            }
 
             for (; $i < count($tokens); $i++) {
                 if ($tokens[$i][0] === T_CLASS) {
@@ -230,6 +173,7 @@ class Files
                 }
             }
         }
+
         return $class;
     }
 }

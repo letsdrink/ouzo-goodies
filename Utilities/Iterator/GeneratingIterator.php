@@ -1,8 +1,9 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
 use Closure;
@@ -10,27 +11,17 @@ use Iterator;
 
 class GeneratingIterator implements Iterator
 {
-    /** @var int */
-    private $index;
-    /** @var mixed */
-    private $current;
-    /** @var Closure */
-    private $function;
-    /** @var bool */
-    private $initialized;
+    private int $index;
+    private mixed $current;
+    private bool $initialized;
+    private Closure $function;
 
-    /**
-     * @param Closure $function
-     */
-    public function __construct($function)
+    public function __construct(callable $function)
     {
-        $this->function = $function;
+        $this->function = Closure::fromCallable($function);
     }
 
-    /**
-     * @return mixed
-     */
-    public function current()
+    public function current(): mixed
     {
         if (!$this->initialized) {
             $this->generate();
@@ -39,44 +30,29 @@ class GeneratingIterator implements Iterator
         return $this->current;
     }
 
-    /**
-     * @return bool
-     */
-    public function valid()
+    public function valid(): bool
     {
         return true;
     }
 
-    /**
-     * @return int
-     */
-    public function key()
+    public function key(): int
     {
         return $this->index;
     }
 
-    /**
-     * @return void
-     */
-    public function next()
+    public function next(): void
     {
         $this->index++;
         $this->generate();
     }
 
-    /**
-     * @return void
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->index = 0;
         $this->initialized = false;
     }
 
-    /**
-     * @return void
-     */
-    private function generate()
+    private function generate(): void
     {
         $function = $this->function;
         $this->current = $function($this->index);

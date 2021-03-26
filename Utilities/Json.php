@@ -1,24 +1,15 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities;
 
-/**
- * Class Json
- * @package Ouzo\Utilities
- */
 class Json
 {
-    /**
-     * Decodes a JSON string
-     *
-     * @param string $string
-     * @param bool $asArray
-     * @return mixed
-     */
-    public static function safeDecode($string, $asArray = false)
+    /** Decodes a JSON string */
+    public static function safeDecode(?string $string, bool $asArray = false): mixed
     {
         if ($string === '' || $string === null) { // for PHP 7 compatibility
             $string = json_encode(null);
@@ -26,51 +17,33 @@ class Json
         return json_decode($string, $asArray);
     }
 
-    /**
-     * Returns the JSON representation of the $value
-     *
-     * @param mixed $value
-     * @return string|false
-     */
-    public static function safeEncode($value)
+    /** Returns the JSON representation of the $value */
+    public static function safeEncode(mixed $value): string|bool
     {
         return json_encode($value);
     }
 
-    /**
-     * Decodes a JSON string, or throws JsonDecodeException on failure
-     *
-     * @param string $string
-     * @param bool $asArray
-     * @return mixed
-     * @throws JsonDecodeException
-     */
-    public static function decode($string, $asArray = false)
+    /** Decodes a JSON string, or throws JsonDecodeException on failure */
+    public static function decode(?string $string, bool $asArray = false): mixed
     {
         $decoded = self::safeDecode($string, $asArray);
-        if (is_null($decoded) == false) {
+        if (!is_null($decoded)) {
             return $decoded;
         }
         $code = self::lastError();
         if ($code === JSON_ERROR_NONE) {
-            return $decoded;
+            return null;
         }
-        throw new JsonDecodeException(self::lastErrorMessage(), $code);
+        throw new JsonDecodeException(self::lastErrorMessage(), self::lastError());
     }
 
-    /**
-     * Decodes a JSON string to array, or throws JsonDecodeException on failure
-     *
-     * @param string $string
-     * @return mixed
-     * @throws JsonDecodeException
-     */
-    public static function decodeToArray($string)
+    /** Decodes a JSON string to array, or throws JsonDecodeException on failure */
+    public static function decodeToArray(?string $string): array
     {
         return self::decode($string, true);
     }
 
-    private static function lastErrorMessage()
+    private static function lastErrorMessage(): bool|string
     {
         if (function_exists('json_last_error_msg')) {
             return json_last_error_msg();
@@ -78,14 +51,8 @@ class Json
         return 'JSON input is malformed';
     }
 
-    /**
-     * Returns the JSON representation of the $value
-     *
-     * @param null|bool|int|float|string|object|array|\JsonSerializable $value
-     * @return string
-     * @throws JsonEncodeException
-     */
-    public static function encode($value)
+    /** Returns the JSON representation of the $value */
+    public static function encode(mixed $value): string
     {
         $encoded = self::safeEncode($value);
         $lastErrorCode = self::lastError();
@@ -95,12 +62,8 @@ class Json
         return $encoded;
     }
 
-    /**
-     * Returns a JSON error code for the last operation.
-     *
-     * @return int
-     */
-    public static function lastError()
+    /** Returns a JSON error code for the last operation. */
+    public static function lastError(): int
     {
         return json_last_error();
     }

@@ -1,61 +1,40 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
 use Iterator;
 
 class ForwardingIterator implements Iterator
 {
-    /** @var Iterator */
-    protected $iterator;
-
-    /**
-     * @param Iterator $iterator
-     */
-    public function __construct(Iterator $iterator)
+    public function __construct(protected Iterator $iterator)
     {
-        $this->iterator = $iterator;
     }
 
-    /**
-     * @return mixed
-     */
-    public function current()
+    public function current(): mixed
     {
         return $this->iterator->current();
     }
 
-    /**
-     * @return void
-     */
-    public function next()
+    public function next(): void
     {
         $this->iterator->next();
     }
 
-    /**
-     * @return mixed
-     */
-    public function key()
+    public function key(): mixed
     {
         return $this->iterator->key();
     }
 
-    /**
-     * @return bool
-     */
-    public function valid()
+    public function valid(): bool
     {
         return $this->iterator->valid();
     }
 
-    /**
-     * @return void
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->iterator->rewind();
     }

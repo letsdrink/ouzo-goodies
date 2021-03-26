@@ -1,15 +1,11 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
 
 namespace Ouzo\Utilities;
 
-/**
- * Class Path
- * @package Ouzo\Utilities
- */
 class Path
 {
     /**
@@ -23,13 +19,10 @@ class Path
      * <code>
      * /my/path/to/file.txt
      * </code>
-     *
-     * @param string ...
-     * @return mixed
      */
-    public static function join()
+    public static function join(string ...$args): string
     {
-        $args = Arrays::filterNotBlank(func_get_args());
+        $args = Arrays::filterNotBlank($args);
         $path = preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
         $path = str_replace("\0", '', $path);
         return $path;
@@ -47,14 +40,10 @@ class Path
      * //Unix
      * /tmp/my/file.txt
      * </code>
-     *
-     * @param string ...
-     * @return mixed
      */
-    public static function joinWithTemp()
+    public static function joinWithTemp(string ...$args): string
     {
-        $args = array_merge([sys_get_temp_dir()], func_get_args());
-        return call_user_func_array([Path::class, 'join'], $args);
+        return Path::join(sys_get_temp_dir(), ...$args);
     }
 
     /**
@@ -81,11 +70,8 @@ class Path
      * ../file.txt
      * /dir/file.txt
      * </code>
-     *
-     * @param string $path
-     * @return string
      */
-    public static function normalize($path)
+    public static function normalize(string $path): string
     {
         $parts = explode('/', trim($path, '/'));
         $result = [];

@@ -1,25 +1,19 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Tests\Mock;
 
 use Ouzo\Utilities\Arrays;
 
-class SimpleMock
+class SimpleMock implements MockInterface
 {
-    /** @var CallStub[] */
-    public $stubbedCalls = [];
-    /** @var MethodCall[] */
-    public $calledMethods = [];
+    public array $stubbedCalls = [];
+    public array $calledMethods = [];
 
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         $methodCall = new MethodCall($name, $arguments);
         $this->calledMethods[] = $methodCall;
@@ -36,34 +30,22 @@ class SimpleMock
         return $firstMatching->evaluate($methodCall);
     }
 
-    /**
-     * @param MethodCall $methodCall
-     * @return CallStub[]
-     */
-    private function getMatchingStubbedCalls(MethodCall $methodCall)
+    private function getMatchingStubbedCalls(MethodCall $methodCall): array
     {
-        $matching = Arrays::filter($this->stubbedCalls, function (CallStub $stubbed_call) use ($methodCall) {
+        return Arrays::filter($this->stubbedCalls, function (CallStub $stubbed_call) use ($methodCall) {
             return $stubbed_call->matches($methodCall);
         });
-        return $matching;
     }
 
-    /**
-     * @param CallStub[] $matching
-     * @return void
-     */
-    private function removeMatchedCallIfMultipleResults(array $matching)
+    /** @param CallStub[] $matching */
+    private function removeMatchedCallIfMultipleResults(array $matching): void
     {
         if (count($matching) > 1) {
             $this->removeStubbedCall(Arrays::first($matching));
         }
     }
 
-    /**
-     * @param CallStub $call
-     * @return void
-     */
-    private function removeStubbedCall(CallStub $call)
+    private function removeStubbedCall(CallStub $call): void
     {
         if (($key = array_search($call, $this->stubbedCalls)) !== false) {
             unset($this->stubbedCalls[$key]);

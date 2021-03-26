@@ -1,33 +1,23 @@
 <?php
 /*
- * Copyright (c) Ouzo contributors, http://ouzoframework.org
+ * Copyright (c) Ouzo contributors, https://github.com/letsdrink/ouzo
  * This file is made available under the MIT License (view the LICENSE file for more information).
  */
+
 namespace Ouzo\Utilities\Iterator;
 
 use Iterator;
 
 class SkippingIterator extends ForwardingIterator
 {
-    /** @var int */
-    private $skipCount;
-    /** @var bool */
-    private $skipped = false;
+    private bool $skipped = false;
 
-    /**
-     * @param Iterator $iterator
-     * @param int $skip
-     */
-    public function __construct(Iterator $iterator, $skip)
+    public function __construct(Iterator $iterator, private int $skipCount)
     {
         parent::__construct($iterator);
-        $this->skipCount = $skip;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function valid()
+    public function valid(): bool
     {
         if (!$this->skipped) {
             for ($i = 0; $i < $this->skipCount; ++$i) {
@@ -38,10 +28,7 @@ class SkippingIterator extends ForwardingIterator
         return parent::valid();
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rewind()
+    public function rewind(): void
     {
         $this->skipped = false;
         $this->iterator->rewind();
