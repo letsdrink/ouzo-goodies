@@ -14,7 +14,7 @@ class InOrderVerifier
     private array $scope = [];
     private ?MethodCall $current = null;
 
-    public function verify(Mock|SimpleMock $mock): InOrderVerifier
+    public function verify(Mock|SimpleMock|MockInterface $mock): InOrderVerifier
     {
         if (!$this->scope) {
             $extractMock = Mock::extractMock($mock);
