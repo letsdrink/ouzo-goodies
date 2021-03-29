@@ -152,7 +152,7 @@ class Arrays
      * k3
      * </code>
      */
-    public static function findKeyByValue(array $elements, string $value): bool|int|string
+    public static function findKeyByValue(array $elements, mixed $value): bool|int|string
     {
         if ($value === 0) {
             $value = '0';

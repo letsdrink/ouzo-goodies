@@ -54,7 +54,7 @@ class Objects
     }
 
     /** Convert boolean to string 'true' or 'false'. */
-    public static function booleanToString(bool $var): string
+    public static function booleanToString(?bool $var): string
     {
         return $var ? 'true' : 'false';
     }

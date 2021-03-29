@@ -62,7 +62,7 @@ class Clock
     }
 
     /** Obtains a Clock set to to a specific point. */
-    public static function at(string $date): Clock
+    public static function at(?string $date): Clock
     {
         $dateTime = new DateTime($date);
         return new Clock($dateTime);

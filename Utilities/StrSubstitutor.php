@@ -18,7 +18,7 @@ class StrSubstitutor
     {
     }
 
-    public function replace(string $string): string
+    public function replace(?string $string): string
     {
         $start = preg_quote(self::START);
         $end = preg_quote(self::END);
