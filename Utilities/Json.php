@@ -40,7 +40,7 @@ class Json
     /** Decodes a JSON string to array, or throws JsonDecodeException on failure */
     public static function decodeToArray(?string $string): array
     {
-        return self::decode($string, true);
+        return self::decode($string, true) ?: [];
     }
 
     private static function lastErrorMessage(): bool|string

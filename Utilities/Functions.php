@@ -27,7 +27,7 @@ class Functions
         return fn($object) => Objects::getValueRecursively($object, $names, null, $accessPrivate);
     }
 
-    public static function extractExpression(string|Extractor $selector, bool $accessPrivate = false): Closure|Extractor
+    public static function extractExpression(string|Extractor|callable $selector, bool $accessPrivate = false): Closure|Extractor
     {
         if (!is_string($selector)) {
             return $selector;

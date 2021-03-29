@@ -70,14 +70,14 @@ class FluentArray
         return $this;
     }
 
-    public function uniqueBy(string|Extractor $selector): static
+    public function uniqueBy(string|Extractor|callable $selector): static
     {
         return $this
             ->toMap(Functions::extractExpression($selector))
             ->values();
     }
 
-    public function groupBy(string|Extractor $selector): static
+    public function groupBy(callable $selector): static
     {
         $this->array = Arrays::groupBy($this->array, $selector);
         return $this;
