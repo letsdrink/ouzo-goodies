@@ -23,7 +23,8 @@ class DynamicProxy
     public static function newInstance(string $className, ?object $methodHandler): MockInterface
     {
         $name = 'DynamicProxy_' . str_replace('\\', '_', $className) . '_' . uniqid() . '_' . self::$counter++;
-        eval(self::getProxyClassDefinition($name, $className));
+        $definition = self::getProxyClassDefinition($name, $className);
+        eval($definition);
         return new $name($methodHandler);
     }
 
@@ -78,11 +79,13 @@ class DynamicProxy
 
             $needCasting = $returnTypeInfo['builtin'] && $type !== 'mixed';
             $returnStatement = $needCasting ? "return ({$type})" : 'return';
+            $nullable = '';
             if ($type != 'mixed' && $returnTypeInfo['nullable']) {
-                $nullable = '?';
+                if (!str_contains($type, '|')) {
+                    $nullable = '?';
+                }
                 $methodBody = "\$result = {$invoke} if (is_null(\$result)) { return \$result; } else { {$returnStatement} \$result; }";
             } else {
-                $nullable = '';
                 $methodBody = "{$returnStatement} {$invoke}";
             }
 
