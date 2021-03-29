@@ -944,7 +944,7 @@ class Arrays
      * )
      * </code>
      */
-    public static function uniqueBy(array $elements, string|Extractor $selector): array
+    public static function uniqueBy(array $elements, string|Extractor|callable $selector): array
     {
         return array_values(self::toMap($elements, Functions::extractExpression($selector)));
     }
