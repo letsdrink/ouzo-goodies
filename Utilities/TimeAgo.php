@@ -13,7 +13,7 @@ class TimeAgo
     private string $key;
     private array $params = [];
 
-    public function __construct(private string $date)
+    public function __construct(private ?string $date)
     {
         $this->prepare();
     }

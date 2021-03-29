@@ -20,7 +20,7 @@ class Path
      * /my/path/to/file.txt
      * </code>
      */
-    public static function join(string ...$args): string
+    public static function join(?string ...$args): string
     {
         $args = Arrays::filterNotBlank($args);
         $path = preg_replace('~[/\\\]+~', DIRECTORY_SEPARATOR, implode(DIRECTORY_SEPARATOR, $args));
