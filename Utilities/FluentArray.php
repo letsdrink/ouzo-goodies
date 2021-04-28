@@ -97,13 +97,13 @@ class FluentArray
 
     public function keys(): static
     {
-        $this->array = array_keys($this->array);
+        $this->array = Arrays::keys($this->array);
         return $this;
     }
 
     public function values(): static
     {
-        $this->array = array_values($this->array);
+        $this->array = Arrays::values($this->array);
         return $this;
     }
 
