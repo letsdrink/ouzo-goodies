@@ -7,6 +7,7 @@
 namespace Ouzo\Utilities;
 
 use InvalidArgumentException;
+use function array_values;
 
 class Arrays
 {
@@ -1144,5 +1145,43 @@ class Arrays
     public static function getDuplicatesAssoc(array $array): array
     {
         return array_unique(array_intersect($array, array_diff_assoc($array, array_unique($array))));
+    }
+
+    /**
+     * Returns only values from an array.
+     * Example:
+     * <code>
+     * $result = Arrays::values(['red' => 'apple', 'green' => 'pear']);
+     * </code>
+     * Result:
+     * <code>
+     * Array (
+     *      [0] => 'apple'
+     *      [1] => 'pear'
+     * )
+     * </code>
+     */
+    public static function values(array $array): array
+    {
+        return array_slice(array_values($array), 0);
+    }
+
+    /**
+     * Returns only keys from an array.
+     * Example:
+     * <code>
+     * $result = Arrays::keys(['red' => 'apple', 'green' => 'pear']);
+     * </code>
+     * Result:
+     * <code>
+     * Array (
+     *      [0] => 'red'
+     *      [1] => 'green'
+     * )
+     * </code>
+     */
+    public static function keys(array $array): array
+    {
+        return array_keys($array);
     }
 }
