@@ -646,4 +646,9 @@ class Strings
         $first = mb_substr($string, 0, 1);
         return mb_strtoupper($first) . mb_substr($string, 1);
     }
+
+    public static function defaultIfBlank(?string $string, ?string $default): ?string
+    {
+        return self::isBlank($string) ? $default : $string;
+    }
 }
