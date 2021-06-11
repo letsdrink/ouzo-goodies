@@ -246,6 +246,22 @@ class Arrays
     }
 
     /**
+     * This method returns the last value or null if array is empty.
+     *
+     * Example:
+     * <code>
+     * $array = array();
+     * $return = Arrays::lastOrNull($array);
+     * </code>
+     * Result:
+     * <code>null</code>
+     */
+    public static function lastOrNull(array $elements): mixed
+    {
+        return empty($elements) ? null : self::last($elements);
+    }
+
+    /**
      * Returns the element for the given key or a default value otherwise.
      *
      * Example:
