@@ -10,21 +10,20 @@ use Closure;
 
 class Loop
 {
-    private int $iterations;
-    private int $delay;
-    private ?Closure $functionForEach;
-    private ?Closure $functionForEveryNth;
-    private ?int $n;
-
     private int $currentIteration = 0;
 
-    public function __construct(int $iterations, int $delay, ?Closure $functionForEach, ?Closure $functionForEveryNth, ?int $n)
+    /**
+     * @param Closure[] $functionForEveryNth
+     * @param int[] $n
+     */
+    public function __construct(
+        private int $iterations,
+        private int $delay,
+        private ?Closure $functionForEach,
+        private array $functionForEveryNth,
+        private array $n,
+    )
     {
-        $this->iterations = $iterations;
-        $this->delay = $delay;
-        $this->functionForEach = $functionForEach;
-        $this->functionForEveryNth = $functionForEveryNth;
-        $this->n = $n;
     }
 
     public static function of(int $iterations): LoopBuilder
@@ -45,9 +44,12 @@ class Loop
                 $function($this->currentIteration);
             }
 
-            if (is_callable($this->functionForEveryNth) && $this->n > 0 && ($this->currentIteration % $this->n === 0)) {
-                $function = $this->functionForEveryNth;
-                $function($this->currentIteration);
+            for ($i = 0; $i < sizeof($this->functionForEveryNth); $i++) {
+                $function = $this->functionForEveryNth[$i];
+                $n = $this->n[$i];
+                if (is_callable($function) && $n > 0 && ($this->currentIteration % $n === 0)) {
+                    $function($this->currentIteration);
+                }
             }
 
             sleep($this->delay);

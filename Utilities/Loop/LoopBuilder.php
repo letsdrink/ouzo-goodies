@@ -10,16 +10,15 @@ use Closure;
 
 class LoopBuilder
 {
-    private int $iterations;
-
     private int $delay = 1;
     private ?Closure $functionForEach = null;
-    private ?Closure $functionForEveryNth = null;
-    private ?int $n = null;
+    /** @var Closure[] */
+    private array $functionForEveryNth = [];
+    /** @var int[] */
+    private array $n = [];
 
-    public function __construct(int $iterations)
+    public function __construct(private int $iterations)
     {
-        $this->iterations = $iterations;
     }
 
     public function withFixedDelay(int $seconds): LoopBuilder
@@ -36,8 +35,8 @@ class LoopBuilder
 
     public function forEveryNth(int $n, Closure $function): LoopBuilder
     {
-        $this->functionForEveryNth = $function;
-        $this->n = $n;
+        $this->functionForEveryNth[] = $function;
+        $this->n[] = $n;
         return $this;
     }
 
