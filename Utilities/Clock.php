@@ -69,10 +69,10 @@ class Clock
     }
 
     /** Obtains a Clock set to to a specific point using Unix timestamp. */
-    public static function fromTimestamp(int $timestamp): Clock
+    public static function fromTimestamp(int|float $timestamp): Clock
     {
         $dateTime = new DateTime();
-        $dateTime->setTimestamp($timestamp);
+        $dateTime->setTimestamp((int) $timestamp);
         return new Clock($dateTime);
     }
 

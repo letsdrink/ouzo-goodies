@@ -351,7 +351,7 @@ class Strings
      */
     public static function isBlank(?string $string): bool
     {
-        return mb_strlen(trim($string)) == 0;
+        return mb_strlen(trim($string ?? '')) == 0;
     }
 
     /**

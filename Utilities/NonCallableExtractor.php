@@ -42,7 +42,7 @@ class NonCallableExtractor implements ArrayAccess
         throw new BadMethodCallException();
     }
 
-    public function offsetSet(mixed $offset, mixed $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         throw new BadMethodCallException();
     }
