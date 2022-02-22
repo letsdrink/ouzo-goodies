@@ -60,6 +60,41 @@ class TimeUnit
         return new TimeUnit(TimeUnit::NANOSECONDS);
     }
 
+    public function toDays(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::DAYS)->convert($duration, $this->timeUnit);
+    }
+
+    public function toHours(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::HOURS)->convert($duration, $this->timeUnit);
+    }
+
+    public function toMinutes(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::MINUTES)->convert($duration, $this->timeUnit);
+    }
+
+    public function toSeconds(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::SECONDS)->convert($duration, $this->timeUnit);
+    }
+
+    public function toMicros(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::MICROSECONDS)->convert($duration, $this->timeUnit);
+    }
+
+    public function toMillis(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::MILLISECONDS)->convert($duration, $this->timeUnit);
+    }
+
+    public function toNanos(int $duration): int
+    {
+        return TimeUnit::of(TimeUnit::NANOSECONDS)->convert($duration, $this->timeUnit);
+    }
+
     public function convert(int $sourceDuration, string $sourceTimeUnit): int
     {
         $nanos = $this->convertToNanos($sourceDuration, $sourceTimeUnit);
