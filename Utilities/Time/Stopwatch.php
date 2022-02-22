@@ -30,10 +30,10 @@ class Stopwatch
         return self::createUnstarted($ticker)->start();
     }
 
-    public function elapsed(string $timeUnit): int
+    public function elapsed(TimeUnit|string $timeUnit): int
     {
         $nanos = $this->elapsedNanos();
-        return TimeUnit::convert($nanos, $timeUnit);
+        return TimeUnit::of($timeUnit)->convert($nanos, TimeUnit::NANOSECONDS);
     }
 
     public function isRunning(): bool
