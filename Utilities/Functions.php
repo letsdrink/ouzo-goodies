@@ -50,7 +50,7 @@ class Functions
 
     public static function random(int $min = 0, ?int $max = null): Closure
     {
-        return fn() => mt_rand($min, $max);
+        return fn() => mt_rand($min, $max ?: mt_getrandmax());
     }
 
     public static function throwException(Exception $exception): Closure

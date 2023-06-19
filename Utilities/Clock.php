@@ -125,61 +125,97 @@ class Clock
 
     public function minusDays(int $days): Clock
     {
+        if ($days < 0) {
+            return $this->minusDays(abs($days));
+        }
         return $this->modify("-$days days");
     }
 
     public function minusHours(int $hours): Clock
     {
+        if ($hours < 0) {
+            return $this->minusHours(abs($hours));
+        }
         return $this->modifyWithDstChangeSupport("-{$hours} hours");
     }
 
     public function minusMinutes(int $minutes): Clock
     {
+        if ($minutes < 0) {
+            return $this->plusMinutes(abs($minutes));
+        }
         return $this->modifyWithDstChangeSupport("-{$minutes} minutes");
     }
 
     public function minusMonths(int $months): Clock
     {
+        if ($months < 0) {
+            return $this->plusMonths(abs($months));
+        }
         return $this->modifyMonths("-{$months} months");
     }
 
     public function minusSeconds(int $seconds): Clock
     {
+        if ($seconds < 0) {
+            return $this->plusSeconds(abs($seconds));
+        }
         return $this->modifyWithDstChangeSupport("-{$seconds} seconds");
     }
 
     public function minusYears(int $years): Clock
     {
+        if ($years < 0) {
+            return $this->plusYears(abs($years));
+        }
         return $this->modify("-{$years} years");
     }
 
     public function plusDays(int $days): Clock
     {
+        if ($days < 0) {
+            return $this->minusDays(abs($days));
+        }
         return $this->modify("+{$days} days");
     }
 
     public function plusHours(int $hours): Clock
     {
+        if ($hours < 0) {
+            return $this->minusHours(abs($hours));
+        }
         return $this->modifyWithDstChangeSupport("+{$hours} hours");
     }
 
     public function plusMinutes(int $minutes): Clock
     {
+        if ($minutes < 0) {
+            return $this->minusMinutes(abs($minutes));
+        }
         return $this->modifyWithDstChangeSupport("+{$minutes} minutes");
     }
 
     public function plusMonths(int $months): Clock
     {
+        if ($months < 0) {
+            return $this->minusMonths(abs($months));
+        }
         return $this->modifyMonths("+{$months} months");
     }
 
     public function plusSeconds(int $seconds): Clock
     {
+        if ($seconds < 0) {
+            return $this->minusSeconds(abs($seconds));
+        }
         return $this->modifyWithDstChangeSupport("+{$seconds} seconds");
     }
 
     public function plusYears(int $years): Clock
     {
+        if ($years < 0) {
+            return $this->modify(abs($years));
+        }
         return $this->modify("+{$years} years");
     }
 

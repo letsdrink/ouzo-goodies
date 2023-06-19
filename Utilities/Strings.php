@@ -127,7 +127,7 @@ class Strings
      */
     public static function startsWith(?string $string, ?string $prefix): bool
     {
-        if (is_null($prefix)) {
+        if (is_null($string) || is_null($prefix)) {
             return false;
         }
         return str_starts_with($string, $prefix);
@@ -146,7 +146,7 @@ class Strings
      */
     public static function endsWith(?string $string, ?string $suffix): bool
     {
-        if (is_null($suffix)) {
+        if (is_null($string) || is_null($suffix)) {
             return false;
         }
         return str_ends_with($string, $suffix);
@@ -164,6 +164,9 @@ class Strings
      */
     public static function equalsIgnoreCase(?string $string1, ?string $string2): bool
     {
+        if (is_null($string1) && is_null($string2)) {
+            return true;
+        }
         if ((is_null($string1) && !is_null($string2)) || (!is_null($string1) && is_null($string2))) {
             return false;
         }
@@ -185,6 +188,9 @@ class Strings
     {
         if (is_null($string)) {
             return null;
+        }
+        if (is_null($toRemove)) {
+            return $string;
         }
         return str_replace($toRemove, self::EMPTY_STRING, $string);
     }
@@ -304,7 +310,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-        return nl2br(htmlspecialchars($string));
+        return nl2br(htmlspecialchars($string, ENT_COMPAT));
     }
 
     public static function htmlEntityDecode(?string $text): ?string
@@ -405,6 +411,9 @@ class Strings
      */
     public static function trimToNull(?string $string): ?string
     {
+        if (is_null($string)) {
+            return null;
+        }
         $string = trim($string);
         if (mb_strlen($string) == 0) {
             return null;
@@ -488,7 +497,7 @@ class Strings
 
     public static function substringBefore(?string $string, ?string $separator): ?string
     {
-        if (is_null($separator)) {
+        if (is_null($separator) || is_null($string)) {
             return $string;
         }
         $pos = mb_strpos($string, $separator);
@@ -497,7 +506,7 @@ class Strings
 
     public static function substringAfter(?string $string, ?string $separator): ?string
     {
-        if (is_null($separator)) {
+        if (is_null($separator) || is_null($string)) {
             return $string;
         }
         $pos = mb_strpos($string, $separator);
@@ -509,7 +518,7 @@ class Strings
 
     public static function replaceNth(?string $subject, ?string $search, ?string $replace, int $nth): ?string
     {
-        if (is_null($search)) {
+        if (is_null($search) || is_null($subject)) {
             return $subject;
         }
         $found = preg_match_all('/' . $search . '/', $subject, $matches, PREG_OFFSET_CAPTURE);

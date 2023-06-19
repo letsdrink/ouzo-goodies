@@ -54,9 +54,7 @@ class DynamicProxy
     private static function getClassMethods(ReflectionClass $reflectionClass): array
     {
         $reflectionMethods = $reflectionClass->getMethods();
-        return Arrays::filter($reflectionMethods, function (ReflectionMethod $reflectionMethod) {
-            return !$reflectionMethod->isConstructor();
-        });
+        return Arrays::filter($reflectionMethods, fn(ReflectionMethod $reflectionMethod) => !$reflectionMethod->isConstructor());
     }
 
     private static function generateMethod(ReflectionMethod $reflectionMethod): string
@@ -69,7 +67,7 @@ class DynamicProxy
         $invoke = 'call_user_func_array(array($this->methodHandler, __FUNCTION__), func_get_args());';
 
         if (is_null($returnTypeInfo)) {
-            $methodSignature = "{$modifier} function {$methodName}({$parameters})";
+            $methodSignature = "#[\ReturnTypeWillChange]\n{$modifier} function {$methodName}({$parameters})";
             $methodBody = "return {$invoke}";
         } elseif ($returnTypeInfo['type'] === 'void') {
             $methodSignature = "{$modifier} function {$methodName}({$parameters}): void";
@@ -102,7 +100,7 @@ class DynamicProxy
             $parameter = '';
             if ($reflectionParameter->hasType() && $reflectionParameter->getType() instanceof ReflectionNamedType) {
                 $typeName = $reflectionParameter->getType()->getName();
-                $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : '';
+                $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : Strings::EMPTY_STRING;
                 $parameter .= "{$nullable}{$typeName} ";
             }
             if ($reflectionParameter->isVariadic()) {
@@ -127,7 +125,6 @@ class DynamicProxy
             $methodReturnType = $reflectionMethod->getReturnType();
 
             if ($methodReturnType instanceof ReflectionUnionType) {
-                /** @var ReflectionUnionType $methodReturnType */
                 $type = implode('|', Arrays::map($methodReturnType->getTypes(), fn($type) => $type->getName()));
                 return [
                     'type' => $type,
@@ -157,6 +154,6 @@ class DynamicProxy
         if ($classes) {
             return $relation . ' ' . implode(', ', $classes);
         }
-        return '';
+        return Strings::EMPTY_STRING;
     }
 }

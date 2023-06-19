@@ -26,7 +26,7 @@ class FilteringIterator extends FilterIterator
         $this->predicate = Closure::fromCallable($predicate);
     }
 
-    public function accept(): mixed
+    public function accept(): bool
     {
         $predicate = $this->predicate;
         return $predicate($this->current());
