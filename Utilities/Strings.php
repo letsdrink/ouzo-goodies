@@ -444,7 +444,9 @@ class Strings
             return $string;
         }
         foreach ($params as $key => $value) {
-            $string = preg_replace("/%{($key)}/", $value, $string);
+            if (!is_null($key) && !is_null($value)) {
+                $string = preg_replace("/%{($key)}/", $value, $string);
+            }
         }
         return $string;
     }
