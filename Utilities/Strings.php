@@ -8,7 +8,12 @@ namespace Ouzo\Utilities;
 
 class Strings
 {
-    const EMPTY_STRING = '';
+    const EMPTY = '';
+
+    /**
+     * @deprecated Use `Strings::EMPTY` instead.
+     */
+    const EMPTY_STRING = self::EMPTY;
 
     /**
      * Example:
@@ -26,7 +31,7 @@ class Strings
         if (is_null($string)) {
             return null;
         }
-        return str_replace('_', self::EMPTY_STRING, ucwords($string, '_'));
+        return str_replace('_', self::EMPTY, ucwords($string, '_'));
     }
 
     /**
@@ -192,7 +197,7 @@ class Strings
         if (is_null($toRemove)) {
             return $string;
         }
-        return str_replace($toRemove, self::EMPTY_STRING, $string);
+        return str_replace($toRemove, self::EMPTY, $string);
     }
 
     /**

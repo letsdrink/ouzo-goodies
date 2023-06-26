@@ -106,7 +106,7 @@ class DynamicProxy
             $parameter = '';
             if ($reflectionParameter->hasType() && $reflectionParameter->getType() instanceof ReflectionNamedType) {
                 $typeName = $reflectionParameter->getType()->getName();
-                $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : Strings::EMPTY_STRING;
+                $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : Strings::EMPTY;
                 $parameter .= "{$nullable}{$typeName} ";
             }
             if ($reflectionParameter->isVariadic()) {
@@ -160,6 +160,6 @@ class DynamicProxy
         if ($classes) {
             return $relation . ' ' . implode(', ', $classes);
         }
-        return Strings::EMPTY_STRING;
+        return Strings::EMPTY;
     }
 }
