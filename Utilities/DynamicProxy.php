@@ -38,10 +38,16 @@ class DynamicProxy
         } else {
             $extendsClasses[] = $className;
         }
+
+        $readonly = '';
+        if ($reflectionClass->isReadOnly()){
+            $readonly = 'readonly';
+        }
         $extends = self::generateRelation('extends', $extendsClasses);
         $implements = self::generateRelation('implements', $implementsInterfaces);
-        $code = "class {$name} {$extends} {$implements} {";
-        $code .= "public \$methodHandler;\n";
+
+        $code = "{$readonly} class {$name} {$extends} {$implements} {";
+        $code .= "public ?object \$methodHandler;\n";
         $code .= "function __construct(\$methodHandler) { \$this->methodHandler = \$methodHandler; }\n";
         foreach (self::getClassMethods($reflectionClass) as $method) {
             $code .= self::generateMethod($method);
