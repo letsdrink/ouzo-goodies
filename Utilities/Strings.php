@@ -449,7 +449,8 @@ class Strings
             return $string;
         }
         foreach ($params as $key => $value) {
-            if (!is_null($key) && !is_null($value)) {
+            if (!is_null($key)) {
+                $value ??= Strings::EMPTY;
                 $string = preg_replace("/%{($key)}/", $value, $string);
             }
         }
