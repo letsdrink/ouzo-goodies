@@ -6,7 +6,7 @@
 
 namespace Ouzo\Utilities;
 
-class StrSubstitutor
+readonly class StrSubstitutor
 {
     private const START = '{{';
     private const END = '}}';
@@ -20,6 +20,10 @@ class StrSubstitutor
 
     public function replace(?string $string): string
     {
+        if (is_null($string)) {
+            return Strings::EMPTY;
+        }
+
         $start = preg_quote(self::START);
         $end = preg_quote(self::END);
         return preg_replace_callback("/{$start}(.+?){$end}/u", [$this, 'replaceVars'], $string);
@@ -30,6 +34,6 @@ class StrSubstitutor
         $matched = $match[0];
         $name = $match[1];
         $default = is_null($this->default) ? $matched : $this->default;
-        return isset($this->values[$name]) ? $this->values[$name] : $default;
+        return $this->values[$name] ?? $default;
     }
 }
