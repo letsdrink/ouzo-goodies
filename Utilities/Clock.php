@@ -64,6 +64,7 @@ class Clock
     /** Obtains a Clock set to to a specific point. */
     public static function at(?string $date): Clock
     {
+        $date ??= Strings::EMPTY;
         $dateTime = new DateTime($date);
         return new Clock($dateTime);
     }
