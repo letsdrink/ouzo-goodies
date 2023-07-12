@@ -478,7 +478,7 @@ class Strings
         }
         if (!is_null($params)) {
             foreach ($params as $key => $value) {
-                $string = preg_replace("/%{($key)}/", $value, $string);
+                $string = preg_replace("/%{($key)}/", $value ?: $default, $string);
             }
         }
         if (!is_null($default)) {
