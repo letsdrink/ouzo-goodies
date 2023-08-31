@@ -9,6 +9,7 @@ namespace Ouzo\Utilities;
 class Strings
 {
     const EMPTY = '';
+    const SPACE = ' ';
 
     /**
      * @deprecated Use `Strings::EMPTY` instead.
