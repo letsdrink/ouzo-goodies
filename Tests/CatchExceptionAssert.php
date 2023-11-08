@@ -50,6 +50,13 @@ class CatchExceptionAssert
         return $this;
     }
 
+    public function messageContains(string $messagePart): CatchExceptionAssert
+    {
+        $this->validateExceptionThrown();
+        AssertAdapter::assertContains($messagePart, $this->exception->getMessage());
+        return $this;
+    }
+
     private function validateExceptionThrown(): void
     {
         if (!$this->exception) {
