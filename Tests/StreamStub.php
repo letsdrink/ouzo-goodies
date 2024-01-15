@@ -16,6 +16,7 @@ class StreamStub
 
     public function stream_open($path, $mode, $options, &$opened_path)
     {
+        self::$position = 0;
         return true;
     }
 
