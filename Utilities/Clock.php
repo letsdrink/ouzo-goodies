@@ -25,7 +25,7 @@ class Clock
     }
 
     /** Freezes time to a specific point or current time if no time is given. */
-    public static function freeze(string $date = null)
+    public static function freeze(?string $date = null)
     {
         self::$freeze = false;
         self::$freezeDate = $date ? new DateTime($date) : self::now();
@@ -45,7 +45,7 @@ class Clock
      * 2011-01-02
      * </code>
      */
-    public static function nowAsString(string $format = null): string
+    public static function nowAsString(?string $format = null): string
     {
         return self::now()->format($format);
     }
@@ -82,7 +82,7 @@ class Clock
         return $this->dateTime->getTimestamp();
     }
 
-    public function format(string $format = null): string
+    public function format(?string $format = null): string
     {
         $format = $format ?: 'Y-m-d H:i:s';
         return $this->dateTime->format($format);

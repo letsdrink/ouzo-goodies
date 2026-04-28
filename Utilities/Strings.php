@@ -6,14 +6,14 @@
 
 namespace Ouzo\Utilities;
 
+use Deprecated;
+
 class Strings
 {
     const EMPTY = '';
     const SPACE = ' ';
 
-    /**
-     * @deprecated Use `Strings::EMPTY` instead.
-     */
+    #[Deprecated(message: 'use Strings::EMPTY instead', since: '3.0')]
     const EMPTY_STRING = self::EMPTY;
 
     /**

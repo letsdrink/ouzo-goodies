@@ -16,7 +16,7 @@ class ToStringBuilder
 
     public function __construct(
         private object $object,
-        ToStringStyle $style = null
+        ?ToStringStyle $style = null
     )
     {
         $this->toStringStyle = $style ?: ToStringStyle::defaultStyle();

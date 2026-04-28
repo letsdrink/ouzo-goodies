@@ -6,6 +6,7 @@
 
 namespace Ouzo\Utilities;
 
+use Deprecated;
 use InvalidArgumentException;
 use function array_values;
 
@@ -31,12 +32,7 @@ class Arrays
      */
     public static function all(array $elements, callable $predicate): bool
     {
-        foreach ($elements as $element) {
-            if (!Functions::call($predicate, $element)) {
-                return false;
-            }
-        }
-        return true;
+        return array_all($elements, $predicate);
     }
 
     /**
@@ -81,7 +77,7 @@ class Arrays
      * )
      * </code>
      */
-    public static function toMap(array $elements, callable $keyFunction, callable $valueFunction = null): array
+    public static function toMap(array $elements, callable $keyFunction, ?callable $valueFunction = null): array
     {
         if ($valueFunction == null) {
             $valueFunction = Functions::identity();
@@ -183,12 +179,7 @@ class Arrays
      */
     public static function any(array $elements, callable $predicate): bool
     {
-        foreach ($elements as $element) {
-            if (Functions::call($predicate, $element)) {
-                return true;
-            }
-        }
-        return false;
+        return array_any($elements, $predicate);
     }
 
     /**
@@ -379,7 +370,7 @@ class Arrays
      * )
      * </code>
      */
-    public static function groupBy(array $elements, callable $keyFunction, string $orderField = null): array
+    public static function groupBy(array $elements, callable $keyFunction, ?string $orderField = null): array
     {
         $map = [];
         if (!empty($orderField)) {
@@ -632,12 +623,7 @@ class Arrays
      */
     public static function find(array $elements, callable $function): mixed
     {
-        foreach ($elements as $element) {
-            if ($function($element)) {
-                return $element;
-            }
-        }
-        return null;
+        return array_find($elements, $function);
     }
 
     /**
@@ -754,10 +740,9 @@ class Arrays
         return $array;
     }
 
-    /** @deprecated */
+    #[Deprecated(message: 'use Arrays::removeNestedKey instead', since: '3.0')]
     public static function removeNestedValue(array &$array, array $keys): void
     {
-        trigger_error('Use Arrays::removeNestedKey instead', E_USER_DEPRECATED);
         self::removeNestedKey($array, $keys);
     }
 
@@ -819,7 +804,7 @@ class Arrays
      * true
      * </code>
      */
-    public static function hasNestedKey(array $array, array $keys, int $flags = null): bool
+    public static function hasNestedKey(array $array, array $keys, ?int $flags = null): bool
     {
         foreach ($keys as $key) {
             if (!is_array($array) || !array_key_exists($key, $array) || (!($flags & self::TREAT_NULL_AS_VALUE) && !isset($array[$key]))) {

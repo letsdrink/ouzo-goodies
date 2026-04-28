@@ -104,10 +104,21 @@ class DynamicProxy
         $parameters = [];
         foreach ($reflectionMethod->getParameters() as $reflectionParameter) {
             $parameter = '';
-            if ($reflectionParameter->hasType() && $reflectionParameter->getType() instanceof ReflectionNamedType) {
-                $typeName = $reflectionParameter->getType()->getName();
-                $nullable = $typeName != 'mixed' && $reflectionParameter->allowsNull() ? '?' : Strings::EMPTY;
-                $parameter .= "{$nullable}{$typeName} ";
+            $needsNullable = $reflectionParameter->isDefaultValueAvailable();
+            if ($reflectionParameter->hasType()) {
+                $type = $reflectionParameter->getType();
+                if ($type instanceof ReflectionUnionType) {
+                    $typeNames = Arrays::map($type->getTypes(), fn($t) => $t->getName());
+                    if ($needsNullable && !in_array('null', $typeNames) && !in_array('mixed', $typeNames)) {
+                        $typeNames[] = 'null';
+                    }
+                    $parameter .= implode('|', $typeNames) . ' ';
+                } elseif ($type instanceof ReflectionNamedType) {
+                    $typeName = $type->getName();
+                    $shouldBeNullable = $reflectionParameter->allowsNull() || $needsNullable;
+                    $nullable = $typeName != 'mixed' && $shouldBeNullable ? '?' : Strings::EMPTY;
+                    $parameter .= "{$nullable}{$typeName} ";
+                }
             }
             if ($reflectionParameter->isVariadic()) {
                 $parameter .= '...';
@@ -116,7 +127,7 @@ class DynamicProxy
                 $parameter .= '&';
             }
             $parameter .= "\${$reflectionParameter->getName()}";
-            if ($reflectionParameter->isDefaultValueAvailable()) {
+            if ($needsNullable) {
                 $parameter .= ' = null'; // methodHandler gets only the passed arguments so anything would work here
             }
             $parameters[] = $parameter;

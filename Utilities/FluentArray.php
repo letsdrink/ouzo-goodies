@@ -125,7 +125,7 @@ class FluentArray
         return $this;
     }
 
-    public function toMap(callable $keyFunction, callable $valueFunction = null): static
+    public function toMap(callable $keyFunction, ?callable $valueFunction = null): static
     {
         $this->array = Arrays::toMap($this->array, $keyFunction, $valueFunction);
         return $this;

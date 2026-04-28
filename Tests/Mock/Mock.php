@@ -12,12 +12,12 @@ use Ouzo\Utilities\DynamicProxy;
 
 class Mock
 {
-    public static function create(string $className = null): MockInterface
+    public static function create(?string $className = null): MockInterface
     {
         return self::mock($className);
     }
 
-    public static function mock(string $className = null): MockInterface
+    public static function mock(?string $className = null): MockInterface
     {
         $mock = new SimpleMock();
         if (!$className) {
